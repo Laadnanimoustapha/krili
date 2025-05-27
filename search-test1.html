@@ -222,12 +222,6 @@
       transform: translateY(-50%);
       color: var(--text-secondary);
       font-size: 1.2rem;
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: translateY(-50%) scale(1); }
-      50% { transform: translateY(-50%) scale(1.1); }
     }
 
     /* Enhanced filter container */
@@ -492,7 +486,6 @@
       transition: all 0.3s ease;
       border: 1px solid rgba(255, 255, 255, 0.1);
       position: relative;
-      animation: fadeIn 0.5s ease forwards;
       transform-style: preserve-3d;
     }
 
@@ -669,90 +662,6 @@
         radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
         radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.05) 0%, transparent 50%);
       z-index: -1;
-      animation: backgroundFloat 20s ease-in-out infinite;
-    }
-
-    @keyframes backgroundFloat {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(1deg); }
-    }
-
-    /* Floating particles background */
-    .particles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    .particle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: var(--accent-primary);
-      border-radius: 50%;
-      opacity: 0.3;
-      animation: float 6s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
-      50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
-    }
-
-    /* Morphing background shapes */
-    .bg-shape {
-      position: fixed;
-      border-radius: 50%;
-      background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
-      animation: morph 8s ease-in-out infinite;
-      z-index: -1;
-    }
-
-    .bg-shape:nth-child(3) {
-      width: 300px;
-      height: 300px;
-      top: 10%;
-      left: 10%;
-      animation-delay: 0s;
-    }
-
-    .bg-shape:nth-child(4) {
-      width: 200px;
-      height: 200px;
-      top: 60%;
-      right: 10%;
-      animation-delay: 2s;
-    }
-
-    .bg-shape:nth-child(5) {
-      width: 150px;
-      height: 150px;
-      bottom: 20%;
-      left: 30%;
-      animation-delay: 4s;
-    }
-
-    @keyframes morph {
-      0%, 100% {
-        border-radius: 50%;
-        transform: scale(1) rotate(0deg);
-      }
-      25% {
-        border-radius: 60% 40% 30% 70%;
-        transform: scale(1.1) rotate(90deg);
-      }
-      50% {
-        border-radius: 30% 60% 70% 40%;
-        transform: scale(0.9) rotate(180deg);
-      }
-      75% {
-        border-radius: 40% 30% 60% 50%;
-        transform: scale(1.05) rotate(270deg);
-      }
     }
 
     /* Cyberpunk grid overlay */
@@ -768,12 +677,6 @@
       background-size: 50px 50px;
       pointer-events: none;
       z-index: -1;
-      animation: gridMove 20s linear infinite;
-    }
-
-    @keyframes gridMove {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(50px, 50px); }
     }
 
     /* Responsive design */
@@ -1092,7 +995,7 @@
 
   </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
   <div class="particles"></div>
   <div class="cyber-grid"></div>
   <div class="bg-shape"></div>
@@ -1419,48 +1322,23 @@
   <div class="notification" id="notification"></div>
 
   <script>
-    // Create floating particles
-    function createParticles() {
-      const particlesContainer = document.querySelector('.particles');
-      for (let i = 0; i < 50; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 6 + 's';
-        particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
-        particlesContainer.appendChild(particle);
-      }
-    }
+    // Remove floating particles creation
+    // function createParticles() { ... }
+    // document.addEventListener('DOMContentLoaded', function() { ... });
 
-    // Add glitch effect data attribute
+    // Remove enhanced card interactions (3D tilt)
+    document.querySelectorAll('.result-card').forEach(card => {
+      card.onmousemove = null;
+      card.onmouseleave = null;
+    });
+
+    // Remove glitch effect data attribute
     document.addEventListener('DOMContentLoaded', function() {
       const title = document.querySelector('.search-title');
       if (title) {
-        title.setAttribute('data-text', title.textContent);
+        title.removeAttribute('data-text');
       }
-      createParticles();
-    });
-
-    // Enhanced card interactions
-    document.querySelectorAll('.result-card').forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const rotateX = (y - centerY) / 10;
-        const rotateY = (centerX - x) / 10;
-        
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
-      });
-      
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
-      });
+      // createParticles(); // Removed
     });
 
     // Theme toggle functionality
@@ -1537,7 +1415,7 @@
     function viewItem(id) {
       showNotification(`Loading item details...`, 'info');
       setTimeout(() => {
-        window.location.href = `item.html?id=${id}`;
+        window.location.href = `item-test1.html?id=${id}`;
       }, 1000);
     }
 
