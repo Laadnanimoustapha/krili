@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Search Results - KRILI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="auth-check.js"></script>
+  <style>
+    :root {
+      --bg-color: #0a0a0a;
+      --text-color: #ffffff;
+      --text-secondary: #a1a1aa;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --accent-primary: #3b82f6;
+      --accent-secondary: #2563eb;
+      --accent-tertiary: #1d4ed8;
+      --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
+      --shadow-primary: 0 0 50px rgba(59, 130, 246, 0.3);
+    }
+
+    body[data-theme="light"] {
+      --bg-color: #ffffff;
+      --text-color: #1a1a1a;
+      --text-secondary: #4b5563;
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --glass-bg: rgba(255, 255, 255, 0.8);
+      --shadow-primary: 0 10px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    body[data-theme="light"] header {
+      background: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    body[data-theme="light"] .item-card {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    body[data-theme="light"] .item-card:hover {
+      border-color: var(--accent-primary);
+      box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15);
+    }
+
+    body[data-theme="light"] .filter-btn {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    body[data-theme="light"] .theme-toggle {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      transition: all 0.3s ease;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1rem 2rem;
+      background: rgba(10, 10, 10, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    body[data-theme="light"] header {
+      background: rgba(250, 250, 250, 0.9);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-links a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--gradient-primary);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+
+    .nav-links a:hover {
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .nav-links a:hover::before {
+      left: 0;
+    }
+
+    .theme-toggle {
+      background: var(--glass-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50px;
+      padding: 0.75rem 1.5rem;
+      color: var(--text-color);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .theme-toggle:hover {
+      background: var(--gradient-primary);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-primary);
+    }
+
+    .search-container {
+      padding: 8rem 2rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      margin-bottom: 2rem;
+    }
+
+    .search-header {
+      margin-bottom: 2rem;
+    }
+
+    .search-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .search-subtitle {
+      color: var(--text-secondary);
+    }
+
+    .search-wrapper {
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      padding-left: 3.5rem;
+      border: none;
+      border-radius: 15px;
+      background: var(--card-bg);
+      color: var(--text-color);
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .search-input:focus {
+      outline: none;
+      box-shadow: 
+        0 0 20px rgba(59, 130, 246, 0.5),
+        0 0 40px rgba(59, 130, 246, 0.3),
+        0 0 60px rgba(59, 130, 246, 0.1);
+      border-color: var(--accent-primary);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1.2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      font-size: 1.2rem;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translateY(-50%) scale(1); }
+      50% { transform: translateY(-50%) scale(1.1); }
+    }
+
+    /* Enhanced filter container */
+    .filters-container {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 2rem;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(139, 92, 246, 0.05));
+      border-radius: 25px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .filters-container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+      animation: rotate 10s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Enhanced filter buttons */
+    .filter-btn {
+      position: relative;
+      padding: 1rem 2rem;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-color);
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+      transform: translateY(0);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .filter-btn:hover::before {
+      left: 100%;
+    }
+
+    .filter-icon-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+    }
+
+    .filter-btn i {
+      font-size: 1.1rem;
+      z-index: 2;
+      transition: all 0.3s ease;
+    }
+
+    .icon-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 30px;
+      height: 30px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.3), transparent);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.3s ease;
+    }
+
+    .filter-text {
+      position: relative;
+      z-index: 2;
+      transition: all 0.3s ease;
+    }
+
+    .filter-ripple {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(59, 130, 246, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: all 0.6s ease;
+    }
+
+    /* Hover effects */
+    .filter-btn:hover {
+      transform: translateY(-8px) scale(1.05);
+      border-color: var(--accent-primary);
+      background: rgba(59, 130, 246, 0.1);
+      box-shadow: 
+        0 10px 30px rgba(59, 130, 246, 0.3),
+        0 0 20px rgba(59, 130, 246, 0.2);
+    }
+
+    .filter-btn:hover .icon-glow {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .filter-btn:hover i {
+      transform: scale(1.2) rotate(5deg);
+      color: var(--accent-primary);
+      text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    }
+
+    .filter-btn:hover .filter-text {
+      color: var(--accent-primary);
+      text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Active state */
+    .filter-btn.active {
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      border-color: var(--accent-primary);
+      color: white;
+      transform: translateY(-5px);
+      box-shadow: 
+        0 15px 35px rgba(59, 130, 246, 0.4),
+        0 0 25px rgba(59, 130, 246, 0.3);
+    }
+
+    .filter-btn.active i {
+      color: white;
+      transform: scale(1.1);
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    }
+
+    .filter-btn.active .filter-text {
+      color: white;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    .filter-btn.active .icon-glow {
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    /* Click animation */
+    .filter-btn:active .filter-ripple {
+      width: 200px;
+      height: 200px;
+      opacity: 0;
+    }
+
+    /* Staggered animation on load */
+    .filter-btn:nth-child(1) { animation: filterSlideIn 0.6s ease 0.1s both; }
+    .filter-btn:nth-child(2) { animation: filterSlideIn 0.6s ease 0.2s both; }
+    .filter-btn:nth-child(3) { animation: filterSlideIn 0.6s ease 0.3s both; }
+    .filter-btn:nth-child(4) { animation: filterSlideIn 0.6s ease 0.4s both; }
+    .filter-btn:nth-child(5) { animation: filterSlideIn 0.6s ease 0.5s both; }
+
+    @keyframes filterSlideIn {
+      0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.8);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2rem;
+    }
+
+    .results-count {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .sort-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .sort-select {
+      padding: 0.5rem 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50px;
+      background: var(--card-bg);
+      color: var(--text-color);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .sort-select:hover {
+      border-color: var(--accent-primary);
+    }
+
+    .view-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .view-btn {
+      background: var(--glass-bg);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      color: var(--text-color);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .view-btn.active {
+      background: var(--gradient-primary);
+      color: white;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .result-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      animation: fadeIn 0.5s ease forwards;
+      transform-style: preserve-3d;
+    }
+
+    .result-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+      transition: left 0.5s;
+    }
+
+    .result-card:hover {
+      transform: perspective(1000px) rotateX(5deg) rotateY(5deg) translateY(-10px);
+      box-shadow: var(--shadow-primary);
+    }
+
+    .result-card:hover::before {
+      left: 100%;
+    }
+
+    .result-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .result-content {
+      padding: 1.5rem;
+    }
+
+    .result-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .result-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .result-location {
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .result-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .result-tag {
+      padding: 0.25rem 0.75rem;
+      background: var(--glass-bg);
+      border-radius: 50px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 3rem;
+      background: var(--card-bg);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: none;
+    }
+
+    .no-results-icon {
+      font-size: 3rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .no-results-text {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    .try-again-btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      background: var(--gradient-primary);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .try-again-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-primary);
+    }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bg-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .loading-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid var(--card-bg);
+      border-top-color: var(--accent-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .result-card:nth-child(1) { animation-delay: 0.1s; }
+    .result-card:nth-child(2) { animation-delay: 0.2s; }
+    .result-card:nth-child(3) { animation-delay: 0.3s; }
+    .result-card:nth-child(4) { animation-delay: 0.4s; }
+    .result-card:nth-child(5) { animation-delay: 0.5s; }
+    .result-card:nth-child(6) { animation-delay: 0.6s; }
+
+    /* Enhanced Background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.05) 0%, transparent 50%);
+      z-index: -1;
+      animation: backgroundFloat 20s ease-in-out infinite;
+    }
+
+    @keyframes backgroundFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(1deg); }
+    }
+
+    /* Floating particles background */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--accent-primary);
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+      50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
+    }
+
+    /* Morphing background shapes */
+    .bg-shape {
+      position: fixed;
+      border-radius: 50%;
+      background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+      animation: morph 8s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    .bg-shape:nth-child(3) {
+      width: 300px;
+      height: 300px;
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .bg-shape:nth-child(4) {
+      width: 200px;
+      height: 200px;
+      top: 60%;
+      right: 10%;
+      animation-delay: 2s;
+    }
+
+    .bg-shape:nth-child(5) {
+      width: 150px;
+      height: 150px;
+      bottom: 20%;
+      left: 30%;
+      animation-delay: 4s;
+    }
+
+    @keyframes morph {
+      0%, 100% {
+        border-radius: 50%;
+        transform: scale(1) rotate(0deg);
+      }
+      25% {
+        border-radius: 60% 40% 30% 70%;
+        transform: scale(1.1) rotate(90deg);
+      }
+      50% {
+        border-radius: 30% 60% 70% 40%;
+        transform: scale(0.9) rotate(180deg);
+      }
+      75% {
+        border-radius: 40% 30% 60% 50%;
+        transform: scale(1.05) rotate(270deg);
+      }
+    }
+
+    /* Cyberpunk grid overlay */
+    .cyber-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: -1;
+      animation: gridMove 20s linear infinite;
+    }
+
+    @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .search-container {
+        padding: 6rem 1rem 1rem;
+      }
+
+      .search-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .filters-container {
+        gap: 1rem;
+        padding: 1.5rem;
+        justify-content: center;
+      }
+      
+      .filter-btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+        flex: 1;
+        min-width: 120px;
+        max-width: 150px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .filters-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .filter-btn {
+        width: 100%;
+        max-width: 250px;
+        justify-content: center;
+      }
+    }
+
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      background: var(--card-bg);
+      color: var(--text-color);
+      box-shadow: var(--shadow-primary);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .notification.success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+    }
+
+    .notification.error {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+    }
+
+    .notification.info {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: white;
+    }
+
+    .item-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      transform-style: preserve-3d;
+      position: relative;
+    }
+
+    .item-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+      transition: left 0.5s;
+    }
+
+    .item-card:hover {
+      transform: perspective(1000px) rotateX(5deg) rotateY(5deg) translateY(-10px);
+      box-shadow: var(--shadow-primary);
+    }
+
+    .item-card:hover::before {
+      left: 100%;
+    }
+
+    .item-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .item-content {
+      padding: 1.5rem;
+    }
+
+    .item-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .item-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .item-location {
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .item-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .item-tag {
+      padding: 0.25rem 0.75rem;
+      background: var(--glass-bg);
+      border-radius: 50px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    /* Enhanced hover effects */
+    .item-card:hover .item-image {
+      transform: scale(1.1);
+    }
+
+    /* Wishlist button */
+    .wishlist-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      z-index: 3;
+    }
+
+    .wishlist-btn:hover,
+    .wishlist-btn.active {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+    }
+
+    /* Item actions */
+    .item-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .item-btn {
+      flex: 1;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .item-btn.primary {
+      background: var(--gradient-primary);
+      color: white;
+    }
+
+    .item-btn.secondary {
+      background: var(--glass-bg);
+      color: var(--text-color);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .item-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Rating display */
+    .item-rating {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      color: #fbbf24;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    /* Enhanced title glow and glitch effect */
+    @keyframes titleGlow {
+      0% { filter: brightness(1); }
+      100% { filter: brightness(1.2); }
+    }
+
+    .search-title {
+      animation: titleGlow 2s ease-in-out infinite alternate;
+      position: relative;
+    }
+
+    .search-title::before,
+    .search-title::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .search-title::before {
+      animation: glitch-1 0.5s infinite;
+      color: #ff0040;
+      z-index: -1;
+    }
+
+    .search-title::after {
+      animation: glitch-2 0.5s infinite;
+      color: #00ff40;
+      z-index: -2;
+    }
+
+    @keyframes glitch {
+      0%, 100% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+    }
+
+    @keyframes glitch-1 {
+      0%, 100% { transform: translate(0); }
+      10% { transform: translate(-2px, -2px); }
+      20% { transform: translate(2px, 2px); }
+    }
+
+    @keyframes glitch-2 {
+      0%, 100% { transform: translate(0); }
+      30% { transform: translate(2px, -2px); }
+      60% { transform: translate(-2px, 2px); }
+    }
+    
+    /* Centralized: Styles for .search-clear button */
+    .search-clear {
+      position: absolute;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 50%;
+      transition: var(--transition, all 0.3s ease);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .search-clear.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .search-clear:hover {
+      color: var(--accent-primary);
+      background: var(--glass-bg);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="particles"></div>
+  <div class="cyber-grid"></div>
+  <div class="bg-shape"></div>
+  <div class="bg-shape"></div>
+  <div class="bg-shape"></div>
+  
+  <div class="loading-overlay">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <header>
+    <div class="header-content">
+      <div class="logo">KRILI</div>
+      <nav class="nav-links">
+        <a href="rent-test1.html">Home</a>
+        <a href="search-test1.html" class="active">Search</a>
+        <a href="profile-test1.html">Profile</a>
+        <a href="#" onclick="logout()">Logout</a>
+      </nav>
+      <button class="theme-toggle" onclick="toggleTheme()">
+        <i id="theme-icon" class="fas fa-moon"></i>
+        <span>Theme</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="search-container">
+    <div class="search-header">
+      <h1 class="search-title">Search Results</h1>
+      <p class="search-subtitle">Found 24 items matching your search</p>
+    </div>
+
+    <div class="search-wrapper">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" class="search-input" placeholder="Search for items to rent..." onkeyup="handleSearch(event)" oninput="toggleClearButton()">
+      <button class="search-clear" onclick="clearSearch()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="filters-container">
+      <button class="filter-btn active" onclick="toggleFilter(this)" data-category="all">
+        <div class="filter-icon-wrapper">
+          <i class="fas fa-tag"></i>
+          <div class="icon-glow"></div>
+        </div>
+        <span class="filter-text">All Categories</span>
+        <div class="filter-ripple"></div>
+      </button>
+      <button class="filter-btn" onclick="toggleFilter(this)" data-category="electronics">
+        <div class="filter-icon-wrapper">
+          <i class="fas fa-laptop"></i>
+          <div class="icon-glow"></div>
+        </div>
+        <span class="filter-text">Electronics</span>
+        <div class="filter-ripple"></div>
+      </button>
+      <button class="filter-btn" onclick="toggleFilter(this)" data-category="vehicles">
+        <div class="filter-icon-wrapper">
+          <i class="fas fa-car"></i>
+          <div class="icon-glow"></div>
+        </div>
+        <span class="filter-text">Vehicles</span>
+        <div class="filter-ripple"></div>
+      </button>
+      <button class="filter-btn" onclick="toggleFilter(this)" data-category="tools">
+        <div class="filter-icon-wrapper">
+          <i class="fas fa-tools"></i>
+          <div class="icon-glow"></div>
+        </div>
+        <span class="filter-text">Tools</span>
+        <div class="filter-ripple"></div>
+      </button>
+      <button class="filter-btn" onclick="toggleFilter(this)" data-category="furniture">
+        <div class="filter-icon-wrapper">
+          <i class="fas fa-couch"></i>
+          <div class="icon-glow"></div>
+        </div>
+        <span class="filter-text">Furniture</span>
+        <div class="filter-ripple"></div>
+      </button>
+    </div>
+
+    <!-- 3. ADD RESULTS HEADER WITH SORTING -->
+    <div class="results-header" style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
+      <div class="results-count">Showing <span id="results-count">24</span> results</div>
+      <div class="sort-controls" style="display: flex; align-items: center; gap: 1rem;">
+        <select class="sort-select" onchange="sortResults(this.value)">
+          <option value="relevance">Sort by Relevance</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="rating">Highest Rated</option>
+          <option value="newest">Newest First</option>
+        </select>
+        <div class="view-toggle">
+          <button class="view-btn active" onclick="toggleView('grid', event)">
+            <i class="fas fa-th"></i>
+          </button>
+          <button class="view-btn" onclick="toggleView('list', event)">
+            <i class="fas fa-list"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="results-grid" id="results-grid">
+      <!-- Item Card 1 -->
+      <div class="item-card" data-category="Electronics" data-price="500" data-rating="4.8" onclick="viewItem(1)">
+        <button class="wishlist-btn" onclick="toggleWishlist(event, 1)">
+          <i class="far fa-heart"></i>
+        </button>
+        <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853" alt="Laptop" class="item-image">
+        <div class="item-content">
+          <div class="item-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 class="item-title">MacBook Pro 2023</h3>
+            <div class="item-rating">
+              <i class="fas fa-star"></i>
+              <span>4.8</span>
+            </div>
+          </div>
+          <div class="item-price">500 MAD/day</div>
+          <div class="item-location">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Casablanca, MA</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag">Electronics</span>
+            <span class="item-tag">Laptop</span>
+            <span class="item-tag">Apple</span>
+          </div>
+          <div class="item-actions">
+            <button class="item-btn primary" onclick="quickRent(event, 1)">
+              <i class="fas fa-calendar-plus"></i> Quick Rent
+            </button>
+            <button class="item-btn secondary" onclick="viewDetails(event, 1)">
+              <i class="fas fa-eye"></i> Details
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item Card 2 -->
+      <div class="item-card" data-category="Vehicles" data-price="750" data-rating="4.5" onclick="viewItem(2)">
+        <button class="wishlist-btn" onclick="toggleWishlist(event, 2)">
+          <i class="far fa-heart"></i>
+        </button>
+        <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39" alt="Motorcycle" class="item-image">
+        <div class="item-content">
+          <div class="item-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 class="item-title">Honda CBR 600</h3>
+            <div class="item-rating">
+              <i class="fas fa-star"></i>
+              <span>4.5</span>
+            </div>
+          </div>
+          <div class="item-price">750 MAD/day</div>
+          <div class="item-location">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Marrakech, MA</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag">Vehicles</span>
+            <span class="item-tag">Motorcycle</span>
+            <span class="item-tag">Sport</span>
+          </div>
+          <div class="item-actions">
+            <button class="item-btn primary" onclick="quickRent(event, 2)">
+              <i class="fas fa-calendar-plus"></i> Quick Rent
+            </button>
+            <button class="item-btn secondary" onclick="viewDetails(event, 2)">
+              <i class="fas fa-eye"></i> Details
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item Card 3 -->
+      <div class="item-card" data-category="Electronics" data-price="400" data-rating="4.7" onclick="viewItem(3)">
+        <button class="wishlist-btn" onclick="toggleWishlist(event, 3)">
+          <i class="far fa-heart"></i>
+        </button>
+        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158" alt="Camera" class="item-image">
+        <div class="item-content">
+          <div class="item-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 class="item-title">Sony A7III</h3>
+            <div class="item-rating">
+              <i class="fas fa-star"></i>
+              <span>4.7</span>
+            </div>
+          </div>
+          <div class="item-price">400 MAD/day</div>
+          <div class="item-location">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Rabat, MA</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag">Electronics</span>
+            <span class="item-tag">Camera</span>
+            <span class="item-tag">Photography</span>
+          </div>
+          <div class="item-actions">
+            <button class="item-btn primary" onclick="quickRent(event, 3)">
+              <i class="fas fa-calendar-plus"></i> Quick Rent
+            </button>
+            <button class="item-btn secondary" onclick="viewDetails(event, 3)">
+              <i class="fas fa-eye"></i> Details
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item Card 4 -->
+      <div class="item-card" data-category="Outdoor" data-price="300" data-rating="4.2" onclick="viewItem(4)">
+        <button class="wishlist-btn" onclick="toggleWishlist(event, 4)">
+          <i class="far fa-heart"></i>
+        </button>
+        <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4" alt="Camping Tent" class="item-image">
+        <div class="item-content">
+          <div class="item-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 class="item-title">4-Person Camping Tent</h3>
+            <div class="item-rating">
+              <i class="fas fa-star"></i>
+              <span>4.2</span>
+            </div>
+          </div>
+          <div class="item-price">300 MAD/day</div>
+          <div class="item-location">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Agadir, MA</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag">Outdoor</span>
+            <span class="item-tag">Camping</span>
+            <span class="item-tag">Tent</span>
+          </div>
+          <div class="item-actions">
+            <button class="item-btn primary" onclick="quickRent(event, 4)">
+              <i class="fas fa-calendar-plus"></i> Quick Rent
+            </button>
+            <button class="item-btn secondary" onclick="viewDetails(event, 4)">
+              <i class="fas fa-eye"></i> Details
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item Card 5 -->
+      <div class="item-card" data-category="Tools" data-price="250" data-rating="4.0" onclick="viewItem(5)">
+        <button class="wishlist-btn" onclick="toggleWishlist(event, 5)">
+          <i class="far fa-heart"></i>
+        </button>
+        <img src="https://images.unsplash.com/photo-1581093458791-9d15482442f6" alt="Drill" class="item-image">
+        <div class="item-content">
+          <div class="item-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 class="item-title">Professional Drill Set</h3>
+            <div class="item-rating">
+              <i class="fas fa-star"></i>
+              <span>4.0</span>
+            </div>
+          </div>
+          <div class="item-price">250 MAD/day</div>
+          <div class="item-location">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Tangier, MA</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag">Tools</span>
+            <span class="item-tag">Power Tools</span>
+            <span class="item-tag">DIY</span>
+          </div>
+          <div class="item-actions">
+            <button class="item-btn primary" onclick="quickRent(event, 5)">
+              <i class="fas fa-calendar-plus"></i> Quick Rent
+            </button>
+            <button class="item-btn secondary" onclick="viewDetails(event, 5)">
+              <i class="fas fa-eye"></i> Details
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item Card 6 -->
+      <div class="item-card" data-category="Party" data-price="1000" data-rating="4.9" onclick="viewItem(6)">
+        <button class="wishlist-btn" onclick="toggleWishlist(event, 6)">
+          <i class="far fa-heart"></i>
+        </button>
+        <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba" alt="Party Supplies" class="item-image">
+        <div class="item-content">
+          <div class="item-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 class="item-title">Party Equipment Set</h3>
+            <div class="item-rating">
+              <i class="fas fa-star"></i>
+              <span>4.9</span>
+            </div>
+          </div>
+          <div class="item-price">1000 MAD/day</div>
+          <div class="item-location">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Fes, MA</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag">Party</span>
+            <span class="item-tag">Events</span>
+            <span class="item-tag">Complete Set</span>
+          </div>
+          <div class="item-actions">
+            <button class="item-btn primary" onclick="quickRent(event, 6)">
+              <i class="fas fa-calendar-plus"></i> Quick Rent
+            </button>
+            <button class="item-btn secondary" onclick="viewDetails(event, 6)">
+              <i class="fas fa-eye"></i> Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-results" style="display: none;">
+      <i class="fas fa-search no-results-icon"></i>
+      <p class="no-results-text">No results found for your search</p>
+      <button class="try-again-btn" onclick="clearSearch()">Try Again</button>
+    </div>
+  </main>
+
+  <div class="notification" id="notification"></div>
+
+  <script>
+    // Create floating particles
+    function createParticles() {
+      const particlesContainer = document.querySelector('.particles');
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 6 + 's';
+        particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // Add glitch effect data attribute
+    document.addEventListener('DOMContentLoaded', function() {
+      const title = document.querySelector('.search-title');
+      if (title) {
+        title.setAttribute('data-text', title.textContent);
+      }
+      createParticles();
+    });
+
+    // Enhanced card interactions
+    document.querySelectorAll('.result-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = (y - centerY) / 10;
+        const rotateY = (centerX - x) / 10;
+        
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+      });
+    });
+
+    // Theme toggle functionality
+    function toggleTheme() {
+      const body = document.body;
+      const themeIcon = document.getElementById('theme-icon');
+      const currentTheme = body.getAttribute('data-theme');
+      
+      if (currentTheme === 'light') {
+        body.removeAttribute('data-theme');
+        themeIcon.className = 'fas fa-moon';
+        showNotification('Switched to dark theme', 'success');
+      } else {
+        body.setAttribute('data-theme', 'light');
+        themeIcon.className = 'fas fa-sun';
+        showNotification('Switched to light theme', 'success');
+      }
+    }
+
+    // Search functionality
+    function handleSearch(event) {
+      const searchInput = event.target.value.toLowerCase();
+      const itemCards = document.querySelectorAll('.item-card');
+      const noResults = document.querySelector('.no-results');
+      let hasResults = false;
+
+      showLoading();
+
+      setTimeout(() => {
+        itemCards.forEach(card => {
+          const title = card.querySelector('.item-title').textContent.toLowerCase();
+          const tags = Array.from(card.querySelectorAll('.item-tag'))
+            .map(tag => tag.textContent.toLowerCase());
+
+          if (title.includes(searchInput) || tags.some(tag => tag.includes(searchInput))) {
+            card.style.display = 'block';
+            hasResults = true;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        noResults.style.display = hasResults ? 'none' : 'block';
+        hideLoading();
+      }, 500);
+    }
+
+    // Filter functionality
+    function toggleFilter(button) {
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      const itemCards = document.querySelectorAll('.item-card');
+      const category = button.textContent.trim();
+      
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+
+      showLoading();
+
+      setTimeout(() => {
+        if (category === 'All Categories') {
+          itemCards.forEach(card => card.style.display = 'block');
+        } else {
+          itemCards.forEach(card => {
+            const tags = Array.from(card.querySelectorAll('.item-tag'))
+              .map(tag => tag.textContent);
+            card.style.display = tags.includes(category) ? 'block' : 'none';
+          });
+        }
+        hideLoading();
+      }, 500);
+    }
+
+    // View item functionality
+    function viewItem(id) {
+      showNotification(`Loading item details...`, 'info');
+      setTimeout(() => {
+        window.location.href = `item.html?id=${id}`;
+      }, 1000);
+    }
+
+    // Logout functionality
+    function logout() {
+      showNotification('Logging out...', 'info');
+      // Clear login status from localStorage
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('userEmail');
+      setTimeout(() => {
+        showNotification('Successfully logged out', 'success');
+        window.location.href = 'login-test1.html';
+      }, 1500);
+    }
+
+    // Notification system
+    function showNotification(message, type = 'info', duration = 3000) {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.className = `notification ${type}`;
+      notification.classList.add('show');
+
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, duration);
+    }
+
+    // Loading functions
+    function showLoading() {
+      document.querySelector('.loading-overlay').classList.add('show');
+    }
+
+    function hideLoading() {
+      document.querySelector('.loading-overlay').classList.remove('show');
+    }
+
+    // Clear search
+    function clearSearch() {
+      const searchInput = document.querySelector('.search-input');
+      searchInput.value = '';
+      searchInput.focus();
+      toggleClearButton();
+      // Optionally, reset filters and show all items
+      const itemCards = document.querySelectorAll('.item-card');
+      itemCards.forEach(card => card.style.display = 'block');
+      document.querySelector('.no-results').style.display = 'none';
+      updateResultsCount();
+    }
+
+    // Toggle clear button visibility
+    function toggleClearButton() {
+      const input = document.querySelector('.search-input');
+      const clearBtn = document.querySelector('.search-clear');
+      clearBtn.classList.toggle('visible', input.value.length > 0);
+    }
+
+    // Sort functionality
+    function sortResults(sortBy) {
+      const grid = document.getElementById('results-grid');
+      const cards = Array.from(grid.querySelectorAll('.item-card:not([style*="display: none"])'));
+      
+      cards.sort((a, b) => {
+        switch(sortBy) {
+          case 'price-low':
+            return parseInt(a.dataset.price) - parseInt(b.dataset.price);
+          case 'price-high':
+            return parseInt(b.dataset.price) - parseInt(a.dataset.price);
+          case 'rating':
+            return parseFloat(b.dataset.rating) - parseFloat(a.dataset.rating);
+          default:
+            return 0;
+        }
+      });
+      
+      cards.forEach(card => grid.appendChild(card));
+      showNotification(`Sorted by ${sortBy.replace('-', ' ')}`, 'success');
+    }
+
+    // View toggle
+    function toggleView(view, event) {
+      const grid = document.getElementById('results-grid');
+      const buttons = document.querySelectorAll('.view-btn');
+      
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.closest('.view-btn').classList.add('active');
+      
+      if (view === 'list') {
+        grid.classList.add('list-view');
+      } else {
+        grid.classList.remove('list-view');
+      }
+    }
+
+    // Wishlist toggle
+    function toggleWishlist(event, id) {
+      event.stopPropagation();
+      const btn = event.target.closest('.wishlist-btn');
+      const icon = btn.querySelector('i');
+      
+      btn.classList.toggle('active');
+      icon.classList.toggle('far');
+      icon.classList.toggle('fas');
+      
+      const action = btn.classList.contains('active') ? 'Added to' : 'Removed from';
+      showNotification(`${action} wishlist`, 'success');
+    }
+
+    // Quick actions
+    function quickRent(event, id) {
+      event.stopPropagation();
+      showNotification('Opening quick rent...', 'info');
+    }
+
+    function viewDetails(event, id) {
+      event.stopPropagation();
+      showNotification('Loading details...', 'info');
+    }
+
+    // Update results count
+    function updateResultsCount() {
+      const visible = document.querySelectorAll('.item-card:not([style*="display: none"])').length;
+      document.getElementById('results-count').textContent = visible;
+    }
+
+    // Update clear button on load
+    window.addEventListener('DOMContentLoaded', () => {
+      toggleClearButton();
+      updateResultsCount();
+    });
+
+    // Initialize
+    window.addEventListener('load', () => {
+      hideLoading();
+    });
+
+    // Show loading on page transitions
+    document.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        if (link.getAttribute('href').startsWith('#')) return;
+        showLoading();
+      });
+    });
+  </script>
+</body>
+</html>

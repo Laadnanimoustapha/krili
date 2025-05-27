@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profile - KRILI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="auth-check.js"></script>
+  <style>
+    :root {
+      --bg-color: #0a0a0a;
+      --text-color: #ffffff;
+      --text-secondary: #a1a1aa;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --accent-primary: #3b82f6;
+      --accent-secondary: #2563eb;
+      --accent-tertiary: #1d4ed8;
+      --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
+      --shadow-primary: 0 0 50px rgba(59, 130, 246, 0.3);
+    }
+
+    body[data-theme="light"] {
+      --bg-color: #ffffff;
+      --text-color: #1a1a1a;
+      --text-secondary: #4b5563;
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --glass-bg: rgba(255, 255, 255, 0.8);
+      --shadow-primary: 0 10px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    body[data-theme="light"] header {
+      background: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    body[data-theme="light"] .nav-links a {
+      color: #4b5563;
+      font-weight: 600;
+    }
+
+    body[data-theme="light"] .nav-links a:hover,
+    body[data-theme="light"] .nav-links a.active {
+      color: white;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      transition: all 0.3s ease;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1rem 2rem;
+      background: rgba(10, 10, 10, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      background: transparent;
+    }
+
+    .nav-links a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--gradient-primary);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+
+    .nav-links a:hover {
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .nav-links a:hover::before {
+      left: 0;
+    }
+
+    .nav-links a.active {
+      color: white;
+      background: var(--gradient-primary);
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    }
+
+    .theme-toggle {
+      background: var(--glass-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50px;
+      padding: 0.75rem 1.5rem;
+      color: var(--text-color);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .theme-toggle:hover {
+      background: var(--gradient-primary);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-primary);
+    }
+
+    .profile-container {
+      padding: 8rem 2rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .profile-header {
+      position: relative;
+      overflow: hidden;
+      padding: 2rem;
+      border-radius: 30px;
+      margin-bottom: 3rem;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+    }
+
+
+
+    .profile-info {
+      position: relative;
+      z-index: 1;
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1.5rem;
+      border: 3px solid var(--accent-primary);
+      box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .profile-avatar:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 40px rgba(59, 130, 246, 0.4);
+    }
+
+    .profile-name {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 10px rgba(59, 130, 246, 0.2);
+    }
+
+    .profile-rating {
+      color: var(--accent-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .profile-rating i {
+      color: #fbbf24;
+      text-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+    }
+
+    .profile-location {
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .profile-bio {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .profile-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 1rem;
+      background: var(--glass-bg);
+      border-radius: 10px;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .edit-profile-btn {
+      width: 100%;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 10px;
+      background: var(--gradient-primary);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .edit-profile-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-primary);
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .listings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .listing-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .listing-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-primary);
+    }
+
+    .listing-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .listing-content {
+      padding: 1.5rem;
+    }
+
+    .listing-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .listing-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .listing-location {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .listing-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .listing-tag {
+      padding: 0.25rem 0.75rem;
+      background: var(--glass-bg);
+      border-radius: 50px;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .listing-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .action-btn {
+      flex: 1;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .edit-btn {
+      background: var(--glass-bg);
+      color: var(--text-color);
+    }
+
+    .delete-btn {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      background: var(--card-bg);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .empty-state-icon {
+      font-size: 3rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .empty-state-text {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    .add-listing-btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      background: var(--gradient-primary);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .add-listing-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-primary);
+    }
+
+    .reviews-section {
+      margin-bottom: 3rem;
+    }
+
+    .review-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .reviewer-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .reviewer-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .reviewer-name {
+      font-weight: 600;
+    }
+
+    .review-date {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .review-rating {
+      color: var(--accent-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .review-text {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .settings-section {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .settings-group {
+      margin-bottom: 2rem;
+    }
+
+    .settings-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .settings-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: var(--glass-bg);
+      border-radius: 10px;
+      margin-bottom: 0.5rem;
+    }
+
+    .settings-label {
+      color: var(--text-secondary);
+    }
+
+    .settings-value {
+      font-weight: 500;
+    }
+
+    .settings-toggle {
+      position: relative;
+      width: 50px;
+      height: 26px;
+    }
+
+    .settings-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--glass-bg);
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+      background: var(--gradient-primary);
+    }
+
+    input:checked + .toggle-slider:before {
+      transform: translateX(24px);
+    }
+
+    .delete-account-btn {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ef4444;
+      border-radius: 10px;
+      background: transparent;
+      color: #ef4444;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .delete-account-btn:hover {
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    footer {
+      background: var(--card-bg);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 3rem 2rem 2rem;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-text {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--glass-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50px;
+      color: var(--text-color);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .social-link:hover {
+      background: var(--gradient-primary);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-primary);
+    }
+
+    .notification {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      padding: 1rem 1.5rem;
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      color: var(--text-color);
+      backdrop-filter: blur(10px);
+      transform: translateX(120%);
+      transition: transform 0.3s ease;
+      z-index: 1001;
+      max-width: 300px;
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    .notification.success {
+      border-left: 4px solid #22c55e;
+    }
+
+    .notification.error {
+      border-left: 4px solid #ef4444;
+    }
+
+    @media (max-width: 1024px) {
+      .profile-header {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .profile-container {
+        padding: 6rem 1rem 1rem;
+      }
+
+      .profile-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .listings-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .analytics-section {
+      margin-bottom: 3rem;
+    }
+
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .analytics-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .analytics-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-color);
+    }
+
+    @media (max-width: 1024px) {
+      .analytics-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .floating-action-btn {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--gradient-primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: var(--shadow-primary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+
+    .floating-action-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .quick-actions {
+      position: fixed;
+      bottom: 5rem;
+      right: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      z-index: 99;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .quick-actions.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+
+    .quick-action-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      color: var(--text-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: var(--shadow-primary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .quick-action-btn:hover {
+      background: var(--gradient-primary);
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .listing-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .listing-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient-primary);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 0;
+    }
+
+    .listing-card:hover::before {
+      opacity: 0.05;
+    }
+
+    .listing-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .analytics-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .analytics-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100px;
+      height: 100px;
+      background: var(--gradient-primary);
+      opacity: 0.1;
+      border-radius: 50%;
+      transform: translate(50%, -50%);
+    }
+
+    .settings-item {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .settings-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 3px;
+      background: var(--gradient-primary);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .settings-item:hover::before {
+      opacity: 1;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .profile-info,
+    .listing-card,
+    .analytics-card,
+    .review-card,
+    .settings-section {
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .profile-info { animation-delay: 0.1s; }
+    .listing-card { animation-delay: 0.2s; }
+    .analytics-card { animation-delay: 0.3s; }
+    .review-card { animation-delay: 0.4s; }
+    .settings-section { animation-delay: 0.5s; }
+
+    .scroll-to-top {
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      width: 40px;
+      height: 40px;
+      background: var(--card-bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-color);
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      z-index: 100;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .scroll-to-top.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .scroll-to-top:hover {
+      background: var(--gradient-primary);
+      color: white;
+    }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bg-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .loading-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid var(--card-bg);
+      border-top-color: var(--accent-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Rental History Styles */
+    .rental-history-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .rental-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .rental-header {
+      position: relative;
+    }
+
+    .rental-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .rental-status {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .rental-status.active {
+      background: rgba(34, 197, 94, 0.2);
+      color: #22c55e;
+    }
+
+    .rental-status.completed {
+      background: rgba(59, 130, 246, 0.2);
+      color: #3b82f6;
+    }
+
+    .rental-content {
+      padding: 1.5rem;
+    }
+
+    .rental-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .rental-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .rental-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-secondary);
+    }
+
+    .rental-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    /* Earnings Styles */
+    .earnings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .earnings-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .earnings-header {
+      margin-bottom: 1rem;
+    }
+
+    .earnings-header h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .earnings-period {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .earnings-amount {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .earnings-trend {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .earnings-trend.positive {
+      color: #22c55e;
+    }
+
+    .earnings-trend.negative {
+      color: #ef4444;
+    }
+
+    /* Verification Styles */
+    .verification-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .verification-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .verification-icon {
+      width: 50px;
+      height: 50px;
+      background: var(--glass-bg);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: var(--accent-primary);
+    }
+
+    .verification-content h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .verification-content p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .verification-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .verification-status.verified {
+      color: #22c55e;
+    }
+
+    .verification-status.pending {
+      color: #f59e0b;
+    }
+
+    @media (max-width: 768px) {
+      .rental-history-grid,
+      .earnings-grid,
+      .verification-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    .profile-info {
+      animation: float 6s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">KRILI</div>
+      <nav class="nav-links">
+        <a href="rent-test1.html">Home</a>
+        <a href="search-test1.html">Search</a>
+        <a href="profile-test1.html" class="active">Profile</a>
+        <a href="#" onclick="logout()">Logout</a>
+      </nav>
+      <button class="theme-toggle" onclick="toggleTheme()">
+        <i id="theme-icon" class="fas fa-moon"></i>
+        <span>Theme</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="loading-overlay">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <button class="scroll-to-top" onclick="scrollToTop()">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <button class="floating-action-btn" onclick="toggleQuickActions()">
+    <i class="fas fa-plus"></i>
+  </button>
+
+  <div class="quick-actions">
+    <button class="quick-action-btn" onclick="addNewListing()" title="Add New Listing">
+      <i class="fas fa-plus"></i>
+    </button>
+    <button class="quick-action-btn" onclick="refreshData()" title="Refresh Data">
+      <i class="fas fa-sync"></i>
+    </button>
+    <button class="quick-action-btn" onclick="exportData()" title="Export Data">
+      <i class="fas fa-download"></i>
+    </button>
+  </div>
+
+  <main class="profile-container">
+    <div class="profile-header">
+      <div class="profile-info">
+        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e" alt="Profile Picture" class="profile-avatar">
+        <h1 class="profile-name">John Doe</h1>
+        <div class="profile-rating">
+          <i class="fas fa-star"></i>
+          <span>4.9 (120 reviews)</span>
+        </div>
+        <div class="profile-location">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Casablanca, MA</span>
+        </div>
+        <p class="profile-bio">
+          Trusted renter and owner in Casablanca. I love sharing my items with the community and ensuring a great rental experience for everyone.
+        </p>
+        <div class="profile-stats">
+          <div class="stat-item">
+            <div class="stat-value">98%</div>
+            <div class="stat-label">Response Rate</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">2h</div>
+            <div class="stat-label">Avg. Response</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">50+</div>
+            <div class="stat-label">Rentals</div>
+          </div>
+        </div>
+        <button class="edit-profile-btn" onclick="editProfile()">
+          <i class="fas fa-edit"></i>
+          Edit Profile
+        </button>
+      </div>
+    </div>
+
+    <section class="listings-section">
+      <h2 class="section-title">My Listings</h2>
+      <div class="listings-grid">
+        <div class="listing-card">
+          <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853" alt="MacBook Pro" class="listing-image">
+          <div class="listing-content">
+            <h3 class="listing-title">MacBook Pro 2023</h3>
+            <div class="listing-price">500 MAD/day</div>
+            <div class="listing-location">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>Casablanca, MA</span>
+            </div>
+            <div class="listing-tags">
+              <span class="listing-tag">Electronics</span>
+              <span class="listing-tag">Laptop</span>
+              <span class="listing-tag">Apple</span>
+            </div>
+            <div class="listing-actions">
+              <button class="action-btn edit-btn" onclick="editListing(1)">
+                <i class="fas fa-edit"></i>
+                Edit
+              </button>
+              <button class="action-btn delete-btn" onclick="deleteListing(1)">
+                <i class="fas fa-trash"></i>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="listing-card">
+          <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39" alt="Motorcycle" class="listing-image">
+          <div class="listing-content">
+            <h3 class="listing-title">Honda CBR 600</h3>
+            <div class="listing-price">750 MAD/day</div>
+            <div class="listing-location">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>Casablanca, MA</span>
+            </div>
+            <div class="listing-tags">
+              <span class="listing-tag">Vehicles</span>
+              <span class="listing-tag">Motorcycle</span>
+              <span class="listing-tag">Sport</span>
+            </div>
+            <div class="listing-actions">
+              <button class="action-btn edit-btn" onclick="editListing(2)">
+                <i class="fas fa-edit"></i>
+                Edit
+              </button>
+              <button class="action-btn delete-btn" onclick="deleteListing(2)">
+                <i class="fas fa-trash"></i>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- New Section: Rental History -->
+    <section class="rental-history-section">
+      <h2 class="section-title">Rental History</h2>
+      <div class="rental-history-grid">
+        <div class="rental-card">
+          <div class="rental-header">
+            <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853" alt="MacBook Pro" class="rental-image">
+            <div class="rental-status active">Active</div>
+          </div>
+          <div class="rental-content">
+            <h3 class="rental-title">MacBook Pro 2023</h3>
+            <div class="rental-details">
+              <div class="rental-info">
+                <i class="fas fa-calendar"></i>
+                <span>Mar 15 - Mar 20, 2024</span>
+              </div>
+              <div class="rental-info">
+                <i class="fas fa-user"></i>
+                <span>Rented by Sarah Johnson</span>
+              </div>
+              <div class="rental-info">
+                <i class="fas fa-money-bill-wave"></i>
+                <span>2,500 MAD</span>
+              </div>
+            </div>
+            <div class="rental-actions">
+              <button class="action-btn edit-btn" onclick="viewRentalDetails(1)">
+                <i class="fas fa-eye"></i>
+                View Details
+              </button>
+              <button class="action-btn delete-btn" onclick="cancelRental(1)">
+                <i class="fas fa-times"></i>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="rental-card">
+          <div class="rental-header">
+            <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39" alt="Motorcycle" class="rental-image">
+            <div class="rental-status completed">Completed</div>
+          </div>
+          <div class="rental-content">
+            <h3 class="rental-title">Honda CBR 600</h3>
+            <div class="rental-details">
+              <div class="rental-info">
+                <i class="fas fa-calendar"></i>
+                <span>Mar 10 - Mar 12, 2024</span>
+              </div>
+              <div class="rental-info">
+                <i class="fas fa-user"></i>
+                <span>Rented by Mike Smith</span>
+              </div>
+              <div class="rental-info">
+                <i class="fas fa-money-bill-wave"></i>
+                <span>1,500 MAD</span>
+              </div>
+            </div>
+            <div class="rental-actions">
+              <button class="action-btn edit-btn" onclick="viewRentalDetails(2)">
+                <i class="fas fa-eye"></i>
+                View Details
+              </button>
+              <button class="action-btn edit-btn" onclick="leaveReview(2)">
+                <i class="fas fa-star"></i>
+                Leave Review
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- New Section: Earnings -->
+    <section class="earnings-section">
+      <h2 class="section-title">Earnings Overview</h2>
+      <div class="earnings-grid">
+        <div class="earnings-card">
+          <div class="earnings-header">
+            <h3>Total Earnings</h3>
+            <div class="earnings-period">Last 30 Days</div>
+          </div>
+          <div class="earnings-amount">15,750 MAD</div>
+          <div class="earnings-trend positive">
+            <i class="fas fa-arrow-up"></i>
+            <span>12% from last month</span>
+          </div>
+        </div>
+
+        <div class="earnings-card">
+          <div class="earnings-header">
+            <h3>Active Rentals</h3>
+            <div class="earnings-period">Current</div>
+          </div>
+          <div class="earnings-amount">5</div>
+          <div class="earnings-trend">
+            <span>2 pending returns</span>
+          </div>
+        </div>
+
+        <div class="earnings-card">
+          <div class="earnings-header">
+            <h3>Average Rating</h3>
+            <div class="earnings-period">All Time</div>
+          </div>
+          <div class="earnings-amount">4.9</div>
+          <div class="earnings-trend">
+            <span>Based on 120 reviews</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- New Section: Verification -->
+    <section class="verification-section">
+      <h2 class="section-title">Verification Status</h2>
+      <div class="verification-grid">
+        <div class="verification-card">
+          <div class="verification-icon">
+            <i class="fas fa-id-card"></i>
+          </div>
+          <div class="verification-content">
+            <h3>ID Verification</h3>
+            <p>Verified on March 1, 2024</p>
+            <div class="verification-status verified">
+              <i class="fas fa-check-circle"></i>
+              <span>Verified</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="verification-card">
+          <div class="verification-icon">
+            <i class="fas fa-phone"></i>
+          </div>
+          <div class="verification-content">
+            <h3>Phone Verification</h3>
+            <p>Verified on March 1, 2024</p>
+            <div class="verification-status verified">
+              <i class="fas fa-check-circle"></i>
+              <span>Verified</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="verification-card">
+          <div class="verification-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="verification-content">
+            <h3>Email Verification</h3>
+            <p>Verified on March 1, 2024</p>
+            <div class="verification-status verified">
+              <i class="fas fa-check-circle"></i>
+              <span>Verified</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="analytics-section">
+      <h2 class="section-title">Analytics Dashboard</h2>
+      <div class="analytics-grid">
+        <div class="analytics-card">
+          <h3 class="analytics-title">Rental Statistics</h3>
+          <canvas id="rentalStatsChart"></canvas>
+        </div>
+        <div class="analytics-card">
+          <h3 class="analytics-title">Revenue Trends</h3>
+          <canvas id="revenueChart"></canvas>
+        </div>
+        <div class="analytics-card">
+          <h3 class="analytics-title">User Engagement</h3>
+          <canvas id="engagementChart"></canvas>
+        </div>
+        <div class="analytics-card">
+          <h3 class="analytics-title">Popular Categories</h3>
+          <canvas id="categoriesChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="reviews-section">
+      <h2 class="section-title">My Reviews</h2>
+      <div class="review-card">
+        <div class="review-header">
+          <div class="reviewer-info">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330" alt="Reviewer" class="reviewer-avatar">
+            <div>
+              <div class="reviewer-name">Sarah Johnson</div>
+              <div class="review-date">March 15, 2024</div>
+            </div>
+          </div>
+          <div class="review-rating">
+            <i class="fas fa-star"></i>
+            <span>5.0</span>
+          </div>
+        </div>
+        <p class="review-text">
+          Excellent experience renting from John! The MacBook Pro was in perfect condition and John was very responsive throughout the rental period. Would definitely rent again!
+        </p>
+      </div>
+    </section>
+
+    <section class="settings-section">
+      <h2 class="section-title">Account Settings</h2>
+      <div class="settings-group">
+        <div class="settings-item">
+          <span class="settings-label">Email</span>
+          <span class="settings-value">john.doe@TAKHNAT.com</span>
+        </div>
+        <div class="settings-item">
+          <span class="settings-label">Change Password</span>
+          <button class="action-btn edit-btn" onclick="changePassword()">
+            <i class="fas fa-key"></i>
+            Change
+          </button>
+        </div>
+        <div class="settings-item">
+          <span class="settings-label">Email Notifications</span>
+          <label class="settings-toggle">
+            <input type="checkbox" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="settings-item">
+          <span class="settings-label">In-App Notifications</span>
+          <label class="settings-toggle">
+            <input type="checkbox" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+      <button class="delete-account-btn" onclick="deleteAccount()">
+        <i class="fas fa-trash"></i>
+        Delete Account
+      </button>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p class="footer-text">&copy; 2025 KRILI. All rights reserved. Created by LAADNANI</p>
+      <div class="social-links">
+        <a href="https://www.instagram.com/ladnani" target="_blank" class="social-link">
+          <i class="fab fa-instagram"></i>
+          <span>@ladnani</span>
+        </a>
+        <a href="https://www.instagram.com/youssef_boumghader" target="_blank" class="social-link">
+          <i class="fab fa-instagram"></i>
+          <span>@youssef_boumghader</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="notification" id="notification"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Theme toggle functionality
+    function toggleTheme() {
+      const body = document.body;
+      const themeIcon = document.getElementById('theme-icon');
+      const currentTheme = body.getAttribute('data-theme');
+      
+      if (currentTheme === 'light') {
+        body.removeAttribute('data-theme');
+        themeIcon.className = 'fas fa-moon';
+        showNotification('Switched to dark theme', 'success');
+      } else {
+        body.setAttribute('data-theme', 'light');
+        themeIcon.className = 'fas fa-sun';
+        showNotification('Switched to light theme', 'success');
+      }
+    }
+
+    // Profile editing functionality
+    function editProfile() {
+      showNotification('Opening profile editor...', 'info');
+      // Here you would typically open a modal or redirect to an edit page
+    }
+
+    // Listing management functionality
+    function editListing(id) {
+      showNotification(`Editing listing #${id}...`, 'info');
+      // Here you would typically open a modal or redirect to an edit page
+    }
+
+    function deleteListing(id) {
+      if (confirm('Are you sure you want to delete this listing?')) {
+        showNotification(`Deleting listing #${id}...`, 'info');
+        // Here you would typically make an API call to delete the listing
+        setTimeout(() => {
+          showNotification('Listing deleted successfully', 'success');
+        }, 1500);
+      }
+    }
+
+    // Password change functionality
+    function changePassword() {
+      showNotification('Opening password change form...', 'info');
+      // Here you would typically open a modal or redirect to a password change page
+    }
+
+    // Account deletion functionality
+    function deleteAccount() {
+      if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+        showNotification('Deleting account...', 'info');
+        // Here you would typically make an API call to delete the account
+        setTimeout(() => {
+          showNotification('Account deleted successfully', 'success');
+          setTimeout(() => {
+            window.location.href = 'login-test1.html';
+          }, 1500);
+        }, 1500);
+      }
+    }
+
+    // Logout functionality
+    function logout() {
+      showNotification('Logging out...', 'info');
+      // Clear login status from localStorage
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('userEmail');
+      setTimeout(() => {
+        showNotification('Successfully logged out', 'success');
+        setTimeout(() => {
+          window.location.href = 'login-test1.html';
+        }, 1500);
+      }, 1500);
+    }
+
+    // Notification system
+    function showNotification(message, type = 'info', duration = 3000) {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.className = `notification ${type}`;
+      notification.classList.add('show');
+
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, duration);
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      // T for theme toggle
+      if (e.key === 't' || e.key === 'T') {
+        if (document.activeElement.tagName !== 'INPUT') {
+          toggleTheme();
+        }
+      }
+      
+      // Escape to close notifications
+      if (e.key === 'Escape') {
+        document.querySelector('.notification').classList.remove('show');
+      }
+    });
+
+    // Analytics Charts
+    function initializeCharts() {
+      // Rental Statistics Chart
+      const rentalStatsCtx = document.getElementById('rentalStatsChart').getContext('2d');
+      new Chart(rentalStatsCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [{
+            label: 'Active Rentals',
+            data: [12, 19, 15, 25, 22, 30],
+            backgroundColor: 'rgba(59, 130, 246, 0.5)',
+            borderColor: 'rgba(59, 130, 246, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+
+      // Revenue Chart
+      const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+      new Chart(revenueCtx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [{
+            label: 'Revenue (MAD)',
+            data: [5000, 7500, 6000, 9000, 8500, 12000],
+            borderColor: 'rgba(139, 92, 246, 1)',
+            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            }
+          }
+        }
+      });
+
+      // User Engagement Chart
+      const engagementCtx = document.getElementById('engagementChart').getContext('2d');
+      new Chart(engagementCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Views', 'Messages', 'Bookings', 'Reviews'],
+          datasets: [{
+            data: [300, 150, 80, 45],
+            backgroundColor: [
+              'rgba(59, 130, 246, 0.8)',
+              'rgba(139, 92, 246, 0.8)',
+              'rgba(236, 72, 153, 0.8)',
+              'rgba(59, 130, 246, 0.4)'
+            ]
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'right',
+            }
+          }
+        }
+      });
+
+      // Categories Chart
+      const categoriesCtx = document.getElementById('categoriesChart').getContext('2d');
+      new Chart(categoriesCtx, {
+        type: 'polarArea',
+        data: {
+          labels: ['Electronics', 'Vehicles', 'Sports', 'Tools', 'Furniture'],
+          datasets: [{
+            data: [35, 25, 20, 15, 10],
+            backgroundColor: [
+              'rgba(59, 130, 246, 0.8)',
+              'rgba(139, 92, 246, 0.8)',
+              'rgba(236, 72, 153, 0.8)',
+              'rgba(59, 130, 246, 0.6)',
+              'rgba(139, 92, 246, 0.6)'
+            ]
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'right',
+            }
+          }
+        }
+      });
+    }
+
+    // Initialize charts when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeCharts();
+    });
+
+    function toggleQuickActions() {
+      const quickActions = document.querySelector('.quick-actions');
+      quickActions.classList.toggle('show');
+    }
+
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    function showLoading() {
+      document.querySelector('.loading-overlay').classList.add('show');
+    }
+
+    function hideLoading() {
+      document.querySelector('.loading-overlay').classList.remove('show');
+    }
+
+    function addNewListing() {
+      showLoading();
+      setTimeout(() => {
+        hideLoading();
+        showNotification('Opening new listing form...', 'info');
+      }, 1000);
+    }
+
+    function refreshData() {
+      showLoading();
+      setTimeout(() => {
+        hideLoading();
+        showNotification('Data refreshed successfully', 'success');
+      }, 1000);
+    }
+
+    function exportData() {
+      showLoading();
+      setTimeout(() => {
+        hideLoading();
+        showNotification('Data exported successfully', 'success');
+      }, 1000);
+    }
+
+    // Show/hide scroll to top button based on scroll position
+    window.addEventListener('scroll', () => {
+      const scrollToTopBtn = document.querySelector('.scroll-to-top');
+      if (window.scrollY > 300) {
+        scrollToTopBtn.classList.add('show');
+      } else {
+        scrollToTopBtn.classList.remove('show');
+      }
+    });
+
+    // Initialize loading overlay
+    window.addEventListener('load', () => {
+      hideLoading();
+    });
+
+    // Show loading on page transitions
+    document.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        if (link.getAttribute('href').startsWith('#')) return;
+        showLoading();
+      });
+    });
+
+    // Rental History Functions
+    function viewRentalDetails(id) {
+      showNotification(`Loading rental #${id} details...`, 'info');
+      // Here you would typically open a modal or redirect to a details page
+    }
+
+    function cancelRental(id) {
+      if (confirm('Are you sure you want to cancel this rental?')) {
+        showNotification(`Cancelling rental #${id}...`, 'info');
+        // Here you would typically make an API call to cancel the rental
+        setTimeout(() => {
+          showNotification('Rental cancelled successfully', 'success');
+        }, 1500);
+      }
+    }
+
+    function leaveReview(id) {
+      showNotification(`Opening review form for rental #${id}...`, 'info');
+      // Here you would typically open a modal or redirect to a review page
+    }
+
+    // Initialize all sections with animations
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeCharts();
+      
+      // Add animation classes to new sections
+      const sections = document.querySelectorAll('.rental-history-section, .earnings-section, .verification-section');
+      sections.forEach((section, index) => {
+        section.style.animationDelay = `${0.6 + index * 0.1}s`;
+      });
+    });
+  </script>
+</body>
+</html>
