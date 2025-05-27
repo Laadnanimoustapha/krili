@@ -173,4 +173,86 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Export security utilities
-window.SecurityUtils = SecurityUtils; 
+window.SecurityUtils = SecurityUtils;
+
+
+// Prevent clickjacking by setting X-Frame-Options
+SecurityUtils.preventClickjacking = function() {
+    if (window.top !== window.self) {
+        window.top.location = window.self.location;
+    }
+};
+
+// Sanitize all input fields on blur
+SecurityUtils.sanitizeInputs = function() {
+    document.querySelectorAll('input, textarea').forEach(input => {
+        input.addEventListener('blur', function() {
+            this.value = SecurityUtils.preventXSS(this.value);
+        });
+    });
+};
+
+// Brute-force prevention (basic, client-side)
+SecurityUtils.loginAttempts = 0;
+SecurityUtils.maxLoginAttempts = 5;
+SecurityUtils.lockoutTime = 30000; // 30 seconds
+SecurityUtils.lastAttemptTime = 0;
+SecurityUtils.preventBruteForce = function(form) {
+    form.addEventListener('submit', function(e) {
+        const now = Date.now();
+        if (SecurityUtils.loginAttempts >= SecurityUtils.maxLoginAttempts) {
+            if (now - SecurityUtils.lastAttemptTime < SecurityUtils.lockoutTime) {
+                e.preventDefault();
+                alert('Too many failed attempts. Please wait 30 seconds.');
+                return;
+            } else {
+                SecurityUtils.loginAttempts = 0;
+            }
+        }
+        SecurityUtils.lastAttemptTime = now;
+    });
+};
+
+// Improved error message removal
+SecurityUtils.clearErrorMessages = function(form) {
+    form.querySelectorAll('.error-message').forEach(el => el.remove());
+};
+
+// Update init to use new features
+SecurityUtils.init = function() {
+    SecurityUtils.preventClickjacking();
+    SecurityUtils.sanitizeInputs();
+    document.querySelectorAll('form').forEach(form => {
+        const csrfToken = this.generateCSRFToken();
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrf_token';
+        csrfInput.value = csrfToken;
+        form.appendChild(csrfInput);
+        // Add brute-force prevention
+        SecurityUtils.preventBruteForce(form);
+        // Add form validation
+        form.addEventListener('submit', (e) => {
+            SecurityUtils.clearErrorMessages(form);
+            const formData = new FormData(form);
+            const validation = this.validateForm(formData);
+            if (!validation.isValid) {
+                e.preventDefault();
+                Object.entries(validation.errors).forEach(([field, message]) => {
+                    const errorElement = form.querySelector(`[name="${field}"]`);
+                    if (errorElement) {
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'error-message';
+                        errorDiv.textContent = message;
+                        errorElement.parentNode.appendChild(errorDiv);
+                    }
+                });
+            }
+        });
+    });
+    document.querySelectorAll('a').forEach(link => {
+        if (link.hostname !== window.location.hostname) {
+            link.setAttribute('rel', 'noopener noreferrer');
+        }
+    });
+};
