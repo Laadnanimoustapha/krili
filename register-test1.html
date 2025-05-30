@@ -95,6 +95,12 @@
       -webkit-text-fill-color: transparent;
     }
 
+    .logo img {
+      height: 70px;
+      max-width: 100%;
+      display: block;
+    }
+
     .form-group {
       margin-bottom: 1.5rem;
     }
@@ -267,6 +273,13 @@
       border-left: 4px solid #ef4444;
     }
 
+    .login-logo img {
+      height: 120px;
+      max-width: 100%;
+      display: block;
+      margin: 0 auto;
+    }
+
     @media (max-width: 480px) {
       .register-container {
         margin: 1rem;
@@ -295,7 +308,9 @@
   </header>
 
   <div class="register-container">
-    <div class="logo">KRILI</div>
+    <div class="logo">
+      <img src="pictures/lw__3_-removebg-preview.png" alt="KRILI Logo">
+    </div>
     
     <form id="registerForm" onsubmit="handleRegister(event)">
       <div class="form-row">
