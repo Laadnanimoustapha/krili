@@ -727,17 +727,37 @@
       if (isValid) {
         showLoading();
         showNotification('Logging in...', 'info');
-        // Simulate API call
-        setTimeout(() => {
+        // Send login request to backend
+        fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email.value,
+            password: password.value
+          })
+        })
+        .then(res => res.json())
+        .then(result => {
           hideLoading();
-          // Set login status in localStorage
-          localStorage.setItem('isLoggedIn', 'true');
-          localStorage.setItem('userEmail', email.value);
-          showNotification('Login successful!', 'success');
-          setTimeout(() => {
-            window.location.href = 'rent-test1.html';
-          }, 1000);
-        }, 1500);
+          if (result.success) {
+            // Save login status and token if needed
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', email.value);
+            if (result.token) {
+              localStorage.setItem('token', result.token);
+            }
+            showNotification('Login successful!', 'success');
+            setTimeout(() => {
+              window.location.href = 'rent-test1.html';
+            }, 1000);
+          } else {
+            showNotification(result.error || 'Invalid email or password', 'error');
+          }
+        })
+        .catch(() => {
+          hideLoading();
+          showNotification('Server error. Please try again.', 'error');
+        });
       }
     }
 
