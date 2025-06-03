@@ -728,7 +728,7 @@
         showLoading();
         showNotification('Logging in...', 'info');
         // Send login request to backend
-        fetch('/api/login', {
+        fetch('https://tar-typical-catsup.glitch.me/api/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
