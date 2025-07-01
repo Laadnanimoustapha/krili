@@ -1,3 +1,8 @@
+/*  I disable it because the database is not connected. and i need to log in but it did note allow me to log in without eny gmail  moustapha in 18/6/25
+
+
+
+
 // Security configuration
 const SECURITY_CONFIG = {
     SESSION_TIMEOUT: 30 * 60 * 1000, // 30 minutes
@@ -63,7 +68,7 @@ function logout(message = 'Logged out successfully') {
     
     // Clear any cookies
     document.cookie.split(';').forEach(cookie => {
-        document.cookie = cookie.replace(/^ +/, '').replace(/=.*/, `=;expires=${new Date(0).toUTCString()};path=/`);
+        document.cookie = cookie.replace(/^ +/, '').replace(/=./, `=;expires=${new Date(0).toUTCString()};path=/`);
     });
     
     // Show logout message
@@ -134,3 +139,4 @@ window.authUtils = {
     sanitizeInput,
     updateLastActivity
 }; 
+*/
