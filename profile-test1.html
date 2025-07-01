@@ -1805,11 +1805,7 @@
     }
 
     function addNewListing() {
-      showLoading();
-      setTimeout(() => {
-        hideLoading();
-        showNotification('Opening new listing form...', 'info');
-      }, 1000);
+      window.location.href = 'creat add.html';
     }
 
     function refreshData() {
