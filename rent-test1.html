@@ -329,56 +329,6 @@
       animation: fadeInUp 0.8s ease-out 0.4s both;
     }
 
-    .search-container {
-      position: relative;
-      max-width: 600px;
-      margin: 0 auto 3rem;
-      animation: fadeInUp 0.8s ease-out 0.6s both;
-    }
-
-    .search-input {
-      width: 100%;
-      padding: 1.25rem 1.5rem;
-      padding-right: 4rem;
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      border-radius: 25px;
-      background: var(--glass-bg);
-      color: var(--text-color);
-      font-size: 1.1rem;
-      backdrop-filter: blur(10px);
-      transition: all 0.3s ease;
-    }
-
-    .search-input:focus {
-      outline: none;
-      border-color: var(--accent-primary);
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-      transform: translateY(-2px);
-    }
-
-    .search-input::placeholder {
-      color: var(--text-secondary);
-    }
-
-    .search-btn {
-      position: absolute;
-      right: 0.5rem;
-      top: 50%;
-      transform: translateY(-50%);
-      background: var(--gradient-primary);
-      border: none;
-      border-radius: 20px;
-      padding: 0.75rem 1.5rem;
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .search-btn:hover {
-      transform: translateY(-50%) scale(1.05);
-      box-shadow: var(--shadow-primary);
-    }
-
     .stats {
       display: flex;
       justify-content: center;
@@ -786,13 +736,6 @@
           From electronics to vehicles, find what you need when you need it.
         </p>
         
-        <div class="search-container">
-          <input type="text" class="search-input" placeholder="What do you want to rent today in Morocco?" id="search-input">
-          <button class="search-btn" onclick="performSearch()">
-            <i class="fas fa-search"></i>
-          </button>
-        </div>
-        
         <div class="stats">
           <div class="stat-item">
             <span class="stat-number" data-target="10000">0</span>
@@ -878,10 +821,6 @@
           <i class="fab fa-instagram"></i>
           <span>@ladnani</span>
         </a>
-        <a href="https://www.instagram.com/youssef_boumghader" target="_blank" class="social-link">
-          <i class="fab fa-instagram"></i>
-          <span>@youssef_boumghader</span>
-        </a>
       </div>
     </div>
   </footer>
@@ -907,22 +846,6 @@
         body.setAttribute('data-theme', 'light');
         themeIcon.className = 'fas fa-sun';
         showNotification('Switched to light theme', 'success');
-      }
-    }
-
-    // Search functionality
-    function performSearch() {
-      const searchInput = document.getElementById('search-input');
-      const query = searchInput.value.trim();
-      
-      if (query) {
-        showNotification(`Searching for "${query}"...`, 'info');
-        // Simulate search process
-        setTimeout(() => {
-          showNotification(`Found results for "${query}"`, 'success');
-        }, 1500);
-      } else {
-        showNotification('Please enter a search term', 'error');
       }
     }
 
@@ -1042,45 +965,9 @@
       }
     }
 
-    // Search input enhancements
-    function setupSearchEnhancements() {
-      const searchInput = document.getElementById('search-input');
-      
-      // Search suggestions (mock data)
-      const suggestions = [
-        'Laptop rental', 'Camera equipment', 'Party supplies', 'Tools for rent',
-        'Car rental', 'Camping gear', 'Kitchen appliances', 'Gaming console'
-      ];
-      
-      searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-          performSearch();
-        }
-      });
-      
-      // Add search suggestions on focus (simplified version)
-      searchInput.addEventListener('focus', () => {
-        const randomSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
-        if (!searchInput.value) {
-          searchInput.placeholder = `Try "${randomSuggestion}"`;
-        }
-      });
-      
-      searchInput.addEventListener('blur', () => {
-        searchInput.placeholder = 'What do you want to rent today?';
-      });
-    }
-
     // Keyboard shortcuts
     function setupKeyboardShortcuts() {
       document.addEventListener('keydown', (e) => {
-        // Ctrl/Cmd + K for search focus
-        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-          e.preventDefault();
-          document.getElementById('search-input').focus();
-          showNotification('Search focused! Start typing...', 'info', 2000);
-        }
-        
         // T for theme toggle
         if (e.key === 't' || e.key === 'T') {
           if (document.activeElement.tagName !== 'INPUT') {
@@ -1189,7 +1076,6 @@
       
       // Initialize all features
       setupScrollAnimations();
-      setupSearchEnhancements();
       setupKeyboardShortcuts();
       setupCategoryInteractions();
       setupPerformanceOptimizations();
@@ -1201,11 +1087,6 @@
       setTimeout(() => {
         showNotification('Welcome to KRILI! 🎉', 'success', 4000);
       }, 1500);
-      
-      // Keyboard shortcut hint
-      setTimeout(() => {
-        showNotification('Tip: Press Ctrl+K to focus search, T to toggle theme', 'info', 5000);
-      }, 8000);
     });
 
     // Service Worker registration for PWA capabilities
