@@ -149,6 +149,7 @@
    ``` 
 
  --- 
+ 
 
  ## Contribution Guide 
 
@@ -201,3 +202,19 @@
  - **HTML5:** <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5 logo">
  - **CSS3:** <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3 logo">
  - **JavaScript:** <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript logo">
+
+## System Architecture
+
+```mermaid
+graph TD
+    A[User Browser] -->|HTTP Requests| B[Web Server]
+    B --> C[Static Files]
+    B --> D[Node.js Backend]
+    D --> E[Python Services]
+    D --> F[C++ Modules]
+    D --> G[PHP Microservices]
+    C -->|HTML/CSS/JS| A
+    E -->|ML Recommendations| D
+    F -->|Image Processing| D
+    G -->|Payment Processing| D
+    D --> H[(Database)]
