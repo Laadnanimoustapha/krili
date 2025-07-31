@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - KRILI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="security.js"></script>
+  <link rel="stylesheet" href="css/login.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KS7XT0KVEP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-KS7XT0KVEP');
+  </script>
+</head>
+<body oncontextmenu="return false;">
+  <div class="loading-overlay">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <main class="login-container">
+    <div class="login-hero">
+      <div class="hero-content">
+        <h1 class="hero-title">Welcome to KRILI</h1>
+        <p class="hero-subtitle">Your trusted platform for renting and sharing items. Join our community of verified users and start renting today.</p>
+        <div class="hero-features">
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <span>Secure & Verified Users</span>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-handshake"></i>
+            </div>
+            <span>Easy Rental Process</span>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <span>Trusted Reviews</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="logo">
+      <div class="login-header">
+        <div class="login-logo" style="margin-bottom:0;">
+          <img src="Assests/main.png" alt="KRILI Logo">
+        </div>
+        <p class="login-subtitle">Welcome back! Please login to your account.</p>
+      </div>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" placeholder="Enter your email" required>
+          <i class="fas fa-envelope form-icon"></i>
+          <div class="error-message">Please enter a valid email address</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" placeholder="Enter your password" required>
+          <i class="fas fa-lock form-icon"></i>
+          <button type="button" class="password-toggle" onclick="togglePassword(this)">
+            <i class="fas fa-eye"></i>
+          </button>
+          <div class="error-message">Password must be at least 6 characters</div>
+        </div>
+
+        <div class="remember-forgot">
+          <label class="remember-me">
+            <input type="checkbox">
+            <span>Remember me</span>
+          </label>
+          <a href="#" class="forgot-password">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="login-btn">
+          Login
+        </button>
+      </form>
+
+      <div class="social-login">
+        <div class="social-login-title">Or continue with</div>
+        <div class="social-buttons">
+          <button class="social-btn" onclick="socialLogin('google')">
+            <i class="fab fa-google"></i>
+          </button>
+          <button class="social-btn" onclick="socialLogin('facebook')">
+            <i class="fab fa-facebook-f"></i>
+          </button>
+          <button class="social-btn" onclick="socialLogin('twitter')">
+            <i class="fab fa-twitter"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="login-footer">
+        Don't have an account? <a href="register-test1.html" class="register-link">Register</a>
+      </div>
+    </div>
+  </main>
+  <div class="notification" id="notification" style="display: none;"></div>
+  <script src="js/login.js"></script>
+</body>
+</html>
