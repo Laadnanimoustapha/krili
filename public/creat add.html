@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Post Ad - KRILI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="css/creat add.css">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <img src="Assests/main.png" alt="KRILI Logo">
+      </div>
+      <nav class="nav-links">
+        <a href="rent-test1.html">Home</a>
+        <a href="#" class="active">Post Ad</a>
+      </nav>
+      <button class="theme-toggle" onclick="toggleTheme()">
+        <i id="theme-icon" class="fas fa-moon"></i>
+        <span>Theme</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <h1 class="page-title">Post Your Ad</h1>
+    <p class="page-subtitle">Follow these simple steps to list your item for rent</p>
+
+    <div class="progress-bar">
+      <div class="progress-line" id="progressLine"></div>
+      <div class="progress-step">
+        <div class="step-circle active" id="step1Circle">
+          <i class="fas fa-info-circle"></i>
+        </div>
+        <div class="step-label active" id="step1Label">Product Info</div>
+      </div>
+      <div class="progress-step">
+        <div class="step-circle" id="step2Circle">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <div class="step-label" id="step2Label">Insurance</div>
+      </div>
+      <div class="progress-step">
+        <div class="step-circle" id="step3Circle">
+          <i class="fas fa-rocket"></i>
+        </div>
+        <div class="step-label" id="step3Label">Boost</div>
+      </div>
+      <div class="progress-step">
+        <div class="step-circle" id="step4Circle">
+          <i class="fas fa-file-contract"></i>
+        </div>
+        <div class="step-label" id="step4Label">Contract</div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <!-- Step 1: Product Information -->
+      <div class="form-step active" id="step1">
+        <div class="form-section">
+          <h2 class="section-title">Product Information</h2>
+          
+          <div class="form-group">
+            <label class="form-label">Product Title *</label>
+            <input type="text" class="form-input" id="productTitle" placeholder="e.g., MacBook Pro 2023, Canon Camera, etc." required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Category *</label>
+            <select class="form-select" id="productCategory" required>
+              <option value="">Select a category</option>
+              <option value="electronics">Electronics</option>
+              <option value="photography">Photography</option>
+              <option value="vehicles">Vehicles</option>
+              <option value="tools">Tools & Equipment</option>
+              <option value="sports">Sports & Recreation</option>
+              <option value="home">Home & Garden</option>
+              <option value="fashion">Fashion & Accessories</option>
+              <option value="books">Books & Education</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Description *</label>
+            <textarea class="form-textarea" id="productDescription" 
+              placeholder="Describe your item in detail. Include condition, specifications, and any important notes..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Daily Rental Price (MAD) *</label>
+            <input type="number" class="form-input" id="dailyPrice" placeholder="0" min="1" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Location *</label>
+            <input type="text" class="form-input" id="location" placeholder="City, Region" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Product Images *</label>
+            <div class="image-upload" id="imageUpload" onclick="document.getElementById('imageInput').click()">
+              <div class="upload-icon">
+                <i class="fas fa-cloud-upload-alt"></i>
+              </div>
+              <p>Click to upload or drag and drop images</p>
+              <p style="font-size: 0.9rem; color: var(--text-secondary);">Maximum 8 images, PNG/JPG format</p>
+            </div>
+            <input type="file" id="imageInput" multiple accept="image/*" style="display: none;">
+            <div class="image-preview" id="imagePreview"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Insurance Options -->
+      <div class="form-step" id="step2">
+        <div class="form-section">
+          <h2 class="section-title">Insurance Options</h2>
+          <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+            Protect your item with optional insurance coverage
+          </p>
+          
+          <div class="insurance-options">
+            <div class="insurance-card" onclick="selectInsurance('none')">
+              <div class="insurance-title">No Insurance</div>
+              <div class="insurance-price">Free</div>
+              <ul class="insurance-features">
+                <li>Basic platform protection</li>
+                <li>User verification</li>
+                <li>Support available</li>
+              </ul>
+            </div>
+
+            <div class="insurance-card" onclick="selectInsurance('basic')">
+              <div class="insurance-title">Basic Protection</div>
+              <div class="insurance-price">50 MAD/month</div>
+              <ul class="insurance-features">
+                <li>Damage coverage up to 5,000 MAD</li>
+                <li>Theft protection</li>
+                <li>24/7 support</li>
+                <li>Fast claim processing</li>
+              </ul>
+            </div>
+
+            <div class="insurance-card" onclick="selectInsurance('premium')">
+              <div class="insurance-title">Premium Protection</div>
+              <div class="insurance-price">100 MAD/month</div>
+              <ul class="insurance-features">
+                <li>Damage coverage up to 15,000 MAD</li>
+                <li>Full theft protection</li>
+                <li>Priority support</li>
+                <li>Replacement guarantee</li>
+                <li>Legal assistance</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Boost Options -->
+      <div class="form-step" id="step3">
+        <div class="form-section">
+          <h2 class="section-title">Boost Your Ad</h2>
+          <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+            Increase your ad's visibility and get more rentals
+          </p>
+          
+          <div class="boost-options">
+            <div class="boost-card" onclick="selectBoost('none')">
+              <div class="boost-icon">
+                <i class="fas fa-eye"></i>
+              </div>
+              <div class="boost-title">Standard Listing</div>
+              <div class="boost-price">Free</div>
+            </div>
+
+            <div class="boost-card" onclick="selectBoost('featured')">
+              <div class="boost-icon">
+                <i class="fas fa-star"></i>
+              </div>
+              <div class="boost-title">Featured</div>
+              <div class="boost-price">30 MAD/week</div>
+            </div>
+
+            <div class="boost-card" onclick="selectBoost('premium')">
+              <div class="boost-icon">
+                <i class="fas fa-crown"></i>
+              </div>
+              <div class="boost-title">Premium</div>
+              <div class="boost-price">50 MAD/week</div>
+            </div>
+
+            <div class="boost-card" onclick="selectBoost('spotlight')">
+              <div class="boost-icon">
+                <i class="fas fa-bolt"></i>
+              </div>
+              <div class="boost-title">Spotlight</div>
+              <div class="boost-price">80 MAD/week</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Contract -->
+      <div class="form-step" id="step4">
+        <div class="form-section">
+          <h2 class="section-title">Rental Contract</h2>
+          
+          <div class="contract-preview">
+            <div class="contract-header">
+              <div class="contract-title">RENTAL AGREEMENT</div>
+              <p style="color: var(--text-secondary);">KRILI Platform</p>
+            </div>
+            
+            <div class="contract-content">
+              <h4>1. Parties au contrat | أطراف العقد</h4>
+              <p>
+                Ce contrat est conclu entre :<br>
+                <strong>La Plateforme de Location krili</strong><br>
+                et<br>
+                <strong>Le Propriétaire du produit à louer</strong>
+              </p>
+              <p>
+                تم إبرام هذا العقد بين:<br>
+                منصة التأجير (ويشار إليها لاحقاً بـ "المنصة")<br>
+                و<br>
+                مالك المنتج المؤجر (ويشار إليه لاحقاً بـ "المؤجر")
+              </p>
+              <hr>
+              <h4>2. Objet du contrat | موضوع العقد</h4>
+              <p>
+                Ce contrat a pour but d’autoriser le Loueur à publier et proposer son produit à la location sur la Plateforme en respectant les conditions ci-dessous.<br>
+                الغرض من هذا العقد هو السماح للمؤجر بنشر وعرض منتجه للإيجار على المنصة وفقاً للشروط التالية.
+              </p>
+              <hr>
+              <h4>3. Engagements du Loueur | التزامات المؤجر</h4>
+              <ul>
+                <li>Le Loueur déclare être propriétaire légal du produit ou disposer d’un droit légal de le louer.</li>
+                <li>Le produit proposé doit être en bon état de fonctionnement.</li>
+                <li>Le Loueur s'engage à fournir des informations exactes et à jour.</li>
+                <li>Le Loueur est responsable des dommages ou litiges liés au produit loué.</li>
+              </ul>
+              <ul>
+                <li>يصرح المؤجر بأنه المالك القانوني للمنتج أو يملك الحق القانوني لتأجيره.</li>
+                <li>يجب أن يكون المنتج المعروض في حالة جيدة وصالح للاستخدام.</li>
+                <li>يلتزم المؤجر بتقديم معلومات صحيحة ومحدثة عن المنتج.</li>
+                <li>يتحمل المؤجر المسؤولية الكاملة عن الأضرار أو النزاعات المتعلقة بالمنتج المؤجر.</li>
+              </ul>
+              <hr>
+              <h4>4. Engagements de la Plateforme | التزامات المنصة</h4>
+              <ul>
+                <li>Fournir un espace numérique sécurisé pour la publication des produits.</li>
+                <li>Promouvoir les produits publiés dans la limite de ses moyens.</li>
+                <li>Intervenir uniquement en tant qu’intermédiaire technique (pas responsable des litiges entre utilisateurs).</li>
+              </ul>
+              <ul>
+                <li>توفير منصة إلكترونية آمنة لنشر المنتجات.</li>
+                <li>الترويج للمنتجات المعروضة ضمن حدود الإمكانيات المتاحة.</li>
+                <li>تعمل كوسيط تقني فقط، ولا تتحمل مسؤولية النزاعات بين المستخدمين.</li>
+              </ul>
+              <hr>
+              <h4>5. Frais et Commission | الرسوم والعمولة</h4>
+              <ul>
+                <li>Une commission sera prélevée sur chaque transaction réussie, selon le barème affiché sur la Plateforme.</li>
+                <li>Aucun frais n’est appliqué pour la publication de l’annonce.</li>
+              </ul>
+              <ul>
+                <li>يتم اقتطاع عمولة على كل عملية تأجير ناجحة، وفقاً للنسب المعروضة على المنصة.</li>
+                <li>لا تُفرض أي رسوم على نشر الإعلان.</li>
+              </ul>
+              <hr>
+              <h4>6. Durée et Résiliation | مدة العقد وإنهاؤه</h4>
+              <ul>
+                <li>Le présent contrat prend effet dès l’acceptation des conditions.</li>
+                <li>Il peut être résilié à tout moment par l’une des parties, sans justification.</li>
+              </ul>
+              <ul>
+                <li>يدخل هذا العقد حيز التنفيذ فور قبول الشروط.</li>
+                <li>يمكن لأي من الطرفين إنهاؤه في أي وقت دون تقديم مبرر.</li>
+              </ul>
+              <hr>
+              <h4>7. Acceptation des Conditions | قبول الشروط</h4>
+              <p>
+                En publiant un produit sur la Plateforme, le Loueur accepte l’ensemble des termes de ce contrat.<br>
+                من خلال نشر أي منتج على المنصة، يُعتبر المؤجر موافقاً على جميع شروط هذا العقد.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-buttons">
+        <button class="btn btn-secondary" id="prevBtn" onclick="previousStep()" style="display: none;">
+          <i class="fas fa-arrow-left"></i>
+          Previous
+        </button>
+        
+        <div style="flex: 1;"></div>
+        
+        <button class="btn btn-primary" id="nextBtn" onclick="nextStep()">
+          Next
+          <i class="fas fa-arrow-right"></i>
+        </button>
+        
+        <button class="btn btn-primary" id="submitBtn" onclick="submitAd()" style="display: none;">
+          <i class="fas fa-check"></i>
+          Post Ad
+        </button>
+        
+        <button class="btn btn-primary" id="downloadBtn" onclick="downloadContract()" style="display: none;">
+          <i class="fas fa-download"></i>
+          Download Contract
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <div class="notification" id="notification"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+  </script>
+</body>
+</html>

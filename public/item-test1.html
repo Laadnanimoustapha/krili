@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Item Details - KRILI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="js/auth-check.js"></script>
+  <link rel="stylesheet" href="css/item.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KS7XT0KVEP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-KS7XT0KVEP');
+  </script>
+</head>
+<body oncontextmenu="return false;">
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <img src="Assests/white-logo.png" alt="KRILI Logo" >
+      </div>
+      <nav class="nav-links">
+        <a href="rent-test1.html">Home</a>
+        <a href="search-test1.html">Search</a>
+        <a href="profile-test1.html">Profile</a>
+        <a href="item-test1.html" class="active">Item</a>
+        <a href="register-test1.html">Register</a>
+        <a href="#" onclick="logout()">Logout</a>
+      </nav>
+      <button class="theme-toggle" onclick="toggleTheme()">
+        <i id="theme-icon" class="fas fa-moon"></i>
+        <span>Theme</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="item-container">
+    <div class="item-grid">
+      <div class="item-gallery">
+        <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853" alt="MacBook Pro" class="main-image" id="mainImage">
+        <div class="thumbnail-grid">
+          <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853" alt="MacBook Pro" class="thumbnail" onclick="changeImage(this.src)">
+          <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8" alt="MacBook Pro" class="thumbnail" onclick="changeImage(this.src)">
+          <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8" alt="MacBook Pro" class="thumbnail" onclick="changeImage(this.src)">
+          <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8" alt="MacBook Pro" class="thumbnail" onclick="changeImage(this.src)">
+        </div>
+      </div>
+
+      <div class="item-info">
+        <h1 class="item-title">MacBook Pro 2023</h1>
+        <div class="item-price">500 MAD/day</div>
+        <div class="item-location">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Casablanca, MA</span>
+        </div>
+
+        <p class="item-description">
+          Brand new MacBook Pro 2023 with M2 Pro chip, 16GB RAM, and 512GB SSD. Perfect for professional work, video editing, and development. Comes with all original accessories and warranty. Available for rent in Casablanca and surrounding areas.
+        </p>
+
+        <div class="item-features">
+          <div class="feature">
+            <i class="fas fa-microchip"></i>
+            <span>M2 Pro Chip</span>
+          </div>
+          <div class="feature">
+            <i class="fas fa-memory"></i>
+            <span>16GB RAM</span>
+          </div>
+          <div class="feature">
+            <i class="fas fa-hdd"></i>
+            <span>512GB SSD</span>
+          </div>
+          <div class="feature">
+            <i class="fas fa-battery-full"></i>
+            <span>18h Battery</span>
+          </div>
+        </div>
+
+        <div class="rental-period">
+          <h3 class="period-title">Select Rental Period</h3>
+          <div class="period-options">
+            <button class="period-option active">1 Day</button>
+            <button class="period-option">3 Days</button>
+            <button class="period-option">1 Week</button>
+            <button class="period-option">2 Weeks</button>
+            <button class="period-option">1 Month</button>
+          </div>
+        </div>
+
+        <button class="rent-btn" onclick="rentItem()">Rent Now</button>
+
+        <div class="owner-info">
+          <div class="owner-header">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e" alt="Owner" class="owner-avatar">
+            <div>
+              <div class="owner-name">يوسف العلوي</div>
+              <div class="owner-rating">
+                <i class="fas fa-star"></i>
+                <span>4.9 (120 reviews)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="owner-stats">
+            <div>
+              <div class="stat-value">98%</div>
+              <div class="stat-label">Response Rate</div>
+            </div>
+            <div>
+              <div class="stat-value">2h</div>
+              <div class="stat-label">Avg. Response</div>
+            </div>
+            <div>
+              <div class="stat-value">50+</div>
+              <div class="stat-label">Rentals</div>
+            </div>
+          </div>
+
+          <button class="contact-btn" onclick="contactOwner()">
+            <i class="fas fa-envelope"></i>
+            Contact Owner
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="notification" id="notification"></div>
+  <script src="js/item.js"></script>
+</body>
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRILI Chat Moderation Demo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .demo-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #007bff;
+        }
+
+        .chat-demo {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .message-input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+        }
+
+        .send-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .result.safe {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .result.blocked {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .result.warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+
+        .test-messages {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .test-message {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .test-message:hover {
+            border-color: #007bff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .test-message.safe {
+            border-left: 5px solid #28a745;
+        }
+
+        .test-message.blocked {
+            border-left: 5px solid #dc3545;
+        }
+
+        .test-message.warning {
+            border-left: 5px solid #ffc107;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .api-status {
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .api-status.healthy {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .api-status.degraded {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .api-status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .integration-code {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ KRILI Chat Moderation Demo</h1>
+        
+        <div id="apiStatus" class="api-status">
+            <div class="loading"></div> Checking API status...
+        </div>
+
+        <div class="demo-section">
+            <h2>🧪 Test Message Moderation</h2>
+            <div class="chat-demo">
+                <input type="text" id="messageInput" class="message-input" placeholder="Type a message to test moderation..." />
+                <button id="sendBtn" class="send-btn">🔍 Test Message</button>
+                <div id="result"></div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>📝 Quick Test Messages</h2>
+            <p>Click any message below to test it:</p>
+            <div class="test-messages">
+                <div class="test-message safe" data-message="Hello, how are you today?">
+                    <strong>✅ Safe:</strong> "Hello, how are you today?"
+                </div>
+                <div class="test-message safe" data-message="What's the price for this item?">
+                    <strong>✅ Safe:</strong> "What's the price for this item?"
+                </div>
+                <div class="test-message blocked" data-message="Contact me at john@email.com">
+                    <strong>🚫 Blocked:</strong> "Contact me at john@email.com"
+                </div>
+                <div class="test-message blocked" data-message="Call me at 555-123-4567">
+                    <strong>🚫 Blocked:</strong> "Call me at 555-123-4567"
+                </div>
+                <div class="test-message blocked" data-message="Add me on WhatsApp">
+                    <strong>🚫 Blocked:</strong> "Add me on WhatsApp"
+                </div>
+                <div class="test-message blocked" data-message="My number is zero six one two three">
+                    <strong>🚫 Blocked:</strong> "My number is zero six one two three"
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>📊 System Statistics</h2>
+            <div class="stats" id="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalMessages">-</div>
+                    <div>Total Messages</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="flaggedMessages">-</div>
+                    <div>Flagged Messages</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="flaggedRate">-</div>
+                    <div>Flagged Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="avgProcessingTime">-</div>
+                    <div>Avg Processing Time</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>🔗 Integration with KRILI Chat</h2>
+            <p>To integrate this moderation system with your KRILI chat, add this code to your Chat.html:</p>
+            <div class="integration-code">
+&lt;script&gt;
+// KRILI Chat Moderation Integration
+class KRILIModerator {
+    constructor() {
+        this.apiUrl = 'http://localhost:5000';
+        this.setupModeration();
+    }
+
+    async moderateMessage(message, userId) {
+        const response = await fetch(`${this.apiUrl}/moderate`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message, user_id: userId })
+        });
+        return await response.json();
+    }
+
+    async setupModeration() {
+        const sendBtn = document.querySelector('.send-btn');
+        const messageInput = document.querySelector('.message-input');
+        
+        if (sendBtn && messageInput) {
+            sendBtn.onclick = async (e) => {
+                e.preventDefault();
+                const message = messageInput.value.trim();
+                if (!message) return;
+
+                const result = await this.moderateMessage(message, 'user123');
+                
+                if (result.is_flagged && result.action === 'block') {
+                    alert(result.warning_message);
+                    messageInput.value = '';
+                    return;
+                }
+                
+                // Send message normally
+                this.sendMessage(message);
+                messageInput.value = '';
+            };
+        }
+    }
+
+    sendMessage(message) {
+        // Your existing message sending logic here
+        console.log('Sending message:', message);
+    }
+}
+
+// Initialize when page loads
+new KRILIModerator();
+&lt;/script&gt;
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>🚀 Next Steps</h2>
+            <ol>
+                <li><strong>API Server:</strong> Keep the Python API running: <code>python chat_moderation_system.py api</code></li>
+                <li><strong>Integration:</strong> Add the moderation code to your KRILI Chat.html</li>
+                <li><strong>Customization:</strong> Adjust confidence thresholds and warning messages</li>
+                <li><strong>Training:</strong> Train the ML models with your specific data</li>
+                <li><strong>Monitoring:</strong> Use the dashboard at <a href="http://localhost:5000" target="_blank">http://localhost:5000</a></li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000';
+        
+        // Check API status
+        async function checkApiStatus() {
+            try {
+                const response = await fetch(`${API_URL}/health`);
+                const health = await response.json();
+                
+                const statusDiv = document.getElementById('apiStatus');
+                statusDiv.className = `api-status ${health.status}`;
+                
+                if (health.status === 'healthy') {
+                    statusDiv.innerHTML = '✅ API Server is healthy and ready';
+                } else if (health.status === 'degraded') {
+                    statusDiv.innerHTML = '⚠️ API Server is running but degraded (some features limited)';
+                } else {
+                    statusDiv.innerHTML = '❌ API Server has issues';
+                }
+            } catch (error) {
+                const statusDiv = document.getElementById('apiStatus');
+                statusDiv.className = 'api-status error';
+                statusDiv.innerHTML = '❌ Cannot connect to API server. Make sure it\'s running on localhost:5000';
+            }
+        }
+
+        // Load statistics
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_URL}/stats`);
+                const stats = await response.json();
+                
+                document.getElementById('totalMessages').textContent = stats.total_messages.toLocaleString();
+                document.getElementById('flaggedMessages').textContent = stats.flagged_messages.toLocaleString();
+                document.getElementById('flaggedRate').textContent = (stats.flagged_rate * 100).toFixed(1) + '%';
+                document.getElementById('avgProcessingTime').textContent = (stats.avg_processing_time * 1000).toFixed(1) + 'ms';
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Test message moderation
+        async function testMessage(message) {
+            const resultDiv = document.getElementById('result');
+            const sendBtn = document.getElementById('sendBtn');
+            
+            // Show loading
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<div class="loading"></div> Testing...';
+            resultDiv.innerHTML = '';
+
+            try {
+                const response = await fetch(`${API_URL}/moderate`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        user_id: 'demo_user_' + Date.now()
+                    })
+                });
+
+                const result = await response.json();
+                
+                // Display result
+                let className = 'safe';
+                let icon = '✅';
+                let actionText = 'ALLOWED';
+                
+                if (result.is_flagged) {
+                    if (result.action === 'block') {
+                        className = 'blocked';
+                        icon = '🚫';
+                        actionText = 'BLOCKED';
+                    } else {
+                        className = 'warning';
+                        icon = '⚠️';
+                        actionText = 'WARNING';
+                    }
+                }
+
+                resultDiv.innerHTML = `
+                    <div class="result ${className}">
+                        <h3>${icon} ${actionText}</h3>
+                        <p><strong>Message:</strong> "${message}"</p>
+                        <p><strong>Confidence:</strong> ${(result.confidence * 100).toFixed(1)}%</p>
+                        ${result.violation_type ? `<p><strong>Violation Type:</strong> ${result.violation_type}</p>` : ''}
+                        ${result.warning_message ? `<p><strong>Warning:</strong> ${result.warning_message}</p>` : ''}
+                        <p><strong>Processing Time:</strong> ${(result.details.processing_time * 1000).toFixed(1)}ms</p>
+                    </div>
+                `;
+
+                // Reload stats
+                loadStats();
+
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result blocked">
+                        <h3>❌ ERROR</h3>
+                        <p>Failed to test message: ${error.message}</p>
+                        <p>Make sure the API server is running.</p>
+                    </div>
+                `;
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = '🔍 Test Message';
+            }
+        }
+
+        // Event listeners
+        document.getElementById('sendBtn').addEventListener('click', () => {
+            const message = document.getElementById('messageInput').value.trim();
+            if (message) {
+                testMessage(message);
+            }
+        });
+
+        document.getElementById('messageInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const message = e.target.value.trim();
+                if (message) {
+                    testMessage(message);
+                }
+            }
+        });
+
+        // Quick test message clicks
+        document.querySelectorAll('.test-message').forEach(element => {
+            element.addEventListener('click', () => {
+                const message = element.getAttribute('data-message');
+                document.getElementById('messageInput').value = message;
+                testMessage(message);
+            });
+        });
+
+        // Initialize
+        checkApiStatus();
+        loadStats();
+        
+        // Refresh stats every 30 seconds
+        setInterval(loadStats, 30000);
+    </script>
+</body>
+</html>

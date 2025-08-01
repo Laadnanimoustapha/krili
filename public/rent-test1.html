@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KRILI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="js/auth-check.js"></script>
+  <link rel="stylesheet" href="css/rent.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KS7XT0KVEP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-KS7XT0KVEP');
+  </script>
+</head>
+<body oncontextmenu="return false;">
+  <div class="preloader">
+    <div class="loader"></div>
+  </div>
+
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <img src="Assests/main.png" alt="KRILI Logo" >
+      </div>
+      <nav class="nav-links">
+        <a href="rent-test1.html" class="active">Home</a>
+        <a href="search-test1.html">Search</a>
+        <a href="profile-test1.html">Profile</a>
+        <a href="#" onclick="logout()">Logout</a>
+      </nav>
+      <button class="theme-toggle" onclick="toggleTheme()">
+        <i id="theme-icon" class="fas fa-moon"></i>
+        <span>Theme</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+      </div>
+      
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fas fa-star"></i>
+          <span>Most Trusted Rental Platform</span>
+        </div>
+        
+        <h1 class="hero-title">Rent Anything, Anytime</h1>
+        
+        <p class="hero-subtitle">
+          Discover thousands of items available for rent in your area. 
+          From electronics to vehicles, find what you need when you need it.
+        </p>
+        
+        <div class="stats">
+          <div class="stat-item">
+            <span class="stat-number" data-target="10000">0</span>
+            <span class="stat-label">Items Available</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" data-target="5000">0</span>
+            <span class="stat-label">Happy Customers</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" data-target="20">0</span>
+            <span class="stat-label">Moroccan Cities</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="categories" id="categories">
+      <div class="section-header">
+        <h2 class="section-title">Popular Categories</h2>
+        <p class="section-subtitle">
+          Browse our most popular rental categories and find exactly what you're looking for
+        </p>
+      </div>
+      
+      <div class="categories-grid">
+        <div class="category-card" onclick="openCategory('electronics')">
+          <div class="category-icon">
+            <i class="fas fa-laptop"></i>
+          </div>
+          <h3 class="category-title">Electronics</h3>
+          <p class="category-desc">Latest gadgets, laptops, cameras, and tech equipment for all your digital needs</p>
+        </div>
+        
+        <div class="category-card" onclick="openCategory('vehicles')">
+          <div class="category-icon">
+            <i class="fas fa-car"></i>
+          </div>
+          <h3 class="category-title">Vehicles</h3>
+          <p class="category-desc">Cars, bikes, scooters, and more for convenient transportation solutions</p>
+        </div>
+        
+        <div class="category-card" onclick="openCategory('tools')">
+          <div class="category-icon">
+            <i class="fas fa-tools"></i>
+          </div>
+          <h3 class="category-title">Tools & Equipment</h3>
+          <p class="category-desc">Professional tools and equipment for construction, gardening, and DIY projects</p>
+        </div>
+        
+        <div class="category-card" onclick="openCategory('outdoor')">
+          <div class="category-icon">
+            <i class="fas fa-mountain"></i>
+          </div>
+          <h3 class="category-title">Outdoor Gear</h3>
+          <p class="category-desc">Camping equipment, sports gear, and adventure essentials for outdoor enthusiasts</p>
+        </div>
+        
+        <div class="category-card" onclick="openCategory('appliances')">
+          <div class="category-icon">
+            <i class="fas fa-blender"></i>
+          </div>
+          <h3 class="category-title">Appliances</h3>
+          <p class="category-desc">Home appliances, kitchen equipment, and household items for temporary needs</p>
+        </div>
+        
+        <div class="category-card" onclick="openCategory('party')">
+          <div class="category-icon">
+            <i class="fas fa-glass-cheers"></i>
+          </div>
+          <h3 class="category-title">Party & Events</h3>
+          <p class="category-desc">Everything you need for parties, weddings, and special events</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p class="footer-text">&copy; 2025 KRILI. All rights reserved. Created by LAADNANI</p>
+      <div class="social-links">
+        <a href="https://www.instagram.com/ladnani" target="_blank" class="social-link">
+          <i class="fab fa-instagram"></i>
+          <span>@ladnani</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <button class="scroll-top" onclick="scrollToTop()">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <div class="notification" id="notification"></div>
+  <script src="js/rent.js"></script>
+</body>
+</html>

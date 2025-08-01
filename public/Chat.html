@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat - KRILI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="js/auth-check.js"></script>
+  <link rel="stylesheet" href="css/item.css">
+  <style>
+    /* Additional styles specific to chat page */
+    .chat-container {
+      padding: 0;
+      max-width: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      gap: 0;
+    }
+    
+    .chat-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1));
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+    }
+    
+    .chat-header-info {
+      flex: 1;
+    }
+    
+    .owner-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-color);
+      margin-bottom: 0.25rem;
+    }
+    
+    .user-status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 400;
+    }
+    
+    .status-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #10b981, #34d399);
+      animation: pulse 2s infinite;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+    }
+    
+    .status-indicator.offline {
+      background: linear-gradient(45deg, #6b7280, #9ca3af);
+      animation: none;
+      box-shadow: none;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { 
+        opacity: 1; 
+        transform: scale(1);
+      }
+      50% { 
+        opacity: 0.7; 
+        transform: scale(1.1);
+      }
+    }
+    
+    .chat-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .chat-action-btn {
+      padding: 0.75rem;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-color);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .chat-action-btn:hover {
+      background: rgba(139, 92, 246, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+      border-color: rgba(139, 92, 246, 0.3);
+    }
+    
+    .chat-header .owner-avatar-placeholder {
+      width: 50px;
+      height: 50px;
+      border-radius: 16px;
+      border: 3px solid rgba(139, 92, 246, 0.3);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2));
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(139, 92, 246, 0.8);
+      font-size: 1.2rem;
+    }
+    
+    .chat-header .owner-avatar-placeholder:hover {
+      transform: scale(1.05);
+      border-color: rgba(139, 92, 246, 0.5);
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(59, 130, 246, 0.3));
+    }
+    
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.05));
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      scroll-behavior: smooth;
+    }
+    
+    .chat-messages::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .chat-messages::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+    
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: linear-gradient(45deg, rgba(139, 92, 246, 0.5), rgba(59, 130, 246, 0.5));
+      border-radius: 10px;
+    }
+    
+    .chat-messages::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(45deg, rgba(139, 92, 246, 0.7), rgba(59, 130, 246, 0.7));
+    }
+    
+    .message {
+      max-width: 75%;
+      padding: 1rem 1.25rem;
+      border-radius: 20px;
+      position: relative;
+      margin-bottom: 0.5rem;
+      animation: messageSlide 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      word-wrap: break-word;
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+    
+    @keyframes messageSlide {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    
+    .message.sent {
+      align-self: flex-end;
+      background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+      color: white;
+      border-bottom-right-radius: 6px;
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .message.received {
+      align-self: flex-start;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      color: var(--text-color);
+      border-bottom-left-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .message-time {
+      font-size: 0.7rem;
+      opacity: 0.6;
+      margin-top: 0.5rem;
+      text-align: right;
+      font-weight: 400;
+    }
+    
+    .message.received .message-time {
+      text-align: left;
+    }
+    
+    .message-status {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.7rem;
+      opacity: 0.6;
+      margin-top: 0.25rem;
+      justify-content: flex-end;
+    }
+    
+    .message.sent .message-status {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 1.25rem;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      max-width: 60%;
+      align-self: flex-start;
+      margin-bottom: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      animation: typingSlide 0.3s ease-out;
+    }
+    
+    @keyframes typingSlide {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    .typing-dots {
+      display: flex;
+      gap: 0.25rem;
+    }
+    
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #8b5cf6, #3b82f6);
+      opacity: 0.6;
+      animation: typingDot 1.4s infinite;
+      box-shadow: 0 2px 4px rgba(139, 92, 246, 0.3);
+    }
+    
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    
+    @keyframes typingDot {
+      0%, 60%, 100% {
+        opacity: 0.6;
+        transform: scale(1);
+      }
+      30% {
+        opacity: 1;
+        transform: scale(1.3);
+      }
+    }
+    
+    .chat-input-area {
+      display: flex;
+      gap: 1rem;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(59, 130, 246, 0.05));
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      align-items: flex-end;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .input-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    
+    .input-action-btn {
+      padding: 0.75rem;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-color);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 44px;
+      height: 44px;
+    }
+    
+    .input-action-btn:hover {
+      background: rgba(139, 92, 246, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+      border-color: rgba(139, 92, 246, 0.3);
+    }
+    
+    .message-input {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-color);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      resize: none;
+      min-height: 50px;
+      max-height: 120px;
+      overflow-y: auto;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      line-height: 1.5;
+    }
+    
+    .message-input:focus {
+      border-color: rgba(139, 92, 246, 0.5);
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15), 0 8px 25px rgba(139, 92, 246, 0.1);
+      outline: none;
+      background: rgba(255, 255, 255, 0.12);
+    }
+    
+    .message-input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 400;
+    }
+    
+    .send-btn {
+      padding: 0.75rem 1.25rem;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-height: 50px;
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .send-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
+      background: linear-gradient(135deg, #9333ea, #2563eb);
+    }
+    
+    .send-btn:active {
+      transform: translateY(-1px);
+    }
+    
+    /* Chat options dropdown */
+    .chat-options-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 0.5rem 0;
+      min-width: 180px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      display: none;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .chat-options-dropdown.show {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .chat-option-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      color: var(--text-color);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+    
+    .chat-option-item:hover {
+      background: rgba(139, 92, 246, 0.2);
+    }
+    
+    .chat-option-item.danger:hover {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+    
+
+    
+    /* Search Panel */
+    .search-panel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(20px);
+      z-index: 1000;
+      display: none;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .search-panel.show {
+      display: flex;
+      flex-direction: column;
+      opacity: 1;
+    }
+    
+    .search-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .search-input {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-color);
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .search-input:focus {
+      border-color: rgba(139, 92, 246, 0.5);
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+      outline: none;
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    .search-close-btn {
+      padding: 1rem;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-color);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .search-close-btn:hover {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+    
+    .search-results {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem 1.5rem;
+    }
+    
+    .search-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      color: rgba(255, 255, 255, 0.5);
+      text-align: center;
+    }
+    
+    .search-placeholder i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.3;
+    }
+    
+    .search-result-item {
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      margin-bottom: 0.75rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .search-result-item:hover {
+      background: rgba(139, 92, 246, 0.1);
+      border-color: rgba(139, 92, 246, 0.3);
+    }
+    
+    .search-result-text {
+      color: var(--text-color);
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+    
+    .search-result-meta {
+      font-size: 0.8rem;
+      opacity: 0.6;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .search-highlight {
+      background: rgba(255, 235, 59, 0.3);
+      padding: 0.1rem 0.2rem;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+    
+
+    
+
+    
+    /* Enhanced Button Animations */
+    .input-action-btn.active {
+      background: rgba(139, 92, 246, 0.3);
+      transform: translateY(-2px) scale(1.1);
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+    }
+    
+    .send-btn.sending {
+      animation: sendingPulse 1s infinite;
+      pointer-events: none;
+    }
+    
+    @keyframes sendingPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    /* Typing indicator enhancements */
+    .typing-indicator {
+      animation: typingSlide 0.4s cubic-bezier(0.4, 0, 0.2, 1), typingGlow 2s infinite;
+    }
+    
+    @keyframes typingGlow {
+      0%, 100% { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+      50% { box-shadow: 0 4px 20px rgba(139, 92, 246, 0.2); }
+    }
+    
+    /* Message hover effects enhancement */
+    .message:hover {
+      transform: translateY(-2px) scale(1.02);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .message.sent:hover {
+      box-shadow: 0 8px 30px rgba(139, 92, 246, 0.5);
+    }
+    
+    .message.received:hover {
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Scroll animations */
+    .chat-messages {
+      scroll-behavior: smooth;
+    }
+    
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: linear-gradient(45deg, rgba(139, 92, 246, 0.5), rgba(59, 130, 246, 0.5));
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+    
+    .chat-messages::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(45deg, rgba(139, 92, 246, 0.8), rgba(59, 130, 246, 0.8));
+      transform: scaleY(1.2);
+    }
+    
+    /* Online users indicator */
+    .online-indicator {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: none;
+    }
+    
+    /* Message context menu */
+    .message-context-menu {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 0.5rem 0;
+      min-width: 150px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      display: none;
+    }
+    
+    .context-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 1rem;
+      color: var(--text-color);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
+    }
+    
+    .context-menu-item:hover {
+      background: rgba(139, 92, 246, 0.2);
+    }
+    
+    .context-menu-item.danger:hover {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+    
+    /* Notification styles */
+    .notification {
+      position: fixed;
+      top: 100px;
+      right: 20px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+      z-index: 1000;
+      display: none;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+    
+    .notification.show {
+      display: block;
+      opacity: 1;
+      transform: translateX(0);
+    }
+    
+    /* Enhanced scrollbar for webkit browsers */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(139, 92, 246, 0.5) transparent;
+    }
+    
+    /* Message hover effects */
+    .message:hover {
+      transform: translateY(-1px);
+      transition: transform 0.2s ease;
+    }
+    
+    .message.sent:hover {
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+    }
+    
+    .message.received:hover {
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Loading animation for messages */
+    .message-loading {
+      opacity: 0.7;
+      animation: messageLoading 1s infinite;
+    }
+    
+    @keyframes messageLoading {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 0.4; }
+    }
+    
+    /* Shake animation for empty input */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+    
+    /* Status glow animation */
+    @keyframes statusGlow {
+      0% { 
+        opacity: 0.6;
+        text-shadow: none;
+      }
+      50% { 
+        opacity: 1;
+        text-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+      }
+      100% { 
+        opacity: 0.6;
+        text-shadow: none;
+      }
+    }
+    
+    /* Enhanced loading animation */
+    @keyframes messageLoading {
+      0%, 100% { 
+        opacity: 0.7;
+        transform: scale(1);
+      }
+      50% { 
+        opacity: 0.4;
+        transform: scale(0.98);
+      }
+    }
+    
+    /* Floating animation for notifications */
+    @keyframes floatIn {
+      0% {
+        opacity: 0;
+        transform: translateX(100%) translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0) translateY(0);
+      }
+    }
+    
+    /* Button press animation */
+    @keyframes buttonPress {
+      0% { transform: scale(1); }
+      50% { transform: scale(0.95); }
+      100% { transform: scale(1); }
+    }
+    
+    .input-action-btn:active,
+    .send-btn:active,
+    .chat-action-btn:active {
+      animation: buttonPress 0.1s ease-out;
+    }
+    
+    /* Enhanced focus states */
+    .chat-action-btn:focus,
+    .input-action-btn:focus,
+    .send-btn:focus {
+      outline: 2px solid rgba(139, 92, 246, 0.5);
+      outline-offset: 2px;
+    }
+    
+    @media (max-width: 768px) {
+      .chat-header {
+        padding: 1rem;
+      }
+      
+      .chat-header .owner-avatar {
+        width: 45px;
+        height: 45px;
+      }
+      
+      .owner-name {
+        font-size: 1rem;
+      }
+      
+      .chat-messages {
+        padding: 1rem;
+      }
+      
+      .message {
+        max-width: 85%;
+        padding: 0.875rem 1rem;
+      }
+      
+      .chat-input-area {
+        padding: 1rem;
+      }
+      
+      .message-input {
+        font-size: 0.9rem;
+      }
+      
+      .send-btn {
+        padding: 0.75rem 1rem;
+        min-height: 45px;
+      }
+      
+      .input-action-btn {
+        width: 40px;
+        height: 40px;
+        padding: 0.625rem;
+      }
+      
+      .notification {
+        right: 10px;
+        left: 10px;
+        top: 20px;
+      }
+      
+      .chat-options-dropdown {
+        min-width: 160px;
+      }
+      
+      .search-header {
+        padding: 1rem;
+      }
+      
+      .search-input {
+        font-size: 0.9rem;
+        padding: 0.875rem 1.25rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .chat-header {
+        padding: 0.875rem;
+      }
+      
+      .chat-messages {
+        padding: 0.75rem;
+      }
+      
+      .message {
+        max-width: 90%;
+        padding: 0.75rem 0.875rem;
+        font-size: 0.9rem;
+      }
+      
+      .chat-input-area {
+        padding: 0.875rem;
+        gap: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body oncontextmenu="return false;">
+  <header style="display: none;">
+    <div class="header-content">
+      <div class="logo">
+        <img src="Assests/white-logo.png" alt="KRILI Logo">
+      </div>
+      <nav class="nav-links">
+        <a href="rent-test1.html">Home</a>
+        <a href="search-test1.html">Search</a>
+        <a href="profile-test1.html">Profile</a>
+        <a href="item-test1.html">Item</a>
+        <a href="register-test1.html">Register</a>
+        <a href="#" onclick="logout()">Logout</a>
+      </nav>
+      <button class="theme-toggle" onclick="toggleTheme()">
+        <i id="theme-icon" class="fas fa-moon"></i>
+        <span>Theme</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="chat-container">
+    <div class="chat-header">
+      <div class="owner-avatar-placeholder">
+        <i class="fas fa-user"></i>
+      </div>
+      <div class="chat-header-info">
+        <div class="owner-name">يوسف العلوي</div>
+        <div class="user-status">
+          <span class="status-indicator" id="statusIndicator"></span>
+          <span id="userStatus">Online now</span>
+        </div>
+      </div>
+      <div class="chat-actions" style="position: relative;">
+        <button class="chat-action-btn" onclick="toggleChatOptions()" title="Options">
+          <i class="fas fa-ellipsis-v"></i>
+        </button>
+        <div class="chat-options-dropdown" id="chatOptionsDropdown">
+          <button class="chat-option-item" onclick="goBack()">
+            <i class="fas fa-arrow-left" ></i>
+            Back to Item
+          </button>
+          <button class="chat-option-item" onclick="toggleUserInfo()">
+            <i class="fas fa-info-circle"></i>
+            User Info
+          </button>
+          <button class="chat-option-item" onclick="toggleNotifications()">
+            <i class="fas fa-bell" id="notificationIcon"></i>
+            <span id="notificationText">Mute Notifications</span>
+          </button>
+          <button class="chat-option-item" onclick="blockUser()">
+            <i class="fas fa-user-slash"></i>
+            Block User
+          </button>
+          <button class="chat-option-item" onclick="reportUser()">
+            <i class="fas fa-flag"></i>
+            Report User
+          </button>
+          <button class="chat-option-item danger" onclick="clearChat()">
+            <i class="fas fa-trash"></i>
+            Clear Chat
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="chat-messages" id="chatMessages">
+      <!-- Messages will be loaded dynamically -->
+    </div>
+    
+    <div class="chat-input-area">
+      <div class="input-actions">
+        <button class="input-action-btn" onclick="toggleSearch()" title="Search Messages" id="searchBtn">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+      <textarea class="message-input" id="messageInput" placeholder="Type your message..." oninput="adjustTextareaHeight(this)" onkeydown="handleKeyDown(event)"></textarea>
+      <button class="send-btn" onclick="sendMessage()" id="sendBtn">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+    
+
+    
+    <!-- Search Panel -->
+    <div class="search-panel" id="searchPanel">
+      <div class="search-header">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search messages..." oninput="performSearch()">
+        <button class="search-close-btn" onclick="closeSearch()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="search-results" id="searchResults">
+        <div class="search-placeholder">
+          <i class="fas fa-search"></i>
+          <p>Type to search messages...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="notification" id="notification"></div>
+  
+  <script>
+    // Chat data management
+    const CHAT_STORAGE_KEY = 'krili_chat_messages';
+    const USER_STATUS_KEY = 'krili_user_status';
+    let isTyping = false;
+    let typingTimeout;
+    let messages = [];
+
+    // Load messages from localStorage
+    function loadMessages() {
+      const savedMessages = localStorage.getItem(CHAT_STORAGE_KEY);
+      if (savedMessages) {
+        messages = JSON.parse(savedMessages);
+        displayMessages();
+      }
+    }
+
+    // Save messages to localStorage
+    function saveMessages() {
+      localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messages));
+    }
+
+    // Display all messages
+    function displayMessages() {
+      const chatMessages = document.getElementById('chatMessages');
+      chatMessages.innerHTML = '';
+      
+      messages.forEach(msg => {
+        const messageDiv = createMessageElement(msg);
+        chatMessages.appendChild(messageDiv);
+      });
+      
+      scrollToBottom();
+    }
+
+    // Create message element
+    function createMessageElement(messageData) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${messageData.type}`;
+      
+      const messageText = document.createElement('div');
+      messageText.className = 'message-text';
+      messageText.textContent = messageData.text;
+      
+      const messageTime = document.createElement('div');
+      messageTime.className = 'message-time';
+      messageTime.textContent = messageData.time;
+      
+      if (messageData.type === 'sent') {
+        const messageStatus = document.createElement('div');
+        messageStatus.className = 'message-status';
+        messageStatus.innerHTML = `<i class="fas fa-check-double"></i> ${messageData.status || 'Delivered'}`;
+        messageDiv.appendChild(messageText);
+        messageDiv.appendChild(messageTime);
+        messageDiv.appendChild(messageStatus);
+      } else {
+        messageDiv.appendChild(messageText);
+        messageDiv.appendChild(messageTime);
+      }
+      
+      return messageDiv;
+    }
+
+    // Theme toggle functionality
+    function toggleTheme() {
+      const body = document.body;
+      const themeIcon = document.getElementById('theme-icon');
+      
+      if (body.getAttribute('data-theme') === 'light') {
+        body.setAttribute('data-theme', 'dark');
+        themeIcon.className = 'fas fa-moon';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        body.setAttribute('data-theme', 'light');
+        themeIcon.className = 'fas fa-sun';
+        localStorage.setItem('theme', 'light');
+      }
+    }
+
+    // Initialize theme
+    function initializeTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      const body = document.body;
+      const themeIcon = document.getElementById('theme-icon');
+      
+      if (savedTheme) {
+        body.setAttribute('data-theme', savedTheme);
+        themeIcon.className = savedTheme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        body.setAttribute('data-theme', 'light');
+        themeIcon.className = 'fas fa-sun';
+      } else {
+        body.setAttribute('data-theme', 'dark');
+      }
+    }
+
+    // User status management
+    function updateUserStatus() {
+      const statusIndicator = document.getElementById('statusIndicator');
+      const userStatus = document.getElementById('userStatus');
+      const statuses = [
+        { text: 'Online now', class: '', online: true },
+        { text: 'Last seen 2 minutes ago', class: 'offline', online: false },
+        { text: 'Typing...', class: '', online: true },
+        { text: 'Online now', class: '', online: true }
+      ];
+      
+      const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+      userStatus.textContent = randomStatus.text;
+      statusIndicator.className = `status-indicator ${randomStatus.class}`;
+      
+      // Update status every 30 seconds
+      setTimeout(updateUserStatus, 30000);
+    }
+
+    // Back to item page
+    function goBack() {
+      const dropdown = document.getElementById('chatOptionsDropdown');
+      dropdown.classList.remove('show');
+      window.location.href = 'item-test1.html';
+    }
+
+    // Adjust textarea height
+    function adjustTextareaHeight(textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+      
+      // Show typing indicator
+      if (!isTyping && textarea.value.trim()) {
+        showTypingIndicator();
+      } else if (isTyping && !textarea.value.trim()) {
+        hideTypingIndicator();
+      }
+    }
+
+    // Show typing indicator
+    function showTypingIndicator() {
+      if (isTyping) return;
+      
+      isTyping = true;
+      const chatMessages = document.getElementById('chatMessages');
+      
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'typing-indicator';
+      typingDiv.id = 'typingIndicator';
+      typingDiv.innerHTML = `
+        <span style="font-size: 0.85rem; opacity: 0.8;">يوسف is typing</span>
+        <div class="typing-dots">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      `;
+      
+      chatMessages.appendChild(typingDiv);
+      scrollToBottom();
+      
+      // Hide after 3 seconds of no typing
+      clearTimeout(typingTimeout);
+      typingTimeout = setTimeout(hideTypingIndicator, 3000);
+    }
+
+    // Hide typing indicator
+    function hideTypingIndicator() {
+      isTyping = false;
+      const typingIndicator = document.getElementById('typingIndicator');
+      if (typingIndicator) {
+        typingIndicator.remove();
+      }
+      clearTimeout(typingTimeout);
+    }
+
+    // Send message functionality with enhanced animations
+    function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const sendBtn = document.getElementById('sendBtn');
+      const message = input.value.trim();
+      
+      if (message) {
+        hideTypingIndicator();
+        
+        // Add sending animation to button
+        sendBtn.classList.add('sending');
+        sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        
+        const messageData = {
+          id: Date.now(),
+          text: message,
+          type: 'sent',
+          time: getCurrentTime(),
+          timestamp: new Date().toISOString(),
+          status: 'Sending...'
+        };
+        
+        const chatMessages = document.getElementById('chatMessages');
+        const messageDiv = createMessageElement(messageData);
+        messageDiv.classList.add('message-loading');
+        chatMessages.appendChild(messageDiv);
+        
+        // Clear input and reset height
+        input.value = '';
+        input.style.height = '50px';
+        
+        scrollToBottom();
+        
+        // Simulate sending delay with enhanced feedback
+        setTimeout(() => {
+          messageDiv.classList.remove('message-loading');
+          messageData.status = 'Delivered';
+          const statusElement = messageDiv.querySelector('.message-status');
+          if (statusElement) {
+            statusElement.innerHTML = '<i class="fas fa-check-double"></i> Delivered';
+          }
+          
+          // Reset send button
+          sendBtn.classList.remove('sending');
+          sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i>';
+          
+          messages.push(messageData);
+          saveMessages();
+          
+          // Update to read status after another second
+          setTimeout(() => {
+            messageData.status = 'Read';
+            saveMessages();
+            if (statusElement) {
+              statusElement.innerHTML = '<i class="fas fa-check-double" style="color: #10b981;"></i> Read';
+              // Add a subtle glow effect to read status
+              statusElement.style.animation = 'statusGlow 0.5s ease-out';
+            }
+          }, 1000);
+          
+          // Simulate reply after 2-4 seconds
+          setTimeout(simulateReply, 2000 + Math.random() * 2000);
+        }, 800);
+      } else {
+        // Enhanced shake animation for empty input
+        input.style.animation = 'shake 0.5s ease-in-out';
+        input.style.borderColor = 'rgba(239, 68, 68, 0.5)';
+        setTimeout(() => {
+          input.style.animation = '';
+          input.style.borderColor = '';
+        }, 500);
+        showNotification('Please enter a message', 'warning');
+      }
+    }
+
+    // Simulate owner reply with enhanced animations
+    function simulateReply() {
+      const replies = [
+        "Yes, that works perfectly for me! 👍",
+        "I can definitely arrange that for you.",
+        "The MacBook will be fully charged and ready to go.",
+        "I usually meet near the city center for convenience.",
+        "Would Tuesday afternoon work better for you?",
+        "I'll include the charger and original box of course.",
+        "Sure, let me know what time works best for your schedule.",
+        "That sounds great! Looking forward to it.",
+        "Perfect! I'll make sure everything is ready.",
+        "No problem at all, happy to help! 😊"
+      ];
+      
+      const randomReply = replies[Math.floor(Math.random() * replies.length)];
+      
+      // Show typing indicator first
+      showTypingIndicator();
+      
+      setTimeout(() => {
+        hideTypingIndicator();
+        
+        const messageData = {
+          id: Date.now(),
+          text: randomReply,
+          type: 'received',
+          time: getCurrentTime(),
+          timestamp: new Date().toISOString()
+        };
+        
+        messages.push(messageData);
+        saveMessages();
+        
+        const chatMessages = document.getElementById('chatMessages');
+        const messageDiv = createMessageElement(messageData);
+        chatMessages.appendChild(messageDiv);
+        
+        scrollToBottom();
+        
+        // Show notification if not muted
+        if (!notificationsMuted) {
+          showNotification('New message received', 'success');
+        }
+      }, 1500 + Math.random() * 1000); // Random typing delay
+    }
+
+    // Get current time in HH:MM format
+    function getCurrentTime() {
+      const now = new Date();
+      return now.getHours().toString().padStart(2, '0') + ':' + 
+             now.getMinutes().toString().padStart(2, '0');
+    }
+
+    // Scroll to bottom
+    function scrollToBottom() {
+      const chatMessages = document.getElementById('chatMessages');
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Clear chat
+    function clearChat() {
+      const dropdown = document.getElementById('chatOptionsDropdown');
+      dropdown.classList.remove('show');
+      
+      if (confirm('Are you sure you want to clear all messages? This action cannot be undone.')) {
+        messages = [];
+        localStorage.removeItem(CHAT_STORAGE_KEY);
+        document.getElementById('chatMessages').innerHTML = '';
+        showNotification('Chat cleared successfully', 'success');
+      }
+    }
+
+    // Toggle chat options dropdown
+    function toggleChatOptions() {
+      const dropdown = document.getElementById('chatOptionsDropdown');
+      dropdown.classList.toggle('show');
+      
+      // Close dropdown when clicking outside
+      if (dropdown.classList.contains('show')) {
+        setTimeout(() => {
+          document.addEventListener('click', closeChatOptions);
+        }, 10);
+      }
+    }
+    
+    // Close chat options dropdown
+    function closeChatOptions(event) {
+      const dropdown = document.getElementById('chatOptionsDropdown');
+      const button = event.target.closest('.chat-action-btn');
+      
+      if (!button && !dropdown.contains(event.target)) {
+        dropdown.classList.remove('show');
+        document.removeEventListener('click', closeChatOptions);
+      }
+    }
+    
+    // Toggle user info
+    function toggleUserInfo() {
+      const dropdown = document.getElementById('chatOptionsDropdown');
+      dropdown.classList.remove('show');
+      
+      showNotification('User Info: يوسف العلوي - Rating: 4.8/5 - Location: Dubai, UAE', 'success');
+    }
+    
+
+
+
+    
+    // Toggle search from input button
+    function toggleSearch() {
+      searchMessages();
+    }
+    
+    // Handle keyboard shortcuts
+    function handleKeyDown(event) {
+      // Ctrl/Cmd + K for search
+      if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+        event.preventDefault();
+        searchMessages();
+      }
+      
+      // Escape to close search
+      if (event.key === 'Escape') {
+        const searchPanel = document.getElementById('searchPanel');
+        if (searchPanel.classList.contains('show')) {
+          closeSearch();
+        }
+      }
+    }
+
+    // Search messages functionality
+    function searchMessages() {
+      const dropdown = document.getElementById('chatOptionsDropdown');
+      dropdown.classList.remove('show');
+      
+      const searchPanel = document.getElementById('searchPanel');
+      searchPanel.classList.add('show');
+      
+      setTimeout(() => {
+        document.getElementById('searchInput').focus();
+      }, 300);
+    }
+    
+    // Close search panel
+    function closeSearch() {
+      const searchPanel = document.getElementById('searchPanel');
+      searchPanel.classList.remove('show');
+      document.getElementById('searchInput').value = '';
+      document.getElementById('searchResults').innerHTML = `
+        <div class="search-placeholder">
+          <i class="fas fa-search"></i>
+          <p>Type to search messages...</p>
+        </div>
+      `;
+    }
+    
+    // Perform search
+    function performSearch() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      const resultsContainer = document.getElementById('searchResults');
+      
+      if (!query) {
+        resultsContainer.innerHTML = `
+          <div class="search-placeholder">
+            <i class="fas fa-search"></i>
+            <p>Type to search messages...</p>
+          </div>
+        `;
+        return;
+      }
+      
+      const results = messages.filter(msg => 
+        msg.text.toLowerCase().includes(query)
+      );
+      
+      if (results.length === 0) {
+        resultsContainer.innerHTML = `
+          <div class="search-placeholder">
+            <i class="fas fa-search"></i>
+            <p>No messages found for "${query}"</p>
+          </div>
+        `;
+        return;
+      }
+      
+      resultsContainer.innerHTML = results.map(msg => {
+        const highlightedText = msg.text.replace(
+          new RegExp(query, 'gi'),
+          match => `<span class="search-highlight">${match}</span>`
+        );
+        
+        return `
+          <div class="search-result-item" onclick="scrollToMessage(${msg.id})">
+            <div class="search-result-text">${highlightedText}</div>
+            <div class="search-result-meta">
+              <span>${msg.type === 'sent' ? 'You' : 'يوسف العلوي'}</span>
+              <span>${msg.time}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+    
+    // Scroll to specific message
+    function scrollToMessage(messageId) {
+      closeSearch();
+      // In a real implementation, you'd scroll to the specific message
+      showNotification('Message found! (Feature simulated)', 'success');
+    }
+    
+    // Toggle notifications
+    let notificationsMuted = false;
+    
+    function toggleNotifications() {
+      const dropdown = document.getElementById('chatOptionsDropdown');
+      dropdown.classList.remove('show');
+      
+      notificationsMuted = !notificationsMuted;
+      const icon = document.getElementById('notificationIcon');
+      const text = document.getElementById('notificationText');
+      
+      if (notificationsMuted) {
+        icon.className = 'fas fa-bell-slash';
+        text.textContent = 'Unmute Notifications';
+        showNotification('Notifications muted', 'warning');
+        localStorage.setItem('chat_notifications_muted', 'true');
+      } else {
+        icon.className = 'fas fa-bell';
+        text.textContent = 'Mute Notifications';
+        showNotification('Notifications enabled', 'success');
+        localStorage.setItem('chat_notifications_muted', 'false');
+      }
+    }
+    
+    // Block user
+    function blockUser() {
+      const dropdown = document.getElementById('chatOptionsDropdown');
+      dropdown.classList.remove('show');
+      
+      if (confirm('Are you sure you want to block يوسف العلوي? You will no longer receive messages from this user.')) {
+        showNotification('User blocked successfully', 'warning');
+        // In real implementation, this would block the user
+      }
+    }
+    
+    // Report user
+    function reportUser() {
+      const dropdown = document.getElementById('chatOptionsDropdown');
+      dropdown.classList.remove('show');
+      
+      const reason = prompt('Please specify the reason for reporting this user:');
+      if (reason && reason.trim()) {
+        showNotification('User reported. Thank you for keeping our community safe.', 'success');
+        // In real implementation, this would send a report
+      }
+    }
+    
+    // Show notification with enhanced animation and effects
+    function showNotification(message, type = 'success') {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.className = `notification ${type}`;
+      
+      // Set different colors and icons based on type
+      let icon = '';
+      if (type === 'error') {
+        notification.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+        icon = '❌ ';
+      } else if (type === 'warning') {
+        notification.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
+        icon = '⚠️ ';
+      } else {
+        notification.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+        icon = '✅ ';
+      }
+      
+      notification.textContent = icon + message;
+      notification.style.display = 'block';
+      notification.style.transform = 'translateX(100%) scale(0.8)';
+      notification.style.opacity = '0';
+      
+      // Enhanced animate in with bounce effect
+      setTimeout(() => {
+        notification.style.opacity = '1';
+        notification.style.transform = 'translateX(0) scale(1)';
+        notification.style.animation = 'floatIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+      }, 10);
+      
+      // Add a subtle pulse effect
+      setTimeout(() => {
+        notification.style.animation = 'pulse 0.3s ease-out';
+      }, 500);
+      
+      // Enhanced animate out
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(100%) scale(0.8)';
+        notification.style.animation = '';
+        setTimeout(() => {
+          notification.style.display = 'none';
+        }, 300);
+      }, 3500);
+    }
+
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeTheme();
+      loadMessages();
+      updateUserStatus();
+      loadNotificationPreferences();
+      
+      // Enable Enter key to send message
+      document.getElementById('messageInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+      
+      // Auto-scroll to bottom
+      scrollToBottom();
+      
+      // Add keyboard shortcuts info
+      showNotification('💡 Tip: Use Ctrl+K to search messages, Escape to close panels', 'success');
+    });
+    
+    // Load notification preferences
+    function loadNotificationPreferences() {
+      const muted = localStorage.getItem('chat_notifications_muted') === 'true';
+      if (muted) {
+        notificationsMuted = true;
+        document.getElementById('notificationIcon').className = 'fas fa-bell-slash';
+        document.getElementById('notificationText').textContent = 'Unmute Notifications';
+      }
+    }
+
+    // Auto-save messages periodically
+    setInterval(saveMessages, 30000);
+  </script>
+</body>
+</html>
