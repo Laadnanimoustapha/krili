@@ -3,12 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="icons8-brake-warning-96.ico" type="image/png">
     <title>Krili - Project Suspended</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: black;
+            background: linear-gradient(135deg, #000000 0%, #1a0000 50%, #000000 100%);
             color: white;
-            font-family: Arial, sans-serif;
+            font-family: 'Orbitron', monospace;
             margin: 0;
             padding: 20px;
             min-height: 100vh;
@@ -17,40 +26,304 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background effects */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 0, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 0, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(255, 0, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 60% 30%, rgba(255, 100, 0, 0.08) 0%, transparent 40%);
+            animation: pulse 4s ease-in-out infinite alternate, rotate 20s linear infinite;
+            z-index: -2;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 0, 0, 0.03) 2px,
+                    rgba(255, 0, 0, 0.03) 4px
+                ),
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 20px,
+                    rgba(255, 0, 0, 0.02) 20px,
+                    rgba(255, 0, 0, 0.02) 22px
+                );
+            animation: scanlines 3s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.8; }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes scanlines {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(20px); }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #ff0000;
+            border-radius: 50%;
+            animation: float 6s infinite linear;
+            opacity: 0.7;
+        }
+
+        .particle:nth-child(odd) {
+            background: #ff6600;
+            animation-duration: 8s;
+        }
+
+        .particle:nth-child(3n) {
+            width: 1px;
+            height: 1px;
+            background: #ffaa00;
+            animation-duration: 10s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
         }
 
         h1 {
-            color: red;
-            font-size: 3em;
+            color: #ff0000;
+            font-size: 4em;
             margin-bottom: 40px;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 4px;
+            font-weight: 900;
+            text-shadow: 
+                0 0 10px #ff0000,
+                0 0 20px #ff0000,
+                0 0 30px #ff0000,
+                0 0 40px #ff0000;
+            animation: flicker 2s infinite alternate, glow 3s ease-in-out infinite alternate, bounce 4s ease-in-out infinite;
+            position: relative;
+            transform-origin: center;
+        }
+
+        h1::before {
+            content: 'WARNING';
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: #ff3333;
+            animation: glitch 0.3s infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+        }
+
+        h1::after {
+            content: 'WARNING';
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: #cc0000;
+            animation: glitch 0.3s infinite reverse;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+        }
+
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow: 
+                    0 0 10px #ff0000,
+                    0 0 20px #ff0000,
+                    0 0 30px #ff0000,
+                    0 0 40px #ff0000;
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+            }
+        }
+
+        @keyframes glow {
+            0% { filter: hue-rotate(0deg) brightness(1); }
+            50% { filter: hue-rotate(10deg) brightness(1.2); }
+            100% { filter: hue-rotate(0deg) brightness(1); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            25% { transform: translateY(-10px) scale(1.05); }
+            50% { transform: translateY(0) scale(1); }
+            75% { transform: translateY(-5px) scale(1.02); }
+        }
+
+        @keyframes glitch {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-3px) skew(-2deg); }
+            40% { transform: translateX(3px) skew(2deg); }
+            60% { transform: translateX(-2px) skew(-1deg); }
+            80% { transform: translateX(2px) skew(1deg); }
+            100% { transform: translateX(0); }
         }
 
         .content {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            line-height: 1.6;
+            line-height: 1.8;
+            z-index: 10;
         }
 
         .language-section {
             margin: 30px 0;
-            padding: 20px;
-            border: 1px solid #333;
-            border-radius: 10px;
-            background-color: #111;
+            padding: 25px;
+            border: 2px solid #ff0000;
+            border-radius: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(20,0,0,0.9) 100%);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+            animation: breathe 6s ease-in-out infinite;
+        }
+
+        .language-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.2), transparent);
+            transition: left 0.5s;
+            animation: pulse-border 4s ease-in-out infinite;
+        }
+
+        .language-section::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff0000, #ff6600, #ff0000, #cc0000);
+            background-size: 400% 400%;
+            animation: gradient-border 3s ease infinite;
+            z-index: -1;
+            clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
+        }
+
+        .language-section:hover::before {
+            left: 100%;
+        }
+
+        .language-section:hover {
+            border-color: #ff3333;
+            box-shadow: 
+                0 0 30px rgba(255, 0, 0, 0.7),
+                inset 0 0 30px rgba(255, 0, 0, 0.2);
+            transform: scale(1.05) rotateX(5deg);
+            animation-play-state: paused;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes pulse-border {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        @keyframes gradient-border {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .language-title {
-            color: #ccc;
-            font-size: 1.2em;
+            color: #ff6666;
+            font-size: 1.4em;
             font-weight: bold;
             margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px #ff0000;
+            animation: typewriter 3s steps(20) infinite, color-shift 4s ease-in-out infinite;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid #ff0000;
+        }
+
+        @keyframes typewriter {
+            0%, 50%, 100% { width: 100%; }
+            25% { width: 0; }
+        }
+
+        @keyframes color-shift {
+            0%, 100% { color: #ff6666; }
+            25% { color: #ff9999; }
+            50% { color: #ffaaaa; }
+            75% { color: #ff3333; }
         }
 
         .message {
-            font-size: 1.1em;
+            font-size: 1.2em;
             margin-bottom: 10px;
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+            animation: fade-in-out 8s ease-in-out infinite;
+            line-height: 1.8;
+        }
+
+        @keyframes fade-in-out {
+            0%, 100% { opacity: 1; transform: translateY(0); }
+            25% { opacity: 0.8; transform: translateY(-2px); }
+            50% { opacity: 1; transform: translateY(0); }
+            75% { opacity: 0.9; transform: translateY(2px); }
         }
 
         .footer {
@@ -60,73 +333,251 @@
 
         .project-link {
             display: inline-block;
-            background-color: #333;
-            color: white;
+            background: linear-gradient(135deg, #1a0000 0%, #330000 50%, #1a0000 100%);
+            color: #ff6666;
             text-decoration: none;
-            padding: 15px 30px;
-            border-radius: 5px;
-            border: 2px solid #555;
+            padding: 20px 40px;
+            border: 3px solid #ff0000;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
             transition: all 0.3s ease;
-            font-size: 1.1em;
+            clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+            animation: button-pulse 3s ease-in-out infinite;
+        }
+
+        .project-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.3), transparent);
+            transition: left 0.3s;
+        }
+
+        .project-link::after {
+            content: '⚡';
+            position: absolute;
+            top: 50%;
+            left: -30px;
+            transform: translateY(-50%);
+            font-size: 1.5em;
+            animation: lightning 2s ease-in-out infinite;
+            transition: left 0.3s ease;
+        }
+
+        .project-link:hover::before {
+            left: 100%;
+        }
+
+        .project-link:hover::after {
+            left: calc(100% + 10px);
         }
 
         .project-link:hover {
-            background-color: #555;
-            border-color: #777;
-            color: #fff;
+            background: linear-gradient(135deg, #330000 0%, #660000 50%, #330000 100%);
+            border-color: #ff3333;
+            color: #ffffff;
+            box-shadow: 
+                0 0 40px rgba(255, 0, 0, 0.8),
+                inset 0 0 40px rgba(255, 0, 0, 0.3);
+            transform: translateY(-5px) scale(1.05);
+            animation-play-state: paused;
+        }
+
+        @keyframes button-pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(255, 0, 0, 0.8); }
+        }
+
+        @keyframes lightning {
+            0%, 100% { opacity: 0.5; transform: translateY(-50%) rotate(0deg); }
+            25% { opacity: 1; transform: translateY(-50%) rotate(10deg); }
+            50% { opacity: 0.8; transform: translateY(-50%) rotate(-5deg); }
+            75% { opacity: 1; transform: translateY(-50%) rotate(5deg); }
         }
 
         /* Arabic text styling */
         .arabic {
             direction: rtl;
             text-align: right;
-            font-size: 1.2em;
+            font-size: 1.3em;
+            font-weight: bold;
         }
 
         /* French text styling */
         .french {
             font-style: italic;
+            font-weight: bold;
+        }
+
+        /* Arabic text styling */
+        .arabic {
+            direction: rtl;
+            text-align: right;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        /* French text styling */
+        .french {
+            font-style: italic;
+            font-weight: bold;
         }
 
         /* English text styling */
         .english {
-            font-weight: normal;
+            font-weight: bold;
+        }
+
+        /* Danger stripes animation */
+
+        /* Screen shake effect */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+            20%, 40%, 60%, 80% { transform: translateX(2px); }
+        }
+
+        .content:hover {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+                letter-spacing: 2px;
+            }
+            
+            .language-section {
+                margin: 20px 0;
+                padding: 15px;
+            }
+            
+            .project-link {
+                padding: 15px 25px;
+                font-size: 1em;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="particles"></div>
+    
     <h1>Warning</h1>
     
     <div class="content">
-        <!-- Arabic Section -->
+        <!-- Developer Message -->
         <div class="language-section">
-            <div class="language-title">العربية</div>
-            <div class="message arabic">
-                تم تعليق مشروع كريلي الآن حتى وقت آخر
-            </div>
-        </div>
-
-        <!-- French Section -->
-        <div class="language-section">
-            <div class="language-title">Français</div>
-            <div class="message french">
-                Le projet Krili a été suspendu pour l'instant jusqu'à une autre fois
-            </div>
-        </div>
-
-        <!-- English Section -->
-        <div class="language-section">
-            <div class="language-title">English</div>
+            <div class="language-title">Message from Developer</div>
             <div class="message english">
-                The Krili project has been suspended for now until another time
+                Dear users, I regret to inform you that the Krili project has been temporarily suspended due to technical complications and resource constraints. I am working on resolving these issues and hope to bring the project back online soon. Thank you for your patience and understanding.<br> i hope you like all the animation i have done in thise page 🙂☠<br> to see my coourrent prject project click on the link below <br>👇👇
             </div>
         </div>
     </div>
 
     <div class="footer">
         <a href="https://admin-panel-reactv0.netlify.app/" class="project-link" target="_blank">
-            To see my current project here
+            Access Current Project
         </a>
     </div>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particles = document.querySelector('.particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                particles.appendChild(particle);
+            }
+        }
+
+        // Enhanced glitch effect
+        function addRandomGlitch() {
+            const title = document.querySelector('h1');
+            const section = document.querySelector('.language-section');
+            
+            setInterval(() => {
+                if (Math.random() < 0.1) {
+                    title.style.filter = 'hue-rotate(' + Math.random() * 360 + 'deg) saturate(200%)';
+                    setTimeout(() => {
+                        title.style.filter = '';
+                    }, 100);
+                }
+            }, 200);
+
+            setInterval(() => {
+                if (Math.random() < 0.05) {
+                    section.style.transform = 'translateX(' + (Math.random() * 4 - 2) + 'px)';
+                    setTimeout(() => {
+                        section.style.transform = '';
+                    }, 50);
+                }
+            }, 300);
+        }
+
+        // Matrix-like code rain effect
+        function createCodeRain() {
+            const chars = '01';
+            const rainContainer = document.createElement('div');
+            rainContainer.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 0;
+                opacity: 0.1;
+            `;
+            document.body.appendChild(rainContainer);
+
+            for (let i = 0; i < 20; i++) {
+                const column = document.createElement('div');
+                column.style.cssText = `
+                    position: absolute;
+                    left: ${Math.random() * 100}%;
+                    top: -100%;
+                    color: #ff0000;
+                    font-family: monospace;
+                    font-size: 14px;
+                    animation: fall ${Math.random() * 3 + 2}s linear infinite;
+                    animation-delay: ${Math.random() * 2}s;
+                `;
+                
+                let text = '';
+                for (let j = 0; j < 20; j++) {
+                    text += chars[Math.floor(Math.random() * chars.length)] + '<br>';
+                }
+                column.innerHTML = text;
+                rainContainer.appendChild(column);
+            }
+
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fall {
+                    to { transform: translateY(100vh); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Initialize all effects
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            addRandomGlitch();
+            createCodeRain();
+        });
+    </script>
 </body>
 </html>
