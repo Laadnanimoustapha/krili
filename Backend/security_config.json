@@ -1,0 +1,388 @@
+{
+  "security": {
+    "authentication": {
+      "jwt": {
+        "expiration_hours": 24,
+        "refresh_expiration_days": 7,
+        "algorithm": "HS256",
+        "issuer": "krili-transaction-service",
+        "audience": "krili-users"
+      },
+      "password": {
+        "min_length": 12,
+        "require_uppercase": true,
+        "require_lowercase": true,
+        "require_numbers": true,
+        "require_special_chars": true,
+        "max_age_days": 90,
+        "history_count": 12,
+        "hash_algorithm": "argon2id",
+        "argon2": {
+          "memory": 65536,
+          "iterations": 3,
+          "parallelism": 4,
+          "salt_length": 32,
+          "key_length": 32
+        }
+      },
+      "session": {
+        "timeout_minutes": 30,
+        "absolute_timeout_hours": 8,
+        "concurrent_sessions": 3,
+        "secure_cookies": true,
+        "same_site": "strict"
+      },
+      "lockout": {
+        "max_attempts": 5,
+        "lockout_duration_minutes": 15,
+        "progressive_delay": true,
+        "ip_lockout_threshold": 10,
+        "ip_lockout_duration_hours": 1
+      }
+    },
+    "multi_factor": {
+      "enabled": true,
+      "required_for_sensitive_ops": true,
+      "totp": {
+        "enabled": true,
+        "issuer": "Krili",
+        "digits": 6,
+        "period": 30,
+        "algorithm": "SHA1"
+      },
+      "sms": {
+        "enabled": false,
+        "provider": "twilio",
+        "rate_limit_per_hour": 5
+      },
+      "email": {
+        "enabled": true,
+        "rate_limit_per_hour": 3
+      },
+      "backup_codes": {
+        "count": 10,
+        "length": 8,
+        "one_time_use": true
+      }
+    },
+    "biometric": {
+      "enabled": true,
+      "supported_types": ["fingerprint", "face", "voice"],
+      "fallback_to_password": true,
+      "max_templates_per_type": 5,
+      "template_expiry_days": 365
+    },
+    "device_management": {
+      "fingerprinting": {
+        "enabled": true,
+        "trust_new_devices": false,
+        "auto_trust_after_days": 7,
+        "max_trusted_devices": 10
+      },
+      "geolocation": {
+        "enabled": true,
+        "block_vpn": false,
+        "block_tor": true,
+        "block_proxy": false,
+        "high_risk_countries": ["CN", "RU", "KP", "IR", "SY"],
+        "impossible_travel_threshold_kmh": 1000
+      }
+    },
+    "rate_limiting": {
+      "global": {
+        "requests_per_minute": 60,
+        "burst_size": 10
+      },
+      "per_ip": {
+        "requests_per_minute": 30,
+        "burst_size": 5
+      },
+      "per_user": {
+        "requests_per_minute": 100,
+        "burst_size": 20
+      },
+      "endpoints": {
+        "/api/v1/login": {
+          "requests_per_minute": 5,
+          "burst_size": 2
+        },
+        "/api/v1/payments": {
+          "requests_per_minute": 10,
+          "burst_size": 3
+        },
+        "/api/v1/payouts": {
+          "requests_per_minute": 5,
+          "burst_size": 2
+        }
+      }
+    },
+    "encryption": {
+      "data_at_rest": {
+        "algorithm": "AES-256-GCM",
+        "key_rotation_days": 90,
+        "backup_keys": 3
+      },
+      "data_in_transit": {
+        "min_tls_version": "1.2",
+        "cipher_suites": [
+          "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+          "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+          "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
+        ],
+        "hsts_max_age": 31536000,
+        "hsts_include_subdomains": true
+      },
+      "pii_encryption": {
+        "enabled": true,
+        "fields": [
+          "card_number",
+          "account_number",
+          "routing_number",
+          "ssn",
+          "phone_number"
+        ]
+      }
+    },
+    "fraud_detection": {
+      "enabled": true,
+      "risk_scoring": {
+        "enabled": true,
+        "threshold_block": 90,
+        "threshold_review": 70,
+        "threshold_flag": 50
+      },
+      "velocity_checks": {
+        "enabled": true,
+        "max_transactions_per_hour": 20,
+        "max_amount_per_hour": 10000,
+        "max_transactions_per_day": 100,
+        "max_amount_per_day": 50000
+      },
+      "pattern_detection": {
+        "enabled": true,
+        "round_amounts": {
+          "enabled": true,
+          "threshold": 5,
+          "time_window_hours": 1
+        },
+        "geographic_anomaly": {
+          "enabled": true,
+          "max_distance_km": 1000,
+          "time_window_hours": 1
+        },
+        "device_switching": {
+          "enabled": true,
+          "max_devices_per_hour": 3
+        }
+      },
+      "machine_learning": {
+        "enabled": false,
+        "model_path": "/models/fraud_detection.pkl",
+        "confidence_threshold": 0.8,
+        "retrain_interval_days": 7
+      }
+    },
+    "transaction_limits": {
+      "payment": {
+        "single_transaction_max": 10000,
+        "daily_limit": 50000,
+        "monthly_limit": 200000,
+        "require_2fa_above": 1000,
+        "require_manual_review_above": 5000
+      },
+      "payout": {
+        "single_transaction_max": 25000,
+        "daily_limit": 100000,
+        "monthly_limit": 500000,
+        "require_2fa_above": 500,
+        "require_manual_review_above": 10000,
+        "minimum_balance": 10
+      }
+    },
+    "monitoring": {
+      "real_time_alerts": {
+        "enabled": true,
+        "channels": ["email", "slack", "webhook"],
+        "severity_levels": ["critical", "high", "medium"],
+        "rate_limit_alerts_per_hour": 10
+      },
+      "security_events": {
+        "retention_days": 365,
+        "auto_archive_after_days": 90,
+        "critical_event_notification": true
+      },
+      "audit_logging": {
+        "enabled": true,
+        "log_all_requests": false,
+        "log_sensitive_operations": true,
+        "retention_days": 2555,
+        "include_request_body": false,
+        "include_response_body": false
+      }
+    },
+    "compliance": {
+      "pci_dss": {
+        "enabled": true,
+        "level": 1,
+        "card_data_retention_days": 0,
+        "log_retention_days": 365,
+        "vulnerability_scan_frequency": "quarterly"
+      },
+      "gdpr": {
+        "enabled": true,
+        "data_retention_days": 2555,
+        "right_to_erasure": true,
+        "data_portability": true,
+        "consent_tracking": true
+      },
+      "sox": {
+        "enabled": true,
+        "financial_data_retention_years": 7,
+        "audit_trail_immutable": true
+      }
+    },
+    "incident_response": {
+      "enabled": true,
+      "auto_block_suspicious_ips": true,
+      "auto_disable_compromised_accounts": true,
+      "notification_channels": {
+        "email": {
+          "enabled": true,
+          "recipients": ["security@krili.com", "admin@krili.com"]
+        },
+        "slack": {
+          "enabled": true,
+          "webhook_url": "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK",
+          "channel": "#security-alerts"
+        },
+        "sms": {
+          "enabled": false,
+          "numbers": ["+1234567890"]
+        }
+      },
+      "escalation": {
+        "critical_response_time_minutes": 15,
+        "high_response_time_minutes": 60,
+        "medium_response_time_hours": 4
+      }
+    },
+    "api_security": {
+      "cors": {
+        "enabled": true,
+        "allowed_origins": [
+          "https://krili.com",
+          "https://www.krili.com",
+          "https://app.krili.com"
+        ],
+        "allowed_methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allowed_headers": [
+          "Authorization",
+          "Content-Type",
+          "X-CSRF-Token",
+          "X-Device-ID",
+          "X-MFA-Token"
+        ],
+        "max_age": 86400
+      },
+      "csrf": {
+        "enabled": true,
+        "token_length": 32,
+        "token_expiry_hours": 1,
+        "same_origin_only": true
+      },
+      "input_validation": {
+        "enabled": true,
+        "max_request_size_mb": 10,
+        "sanitize_html": true,
+        "block_sql_injection": true,
+        "block_xss": true,
+        "block_command_injection": true
+      },
+      "output_encoding": {
+        "enabled": true,
+        "escape_html": true,
+        "escape_json": true,
+        "remove_sensitive_headers": true
+      }
+    },
+    "backup_and_recovery": {
+      "encryption": {
+        "enabled": true,
+        "algorithm": "AES-256-GCM"
+      },
+      "frequency": {
+        "database_backup_hours": 6,
+        "log_backup_hours": 24,
+        "config_backup_days": 1
+      },
+      "retention": {
+        "daily_backups_days": 30,
+        "weekly_backups_weeks": 12,
+        "monthly_backups_months": 12,
+        "yearly_backups_years": 7
+      },
+      "testing": {
+        "restore_test_frequency_days": 30,
+        "disaster_recovery_test_frequency_days": 90
+      }
+    },
+    "network_security": {
+      "firewall": {
+        "enabled": true,
+        "default_deny": true,
+        "allowed_ports": [80, 443, 22],
+        "rate_limiting": true
+      },
+      "ddos_protection": {
+        "enabled": true,
+        "threshold_requests_per_second": 1000,
+        "mitigation_duration_minutes": 30
+      },
+      "intrusion_detection": {
+        "enabled": true,
+        "signature_based": true,
+        "anomaly_based": true,
+        "log_all_attempts": true
+      }
+    }
+  },
+  "features": {
+    "maintenance_mode": {
+      "enabled": false,
+      "allowed_ips": ["127.0.0.1", "::1"],
+      "message": "System is under maintenance. Please try again later."
+    },
+    "feature_flags": {
+      "biometric_auth": true,
+      "advanced_fraud_detection": true,
+      "real_time_monitoring": true,
+      "automated_incident_response": true
+    }
+  },
+  "integrations": {
+    "payment_processors": {
+      "stripe": {
+        "webhook_tolerance_seconds": 300,
+        "retry_attempts": 3,
+        "timeout_seconds": 30
+      },
+      "paypal": {
+        "webhook_tolerance_seconds": 300,
+        "retry_attempts": 3,
+        "timeout_seconds": 30
+      }
+    },
+    "external_services": {
+      "geolocation": {
+        "provider": "maxmind",
+        "cache_duration_hours": 24,
+        "timeout_seconds": 5
+      },
+      "fraud_detection": {
+        "provider": "sift",
+        "timeout_seconds": 10,
+        "fallback_enabled": true
+      }
+    }
+  }
+}

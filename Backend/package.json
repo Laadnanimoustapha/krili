@@ -1,0 +1,27 @@
+{
+  "name": "krili-backend",
+  "version": "1.0.0",
+  "description": "Krili Backend with Image Processing",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test_imageProcessor.js",
+    "test-image": "node test_imageProcessor.js"
+  },
+  "keywords": ["image-processing", "krili", "backend"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.1",
+    "sharp": "^0.33.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
