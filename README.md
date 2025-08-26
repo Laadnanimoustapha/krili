@@ -129,10 +129,6 @@ krili-react-ts/
 ├── .prettierrc         # Prettier configuration
 ├── package.json
 └── README.md
-```
-
-> _The structure above is a typical example; please update as the project evolves._
-
 ---
 
 ## Scripts
