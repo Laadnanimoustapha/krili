@@ -167,7 +167,3 @@ Please ensure your code follows the established style and passes all tests and l
 For questions, suggestions, or feedback, please open an issue or contact the repository owner:
 
 - GitHub: [Laadnanimoustapha](https://github.com/Laadnanimoustapha)
-
----
-
-_This README was generated for full transparency and to help onboard future contributors and users. Please update it with project-specific details as development progresses._
