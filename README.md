@@ -161,11 +161,6 @@ Please ensure your code follows the established style and passes all tests and l
 
 ---
 
-## License
-
-Distributed under the MIT License. See [`LICENSE`](LICENSE) for more information.
-
----
 
 ## Contact
 
