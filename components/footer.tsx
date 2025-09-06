@@ -43,7 +43,7 @@ export function Footer() {
             <h3 className="font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/search" className="text-muted-foreground hover:text-primary">
+                <Link href="/browse" className="text-muted-foreground hover:text-primary">
                   Browse Items
                 </Link>
               </li>

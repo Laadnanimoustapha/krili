@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
-import { Search, Grid, List, Star, MapPin } from "lucide-react"
+import { Search, Grid, List, Star, MapPin, Map } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { MapSearch } from "./map-search"
 
 // Mock data for demonstration
 const mockItems = [
@@ -105,7 +106,7 @@ const mockItems = [
 ]
 
 export function SearchResults() {
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+  const [viewMode, setViewMode] = useState<"grid" | "list" | "map">("grid")
   const [searchQuery, setSearchQuery] = useState("")
 
   return (
@@ -131,12 +132,12 @@ export function SearchResults() {
             </SelectContent>
           </Select>
 
-          <div className="flex border rounded-md">
+          <div className="flex border rounded-lg overflow-hidden">
             <Button
               variant={viewMode === "grid" ? "default" : "ghost"}
               size="sm"
               onClick={() => setViewMode("grid")}
-              className="rounded-r-none"
+              className="rounded-none border-r"
             >
               <Grid className="h-4 w-4" />
             </Button>
@@ -144,9 +145,17 @@ export function SearchResults() {
               variant={viewMode === "list" ? "default" : "ghost"}
               size="sm"
               onClick={() => setViewMode("list")}
-              className="rounded-l-none"
+              className="rounded-none border-r"
             >
               <List className="h-4 w-4" />
+            </Button>
+            <Button
+              variant={viewMode === "map" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setViewMode("map")}
+              className="rounded-none"
+            >
+              <Map className="h-4 w-4" />
             </Button>
           </div>
         </div>
@@ -163,97 +172,103 @@ export function SearchResults() {
         />
       </div>
 
-      {/* Results Grid/List */}
-      <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" : "space-y-4"}>
-        {mockItems.map((item) => (
-          <Card key={item.id} className="overflow-hidden hover:shadow-md transition-shadow">
-            <div className={viewMode === "list" ? "flex" : ""}>
-              {/* Image */}
-              <div className={viewMode === "list" ? "w-48 flex-shrink-0" : "aspect-[4/3] relative"}>
-                <Image src={item.image || "/placeholder.svg"} alt={item.title} fill className="object-cover" />
-                {!item.available && (
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                    <Badge variant="secondary">Not Available</Badge>
-                  </div>
-                )}
-                {item.instantBook && item.available && (
-                  <Badge className="absolute top-2 left-2 bg-green-600">Instant Book</Badge>
-                )}
-              </div>
-
-              {/* Content */}
-              <CardContent className={`p-4 ${viewMode === "list" ? "flex-1" : ""}`}>
-                <div className="space-y-2">
-                  <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-semibold text-lg leading-tight">{item.title}</h3>
-                    <div className="text-right flex-shrink-0">
-                      <p className="text-lg font-bold">${item.price}</p>
-                      <p className="text-xs text-muted-foreground">per day</p>
-                    </div>
+      {viewMode === "map" ? (
+        <MapSearch />
+      ) : (
+        <>
+          {/* Results Grid/List */}
+          <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" : "space-y-4"}>
+            {mockItems.map((item) => (
+              <Card key={item.id} className="overflow-hidden hover:shadow-md transition-shadow">
+                <div className={viewMode === "list" ? "flex" : ""}>
+                  {/* Image */}
+                  <div className={viewMode === "list" ? "w-48 flex-shrink-0" : "aspect-[4/3] relative"}>
+                    <Image src={item.image || "/placeholder.svg"} alt={item.title} fill className="object-cover" />
+                    {!item.available && (
+                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                        <Badge variant="secondary">Not Available</Badge>
+                      </div>
+                    )}
+                    {item.instantBook && item.available && (
+                      <Badge className="absolute top-2 left-2 bg-green-600">Instant Book</Badge>
+                    )}
                   </div>
 
-                  <p className="text-sm text-muted-foreground line-clamp-2">{item.description}</p>
+                  {/* Content */}
+                  <CardContent className={`p-4 ${viewMode === "list" ? "flex-1" : ""}`}>
+                    <div className="space-y-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <h3 className="font-semibold text-lg leading-tight">{item.title}</h3>
+                        <div className="text-right flex-shrink-0">
+                          <p className="text-lg font-bold">${item.price}</p>
+                          <p className="text-xs text-muted-foreground">per day</p>
+                        </div>
+                      </div>
 
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                      <span>{item.rating}</span>
-                      <span>({item.reviews})</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <MapPin className="h-3 w-3" />
-                      <span>{item.location}</span>
-                    </div>
-                  </div>
+                      <p className="text-sm text-muted-foreground line-clamp-2">{item.description}</p>
 
-                  <div className="flex items-center justify-between pt-2">
-                    <div className="flex gap-2">
-                      <Badge variant="outline" className="text-xs">
-                        {item.category}
-                      </Badge>
-                      <Badge variant="outline" className="text-xs">
-                        {item.condition}
-                      </Badge>
-                    </div>
+                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                          <span>{item.rating}</span>
+                          <span>({item.reviews})</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <MapPin className="h-3 w-3" />
+                          <span>{item.location}</span>
+                        </div>
+                      </div>
 
-                    <Button size="sm" asChild disabled={!item.available}>
-                      <Link href={`/item/${item.id}`}>{item.available ? "View Details" : "Unavailable"}</Link>
-                    </Button>
-                  </div>
+                      <div className="flex items-center justify-between pt-2">
+                        <div className="flex gap-2">
+                          <Badge variant="outline" className="text-xs">
+                            {item.category}
+                          </Badge>
+                          <Badge variant="outline" className="text-xs">
+                            {item.condition}
+                          </Badge>
+                        </div>
 
-                  <div className="flex items-center gap-2 pt-1">
-                    <div className="w-6 h-6 bg-muted rounded-full flex items-center justify-center text-xs">
-                      {item.owner.charAt(0)}
+                        <Button size="sm" asChild disabled={!item.available}>
+                          <Link href={`/item/${item.id}`}>{item.available ? "View Details" : "Unavailable"}</Link>
+                        </Button>
+                      </div>
+
+                      <div className="flex items-center gap-2 pt-1">
+                        <div className="w-6 h-6 bg-muted rounded-full flex items-center justify-center text-xs">
+                          {item.owner.charAt(0)}
+                        </div>
+                        <span className="text-xs text-muted-foreground">by {item.owner}</span>
+                      </div>
                     </div>
-                    <span className="text-xs text-muted-foreground">by {item.owner}</span>
-                  </div>
+                  </CardContent>
                 </div>
-              </CardContent>
-            </div>
-          </Card>
-        ))}
-      </div>
+              </Card>
+            ))}
+          </div>
 
-      {/* Pagination */}
-      <div className="flex justify-center pt-8">
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" disabled>
-            Previous
-          </Button>
-          <Button variant="default" size="sm">
-            1
-          </Button>
-          <Button variant="outline" size="sm">
-            2
-          </Button>
-          <Button variant="outline" size="sm">
-            3
-          </Button>
-          <Button variant="outline" size="sm">
-            Next
-          </Button>
-        </div>
-      </div>
+          {/* Pagination */}
+          <div className="flex justify-center pt-8">
+            <div className="flex items-center gap-2">
+              <Button variant="outline" size="sm" disabled>
+                Previous
+              </Button>
+              <Button variant="default" size="sm">
+                1
+              </Button>
+              <Button variant="outline" size="sm">
+                2
+              </Button>
+              <Button variant="outline" size="sm">
+                3
+              </Button>
+              <Button variant="outline" size="sm">
+                Next
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

@@ -1,0 +1,93 @@
+{
+  "name": "Krili - Peer-to-Peer Rental Marketplace",
+  "short_name": "Krili",
+  "description": "Rent anything, anytime. The ultimate peer-to-peer rental marketplace.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "categories": ["shopping", "business", "lifestyle"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Krili Homepage"
+    },
+    {
+      "src": "/screenshot-narrow.png",
+      "sizes": "640x1136",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Krili Mobile View"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Search Rentals",
+      "short_name": "Search",
+      "description": "Search for rental items",
+      "url": "/search",
+      "icons": [
+        {
+          "src": "/search-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "List Item",
+      "short_name": "List",
+      "description": "List an item for rent",
+      "url": "/list-item",
+      "icons": [
+        {
+          "src": "/add-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.krili.app",
+      "id": "com.krili.app"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://apps.apple.com/app/krili/id123456789"
+    }
+  ],
+  "prefer_related_applications": false
+}
