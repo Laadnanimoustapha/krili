@@ -73,12 +73,28 @@ function Button({
     onClick?.(e)
   }
 
+  // When using `asChild`, we must ensure exactly one child is passed to Slot.
+  // Avoid rendering extra siblings like loaders or ripple spans, which would break React.Children.only.
+  if (asChild) {
+    return (
+      <Comp
+        data-slot="button"
+        className={cn(buttonVariants({ variant, size, className }))}
+        onClick={handleClick}
+        disabled={loading || (props as any).disabled}
+        {...props}
+      >
+        {children}
+      </Comp>
+    )
+  }
+
   return (
     <Comp
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
       onClick={handleClick}
-      disabled={loading || props.disabled}
+      disabled={loading || (props as any).disabled}
       {...props}
     >
       {loading && <Loader2 className="h-4 w-4 animate-spin" />}
