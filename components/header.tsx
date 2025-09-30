@@ -219,7 +219,7 @@ export function Header() {
 
       {isMenuOpen && (
         <div className="md:hidden border-t bg-background/98 backdrop-blur-xl animate-in slide-in-from-top-2 duration-500 shadow-xl">
-          <div className="container py-6 space-y-3">
+          <div className="container py-6">
             <div className="space-y-2">
               {[
                 {
@@ -261,8 +261,9 @@ export function Header() {
                 </Link>
               ))}
             </div>
+            <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent my-3"></div>
 
-            <div className="border-t border-gradient-to-r from-transparent via-border to-transparent pt-3 space-y-2">
+            <div className="space-y-2">
               <Link
                 href="/wishlist"
                 className="flex items-center justify-between px-4 py-3 text-sm font-medium rounded-xl hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 hover:text-primary transition-all duration-300 hover:scale-105 group"
@@ -274,7 +275,7 @@ export function Header() {
                 {wishlistCount > 0 && (
                   <Badge
                     variant="secondary"
-                    className="text-xs animate-pulse bg-gradient-to-r from-red-500 to-pink-500 text-white border-0"
+                    className="h-5 w-5 p-0 text-xs animate-pulse bg-gradient-to-r from-red-500 to-pink-500 text-white border-0"
                   >
                     {wishlistCount}
                   </Badge>
@@ -291,7 +292,7 @@ export function Header() {
                 {messageCount > 0 && (
                   <Badge
                     variant="destructive"
-                    className="text-xs animate-pulse bg-gradient-to-r from-orange-500 to-red-500 border-0"
+                    className="h-5 w-5 p-0 text-xs animate-pulse bg-gradient-to-r from-orange-500 to-red-500 border-0"
                   >
                     {messageCount}
                   </Badge>
@@ -310,7 +311,7 @@ export function Header() {
                 {unreadCount > 0 && (
                   <Badge
                     variant="destructive"
-                    className="text-xs animate-bounce bg-gradient-to-r from-red-500 to-pink-600 border-0"
+                    className="h-5 w-5 p-0 text-xs animate-bounce bg-gradient-to-r from-red-500 to-pink-600 border-0"
                   >
                     {unreadCount}
                   </Badge>
@@ -324,8 +325,9 @@ export function Header() {
                 <span className="transition-transform duration-300 group-hover:translate-x-1">{t("profile")}</span>
               </Link>
             </div>
+            <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mt-3 mb-3"></div>
 
-            <div className="flex space-x-3 pt-4 border-t border-gradient-to-r from-transparent via-border to-transparent">
+            <div className="flex space-x-3 pt-4">
               <Button
                 variant="outline"
                 size="sm"
