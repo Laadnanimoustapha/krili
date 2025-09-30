@@ -108,7 +108,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/logo.ico" sizes="any" />
         <link rel="icon" href="/icon-192x192.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/icon-192x192.png" />
+        <link rel="icon-192x192" href="/icon-192x192.png" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="application-name" content="Krili" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -135,7 +135,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Organization",
               name: "Krili",
-              url: "https://krili.com",
+              url: "https://krili.comicon-192x192",
               logo: "https://krili.com/icon-192x192.png",
               description: "The ultimate peer-to-peer rental marketplace",
               sameAs: [
