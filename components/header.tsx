@@ -5,13 +5,16 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
+import { LanguageSelector } from "@/components/language-selector"
 import { Menu, X, Search, MessageCircle, Bell, User, Heart, Wallet, Plus } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { useNotifications } from "@/components/notification-context"
+import { useLanguage } from "@/contexts/language-context"
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const { t } = useLanguage()
 
   const { unreadCount, messageCount, wishlistCount } = useNotifications()
 
@@ -53,7 +56,7 @@ export function Header() {
             href="/browse"
             className="px-4 py-2 text-sm font-medium rounded-xl transition-all duration-300 hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 hover:text-primary hover:shadow-md hover:shadow-primary/10 hover:scale-105 relative group overflow-hidden"
           >
-            <span className="relative z-10">Browse</span>
+            <span className="relative z-10">{t("browse")}</span>
             <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-primary/70 transition-all duration-500 group-hover:w-full group-hover:left-0 rounded-full"></span>
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-xl" />
           </Link>
@@ -63,7 +66,7 @@ export function Header() {
           >
             <span className="relative z-10 flex items-center">
               <Plus className="h-4 w-4 inline mr-1 transition-transform duration-300 group-hover:rotate-90" />
-              List Item
+              {t("listItem")}
             </span>
             <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-primary/70 transition-all duration-500 group-hover:w-full group-hover:left-0 rounded-full"></span>
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-xl" />
@@ -72,7 +75,7 @@ export function Header() {
             href="/my-listings"
             className="px-4 py-2 text-sm font-medium rounded-xl transition-all duration-300 hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 hover:text-primary hover:shadow-md hover:shadow-primary/10 hover:scale-105 relative group overflow-hidden"
           >
-            <span className="relative z-10">My Listings</span>
+            <span className="relative z-10">{t("myListings")}</span>
             <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-primary/70 transition-all duration-500 group-hover:w-full group-hover:left-0 rounded-full"></span>
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-xl" />
           </Link>
@@ -82,7 +85,7 @@ export function Header() {
           >
             <span className="relative z-10 flex items-center">
               <Wallet className="h-4 w-4 inline mr-1 transition-transform duration-300 group-hover:scale-110" />
-              Billing
+              {t("billing")}
             </span>
             <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-primary/70 transition-all duration-500 group-hover:w-full group-hover:left-0 rounded-full"></span>
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-xl" />
@@ -98,7 +101,7 @@ export function Header() {
           >
             <Link href="/search">
               <Search className="h-4 w-4 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />
-              <span className="sr-only">Search</span>
+              <span className="sr-only">{t("search")}</span>
             </Link>
           </Button>
 
@@ -172,6 +175,8 @@ export function Header() {
 
           <div className="h-6 w-px bg-gradient-to-b from-transparent via-border to-transparent mx-3"></div>
 
+          <LanguageSelector />
+
           <ModeToggle />
 
           <Button
@@ -180,18 +185,19 @@ export function Header() {
             className="hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 transition-all duration-300 bg-transparent border-primary/20 hover:border-primary/40 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 rounded-xl"
             asChild
           >
-            <Link href="/login">Login</Link>
+            <Link href="/login">{t("login")}</Link>
           </Button>
           <Button
             size="sm"
             className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary/30 hover:scale-105 rounded-xl font-medium"
             asChild
           >
-            <Link href="/register">Sign Up</Link>
+            <Link href="/register">{t("signUp")}</Link>
           </Button>
         </div>
 
         <div className="flex md:hidden items-center space-x-2">
+          <LanguageSelector />
           <ModeToggle />
           <Button
             variant="ghost"
@@ -216,11 +222,31 @@ export function Header() {
           <div className="container py-6 space-y-3">
             <div className="space-y-2">
               {[
-                { href: "/browse", label: "Browse", icon: null },
-                { href: "/list-item", label: "List Item", icon: Plus },
-                { href: "/my-listings", label: "My Listings", icon: null },
-                { href: "/billing", label: "Billing", icon: Wallet },
-                { href: "/search", label: "Search", icon: Search },
+                {
+                  href: "/browse",
+                  label: t("browse"),
+                  icon: null,
+                },
+                {
+                  href: "/list-item",
+                  label: t("listItem"),
+                  icon: Plus,
+                },
+                {
+                  href: "/my-listings",
+                  label: t("myListings"),
+                  icon: null,
+                },
+                {
+                  href: "/billing",
+                  label: t("billing"),
+                  icon: Wallet,
+                },
+                {
+                  href: "/search",
+                  label: t("search"),
+                  icon: Search,
+                },
               ].map((item, index) => (
                 <Link
                   key={item.href}
@@ -243,7 +269,7 @@ export function Header() {
               >
                 <span className="flex items-center">
                   <Heart className="h-4 w-4 mr-3 transition-all duration-300 group-hover:scale-110 group-hover:fill-red-500 group-hover:text-red-500" />
-                  <span className="transition-transform duration-300 group-hover:translate-x-1">Wishlist</span>
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">{t("wishlist")}</span>
                 </span>
                 {wishlistCount > 0 && (
                   <Badge
@@ -260,7 +286,7 @@ export function Header() {
               >
                 <span className="flex items-center">
                   <MessageCircle className="h-4 w-4 mr-3 transition-transform duration-300 group-hover:scale-110" />
-                  <span className="transition-transform duration-300 group-hover:translate-x-1">Messages</span>
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">{t("messages")}</span>
                 </span>
                 {messageCount > 0 && (
                   <Badge
@@ -277,7 +303,9 @@ export function Header() {
               >
                 <span className="flex items-center">
                   <Bell className="h-4 w-4 mr-3 transition-transform duration-300 group-hover:scale-110" />
-                  <span className="transition-transform duration-300 group-hover:translate-x-1">Notifications</span>
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">
+                    {t("notifications")}
+                  </span>
                 </span>
                 {unreadCount > 0 && (
                   <Badge
@@ -293,7 +321,7 @@ export function Header() {
                 className="flex items-center px-4 py-3 text-sm font-medium rounded-xl hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 hover:text-primary transition-all duration-300 hover:scale-105 group"
               >
                 <User className="h-4 w-4 mr-3 transition-transform duration-300 group-hover:scale-110" />
-                <span className="transition-transform duration-300 group-hover:translate-x-1">Profile</span>
+                <span className="transition-transform duration-300 group-hover:translate-x-1">{t("profile")}</span>
               </Link>
             </div>
 
@@ -304,14 +332,14 @@ export function Header() {
                 className="flex-1 hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 transition-all duration-300 bg-transparent border-primary/20 hover:border-primary/40 hover:scale-105 rounded-xl"
                 asChild
               >
-                <Link href="/login">Login</Link>
+                <Link href="/login">{t("login")}</Link>
               </Button>
               <Button
                 size="sm"
                 className="flex-1 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl rounded-xl"
                 asChild
               >
-                <Link href="/register">Sign Up</Link>
+                <Link href="/register">{t("signUp")}</Link>
               </Button>
             </div>
           </div>

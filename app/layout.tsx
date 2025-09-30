@@ -10,6 +10,7 @@ import { QuickSearch } from "@/components/quick-search"
 import { ToastProvider, ToastViewport } from "@/components/ui/toast"
 import { NotificationProvider } from "@/components/notification-context"
 import { PageTransition } from "@/components/page-transition"
+import { LanguageProvider } from "@/contexts/language-context"
 
 export const metadata: Metadata = {
   title: {
@@ -83,7 +84,7 @@ export const metadata: Metadata = {
     yahoo: "your-yahoo-verification-code",
   },
   category: "marketplace",
-    generator: 'v0.app'
+  generator: "v0.app",
 }
 
 export const viewport: Viewport = {
@@ -153,18 +154,20 @@ export default function RootLayout({
       </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <NotificationProvider>
-            <ToastProvider>
-              <PageTransition>
-                <Suspense fallback={null}>
-                  {children}
-                  <FloatingActionButton />
-                  <QuickSearch />
-                </Suspense>
-              </PageTransition>
-              <ToastViewport />
-            </ToastProvider>
-          </NotificationProvider>
+          <LanguageProvider>
+            <NotificationProvider>
+              <ToastProvider>
+                <PageTransition>
+                  <Suspense fallback={null}>
+                    {children}
+                    <FloatingActionButton />
+                    <QuickSearch />
+                  </Suspense>
+                </PageTransition>
+                <ToastViewport />
+              </ToastProvider>
+            </NotificationProvider>
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

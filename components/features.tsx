@@ -1,51 +1,53 @@
+"use client"
+
 import { Card, CardContent } from "@/components/ui/card"
 import { Shield, CreditCard, MessageCircle, Star, Clock, MapPin } from "lucide-react"
 import { ScrollReveal } from "@/components/scroll-reveal"
 import { AnimatedCounter } from "@/components/animated-counter"
-
-const features = [
-  {
-    icon: Shield,
-    title: "Secure & Trusted",
-    description: "All users are verified with KYC. Every rental is protected with comprehensive insurance coverage.",
-  },
-  {
-    icon: CreditCard,
-    title: "Easy Payments",
-    description: "Secure payment processing with instant payouts. Multiple payment methods supported.",
-  },
-  {
-    icon: MessageCircle,
-    title: "Built-in Chat",
-    description: "Communicate directly with renters and owners through our integrated messaging system.",
-  },
-  {
-    icon: Star,
-    title: "Rating System",
-    description: "Build trust through our comprehensive rating and review system for all users.",
-  },
-  {
-    icon: Clock,
-    title: "Flexible Rentals",
-    description: "Rent for hours, days, or weeks. Set your own availability and pricing.",
-  },
-  {
-    icon: MapPin,
-    title: "Local & Convenient",
-    description: "Find items near you with our location-based search and pickup options.",
-  },
-]
+import { useLanguage } from "@/contexts/language-context"
 
 export function Features() {
+  const { t } = useLanguage()
+
+  const features = [
+    {
+      icon: Shield,
+      title: t("secureTitle"),
+      description: t("secureDescription"),
+    },
+    {
+      icon: CreditCard,
+      title: t("paymentsTitle"),
+      description: t("paymentsDescription"),
+    },
+    {
+      icon: MessageCircle,
+      title: t("chatTitle"),
+      description: t("chatDescription"),
+    },
+    {
+      icon: Star,
+      title: t("ratingTitle"),
+      description: t("ratingDescription"),
+    },
+    {
+      icon: Clock,
+      title: t("flexibleTitle"),
+      description: t("flexibleDescription"),
+    },
+    {
+      icon: MapPin,
+      title: t("localTitle"),
+      description: t("localDescription"),
+    },
+  ]
+
   return (
     <section className="py-16">
       <div className="container">
         <ScrollReveal direction="up" className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-balance">Why Choose Krili?</h2>
-          <p className="mt-4 text-muted-foreground text-pretty max-w-2xl mx-auto">
-            We've built the most trusted and user-friendly rental marketplace with features designed for both renters
-            and owners.
-          </p>
+          <h2 className="text-3xl font-bold text-balance">{t("whyChooseKrili")}</h2>
+          <p className="mt-4 text-muted-foreground text-pretty max-w-2xl mx-auto">{t("whyChooseDescription")}</p>
         </ScrollReveal>
 
         <ScrollReveal direction="up" delay={200} className="mb-16">
@@ -54,25 +56,25 @@ export function Features() {
               <div className="text-3xl font-bold text-primary">
                 <AnimatedCounter end={50000} suffix="+" />
               </div>
-              <p className="text-sm text-muted-foreground">Active Users</p>
+              <p className="text-sm text-muted-foreground">{t("activeUsers")}</p>
             </div>
             <div className="space-y-2">
               <div className="text-3xl font-bold text-primary">
                 <AnimatedCounter end={15000} suffix="+" />
               </div>
-              <p className="text-sm text-muted-foreground">Items Listed</p>
+              <p className="text-sm text-muted-foreground">{t("itemsListed")}</p>
             </div>
             <div className="space-y-2">
               <div className="text-3xl font-bold text-primary">
                 <AnimatedCounter end={98} suffix="%" />
               </div>
-              <p className="text-sm text-muted-foreground">Satisfaction Rate</p>
+              <p className="text-sm text-muted-foreground">{t("satisfactionRate")}</p>
             </div>
             <div className="space-y-2">
               <div className="text-3xl font-bold text-primary">
                 <AnimatedCounter end={25} suffix="+" />
               </div>
-              <p className="text-sm text-muted-foreground">Cities</p>
+              <p className="text-sm text-muted-foreground">{t("cities")}</p>
             </div>
           </div>
         </ScrollReveal>

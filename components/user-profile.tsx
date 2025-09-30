@@ -36,7 +36,7 @@ const mockListings = [
     price: 45,
     rating: 4.9,
     reviews: 23,
-    image: "/professional-camera.png",
+    image: "https://images.unsplash.com/photo-1606980707986-8f6e6c3e6d1e?w=800&h=600&fit=crop",
     status: "active",
   },
   {
@@ -45,7 +45,7 @@ const mockListings = [
     price: 65,
     rating: 4.8,
     reviews: 18,
-    image: "/drone-4k-camera.png",
+    image: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=800&h=600&fit=crop",
     status: "active",
   },
   {
@@ -54,7 +54,7 @@ const mockListings = [
     price: 35,
     rating: 4.7,
     reviews: 12,
-    image: "/lighting-kit-professional.png",
+    image: "https://images.unsplash.com/photo-1601506521937-0121a7fc2a6b?w=800&h=600&fit=crop",
     status: "rented",
   },
 ]
