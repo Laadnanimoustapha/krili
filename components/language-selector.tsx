@@ -15,7 +15,11 @@ const languages = [
 export function LanguageSelector() {
   const { language, setLanguage } = useLanguage()
 
+  console.log("LanguageSelector rendered, current language:", language)
+
   const currentLang = languages.find((lang) => lang.code === language)
+
+  console.log("Current language object:", currentLang)
 
   return (
     <DropdownMenu>
@@ -31,10 +35,14 @@ export function LanguageSelector() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent side="bottom" align="end" className="w-48 z-[60]">
+        {console.log("Rendering dropdown content, languages:", languages)}
         {languages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
-            onClick={() => setLanguage(lang.code)}
+            onClick={() => {
+              console.log("Clicked language:", lang.code)
+              setLanguage(lang.code)
+            }}
             className="flex items-center justify-between"
           >
             <span className="flex items-center gap-2">
