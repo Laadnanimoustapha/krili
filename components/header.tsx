@@ -255,7 +255,7 @@ export function Header() {
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
                   {item.icon && (
-                    <item.icon className="h-4 w-4 mr-3 transition-transform duration-300 group-hover:scale-110" />
+                    <item.icon className={`h-4 w-4 mr-3 transition-transform duration-300 group-hover:scale-110 ${item.icon === Plus ? 'group-hover:rotate-90' : item.icon === Search ? 'group-hover:rotate-12' : ''}`} />
                   )}
                   <span className="transition-transform duration-300 group-hover:translate-x-1">{item.label}</span>
                 </Link>
@@ -266,7 +266,7 @@ export function Header() {
             <div className="space-y-2">
               <Link
                 href="/wishlist"
-                className="flex items-center justify-between px-4 py-3 text-sm font-medium rounded-xl hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 hover:text-primary transition-all duration-300 hover:scale-105 group"
+                className="flex items-center justify-between px-4 py-3 text-sm font-medium rounded-xl hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 hover:text-primary transition-all duration-300 hover:scale-105 group relative"
               >
                 <span className="flex items-center">
                   <Heart className="h-4 w-4 mr-3 transition-all duration-300 group-hover:scale-110 group-hover:fill-red-500 group-hover:text-red-500" />
@@ -275,7 +275,7 @@ export function Header() {
                 {wishlistCount > 0 && (
                   <Badge
                     variant="secondary"
-                    className="h-5 w-5 p-0 text-xs animate-pulse bg-gradient-to-r from-red-500 to-pink-500 text-white border-0"
+                    className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs animate-pulse bg-gradient-to-r from-red-500 to-pink-500 text-white border-0"
                   >
                     {wishlistCount}
                   </Badge>
@@ -283,16 +283,16 @@ export function Header() {
               </Link>
               <Link
                 href="/messages"
-                className="flex items-center justify-between px-4 py-3 text-sm font-medium rounded-xl hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 hover:text-primary transition-all duration-300 hover:scale-105 group"
+                className="flex items-center justify-between px-4 py-3 text-sm font-medium rounded-xl hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 hover:text-primary transition-all duration-300 hover:scale-105 group relative"
               >
                 <span className="flex items-center">
-                  <MessageCircle className="h-4 w-4 mr-3 transition-transform duration-300 group-hover:scale-110" />
+                  <MessageCircle className="h-4 w-4 mr-3 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-12" />
                   <span className="transition-transform duration-300 group-hover:translate-x-1">{t("messages")}</span>
                 </span>
                 {messageCount > 0 && (
                   <Badge
                     variant="destructive"
-                    className="h-5 w-5 p-0 text-xs animate-pulse bg-gradient-to-r from-orange-500 to-red-500 border-0"
+                    className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs animate-pulse bg-gradient-to-r from-orange-500 to-red-500 border-0"
                   >
                     {messageCount}
                   </Badge>
@@ -300,10 +300,10 @@ export function Header() {
               </Link>
               <Link
                 href="/notifications"
-                className="flex items-center justify-between px-4 py-3 text-sm font-medium rounded-xl hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 hover:text-primary transition-all duration-300 hover:scale-105 group"
+                className="flex items-center justify-between px-4 py-3 text-sm font-medium rounded-xl hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 hover:text-primary transition-all duration-300 hover:scale-105 group relative"
               >
                 <span className="flex items-center">
-                  <Bell className="h-4 w-4 mr-3 transition-transform duration-300 group-hover:scale-110" />
+                  <Bell className="h-4 w-4 mr-3 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />
                   <span className="transition-transform duration-300 group-hover:translate-x-1">
                     {t("notifications")}
                   </span>
@@ -311,7 +311,7 @@ export function Header() {
                 {unreadCount > 0 && (
                   <Badge
                     variant="destructive"
-                    className="h-5 w-5 p-0 text-xs animate-bounce bg-gradient-to-r from-red-500 to-pink-600 border-0"
+                    className="absolute -top-1 -right-1 h-5 w-5 p-0 text-xs animate-bounce bg-gradient-to-r from-red-500 to-pink-600 border-0"
                   >
                     {unreadCount}
                   </Badge>
