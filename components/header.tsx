@@ -38,7 +38,7 @@ export function Header() {
         <Link href="/" className="flex items-center space-x-2 group">
           <div className="relative overflow-hidden rounded-xl p-1 transition-all duration-300 group-hover:bg-primary/10 group-hover:shadow-lg group-hover:shadow-primary/20">
             <Image
-              src="https://laadnanimoustapha.github.io/krili/public/Assests/logo.ico"
+              src="/icon-192x192.png"
               alt="Krili Logo"
               width={32}
               height={32}

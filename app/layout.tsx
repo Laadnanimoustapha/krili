@@ -106,9 +106,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="icon" href="/logo.ico" sizes="any" />
+        <link rel="icon" href="/icon-192x192.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/icon-192x192.png" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="application-name" content="Krili" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -136,7 +136,7 @@ export default function RootLayout({
               "@type": "Organization",
               name: "Krili",
               url: "https://krili.com",
-              logo: "https://krili.com/logo.png",
+              logo: "https://krili.com/icon-192x192.png",
               description: "The ultimate peer-to-peer rental marketplace",
               sameAs: [
                 "https://twitter.com/krili_app",

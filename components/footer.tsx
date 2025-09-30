@@ -11,7 +11,7 @@ export function Footer() {
           <div className="space-y-4">
             <Link href="/" className="flex items-center space-x-2">
               <Image
-                src="https://laadnanimoustapha.github.io/krili/public/Assests/logo.ico"
+                src="/icon-192x192.png"
                 alt="Krili Logo"
                 width={24}
                 height={24}

@@ -72,7 +72,7 @@ export function LoginForm() {
         <Link href="/" className="flex items-center justify-center space-x-2 mb-4 group">
           <div className="relative">
             <Image
-              src="https://laadnanimoustapha.github.io/krili/public/Assests/logo.ico"
+              src="/icon-192x192.png"
               alt="Krili Logo"
               width={40}
               height={40}
