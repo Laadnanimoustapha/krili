@@ -5,10 +5,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search, ArrowRight, Sparkles } from "lucide-react"
 import Link from "next/link"
+import { useLanguage } from "@/contexts/language-context"
 
 export function Hero() {
   const [searchValue, setSearchValue] = useState("")
   const [isSearchFocused, setIsSearchFocused] = useState(false)
+  const { t } = useLanguage()
 
   const popularSearches = ["Camera", "Bike", "Tools", "Party Equipment", "Car"]
 
@@ -24,14 +26,14 @@ export function Hero() {
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
               <Sparkles className="h-4 w-4" />
-              New: Instant booking available
+              {t("newInstantBooking")}
             </div>
           </div>
 
           <h1 className="text-4xl font-bold tracking-tight text-balance sm:text-6xl lg:text-7xl animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-200">
-            Rent Anything,{" "}
+            {t("heroTitle")}{" "}
             <span className="text-primary bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              Anytime
+              {t("heroTitleHighlight")}
             </span>
           </h1>
 
