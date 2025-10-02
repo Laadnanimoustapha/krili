@@ -132,4 +132,4 @@ This project is private and proprietary.
 
 ---
 
-Built with ❤️ using Next.js, TypeScript, and modern web technologies.
+Built with ❤️ using Next.js, TypeScript, BY LAADNANI
