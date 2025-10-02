@@ -129,9 +129,6 @@ npx shadcn-ui@latest add [component-name]
 
 This project is private and proprietary.
 
-## 📞 Contact
-
-For questions or support, please reach out to our team.
 
 ---
 
