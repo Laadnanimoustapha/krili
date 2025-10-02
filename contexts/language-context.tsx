@@ -1,52 +1,50 @@
 "use client"
 
-import type React from "react"
-import { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react"
-import { type Language, translations, type TranslationKey } from "@/lib/translations"
+import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react"
+import type { Language } from "@/lib/translations"
 
 interface LanguageContextType {
   language: Language
   setLanguage: (lang: Language) => void
-  t: (key: TranslationKey) => string
   dir: "ltr" | "rtl"
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
+export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>("en")
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
     const savedLanguage = localStorage.getItem("language") as Language
-    if (savedLanguage && ["en", "fr", "ar", "es", "de", "it"].includes(savedLanguage)) {
+    if (savedLanguage && ["en", "fr", "ar"].includes(savedLanguage)) {
       setLanguageState(savedLanguage)
-      document.documentElement.lang = savedLanguage
-      document.documentElement.dir = savedLanguage === "ar" ? "rtl" : "ltr"
     }
   }, [])
 
-  const setLanguage = (lang: Language) => {
+  const setLanguage = useCallback((lang: Language) => {
     setLanguageState(lang)
     localStorage.setItem("language", lang)
-    document.documentElement.lang = lang
-    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr"
-  }
 
-  const t = useCallback((key: TranslationKey): string => {
-    return translations[language][key] || translations.en[key] || key
-  }, [language])
+    // Update document direction for RTL support
+    if (typeof document !== "undefined") {
+      document.documentElement.dir = lang === "ar" ? "rtl" : "ltr"
+      document.documentElement.lang = lang
+    }
+  }, [])
+
+  // Set initial direction
+  useEffect(() => {
+    if (mounted && typeof document !== "undefined") {
+      document.documentElement.dir = language === "ar" ? "rtl" : "ltr"
+      document.documentElement.lang = language
+    }
+  }, [language, mounted])
 
   const dir = language === "ar" ? "rtl" : "ltr"
 
-  const value = useMemo(() => ({ language, setLanguage, t, dir }), [language, setLanguage, t, dir])
-
-  if (!mounted) {
-    return null
-  }
-
-  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>
+  return <LanguageContext.Provider value={{ language, setLanguage, dir }}>{children}</LanguageContext.Provider>
 }
 
 export function useLanguage() {

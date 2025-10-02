@@ -5,40 +5,41 @@ import { Shield, CreditCard, MessageCircle, Star, Clock, MapPin } from "lucide-r
 import { ScrollReveal } from "@/components/scroll-reveal"
 import { AnimatedCounter } from "@/components/animated-counter"
 import { useLanguage } from "@/contexts/language-context"
+import { getTranslation } from "@/lib/translations"
 
 export function Features() {
-  const { t } = useLanguage()
+  const { language } = useLanguage()
 
   const features = [
     {
       icon: Shield,
-      title: t("secureTitle"),
-      description: t("secureDescription"),
+      title: getTranslation(language, "secureTitle"),
+      description: getTranslation(language, "secureDescription"),
     },
     {
       icon: CreditCard,
-      title: t("paymentsTitle"),
-      description: t("paymentsDescription"),
+      title: getTranslation(language, "paymentsTitle"),
+      description: getTranslation(language, "paymentsDescription"),
     },
     {
       icon: MessageCircle,
-      title: t("chatTitle"),
-      description: t("chatDescription"),
+      title: getTranslation(language, "chatTitle"),
+      description: getTranslation(language, "chatDescription"),
     },
     {
       icon: Star,
-      title: t("ratingTitle"),
-      description: t("ratingDescription"),
+      title: getTranslation(language, "ratingTitle"),
+      description: getTranslation(language, "ratingDescription"),
     },
     {
       icon: Clock,
-      title: t("flexibleTitle"),
-      description: t("flexibleDescription"),
+      title: getTranslation(language, "flexibleTitle"),
+      description: getTranslation(language, "flexibleDescription"),
     },
     {
       icon: MapPin,
-      title: t("localTitle"),
-      description: t("localDescription"),
+      title: getTranslation(language, "localTitle"),
+      description: getTranslation(language, "localDescription"),
     },
   ]
 
@@ -46,8 +47,10 @@ export function Features() {
     <section className="py-16">
       <div className="container">
         <ScrollReveal direction="up" className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-balance">{t("whyChooseKrili")}</h2>
-          <p className="mt-4 text-muted-foreground text-pretty max-w-2xl mx-auto">{t("whyChooseDescription")}</p>
+          <h2 className="text-3xl font-bold text-balance">{getTranslation(language, "whyChooseKrili")}</h2>
+          <p className="mt-4 text-muted-foreground text-pretty max-w-2xl mx-auto">
+            {getTranslation(language, "featuresDescription")}
+          </p>
         </ScrollReveal>
 
         <ScrollReveal direction="up" delay={200} className="mb-16">
@@ -56,25 +59,25 @@ export function Features() {
               <div className="text-3xl font-bold text-primary">
                 <AnimatedCounter end={50000} suffix="+" />
               </div>
-              <p className="text-sm text-muted-foreground">{t("activeUsers")}</p>
+              <p className="text-sm text-muted-foreground">{getTranslation(language, "activeUsers")}</p>
             </div>
             <div className="space-y-2">
               <div className="text-3xl font-bold text-primary">
                 <AnimatedCounter end={15000} suffix="+" />
               </div>
-              <p className="text-sm text-muted-foreground">{t("itemsListed")}</p>
+              <p className="text-sm text-muted-foreground">{getTranslation(language, "itemsListed")}</p>
             </div>
             <div className="space-y-2">
               <div className="text-3xl font-bold text-primary">
                 <AnimatedCounter end={98} suffix="%" />
               </div>
-              <p className="text-sm text-muted-foreground">{t("satisfactionRate")}</p>
+              <p className="text-sm text-muted-foreground">{getTranslation(language, "satisfactionRate")}</p>
             </div>
             <div className="space-y-2">
               <div className="text-3xl font-bold text-primary">
                 <AnimatedCounter end={25} suffix="+" />
               </div>
-              <p className="text-sm text-muted-foreground">{t("cities")}</p>
+              <p className="text-sm text-muted-foreground">{getTranslation(language, "cities")}</p>
             </div>
           </div>
         </ScrollReveal>
