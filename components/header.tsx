@@ -47,9 +47,6 @@ function HeaderComponent() {
             />
             <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
           </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent transition-all duration-300 group-hover:from-primary/90 group-hover:to-primary group-hover:scale-105">
-            Krili
-          </span>
         </Link>
 
         <nav className="hidden md:flex items-center space-x-1">

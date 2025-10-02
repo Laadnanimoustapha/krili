@@ -7,27 +7,27 @@ import { ScrollReveal } from "@/components/scroll-reveal"
 
 const testimonials = [
   {
-    name: "Sarah Johnson",
+    name: "Fatima Zahra",
     role: "Homeowner",
     content:
-      "I needed a pressure washer for one weekend. Found one nearby for $30 instead of buying a $300 one. Perfect!",
+      "I needed a pressure washer for one weekend. Found one nearby for 300 DH instead of buying a 3000 DH one. Perfect!",
     rating: 5,
-    avatar: "SJ",
+    avatar: "FZ",
   },
   {
-    name: "Mike Chen",
+    name: "Youssef Bennani",
     role: "Photography Enthusiast",
     content:
       "Rented a professional camera lens for my wedding shoot. The owner was super helpful and the quality was amazing.",
     rating: 5,
-    avatar: "MC",
+    avatar: "YB",
   },
   {
-    name: "Emma Davis",
+    name: "Amina El Idrissi",
     role: "Small Business Owner",
     content: "I list my tools on Krili when I'm not using them. It's become a nice side income stream!",
     rating: 5,
-    avatar: "ED",
+    avatar: "AE",
   },
 ]
 

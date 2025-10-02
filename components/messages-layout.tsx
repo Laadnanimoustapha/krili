@@ -15,9 +15,9 @@ const mockConversations = [
   {
     id: "1",
     participant: {
-      name: "Sarah Johnson",
+      name: "Salma Benjelloun",
       avatar: "/user-avatar.png",
-      initials: "SJ",
+      initials: "SB",
       isOnline: true,
     },
     item: {
@@ -36,9 +36,9 @@ const mockConversations = [
   {
     id: "2",
     participant: {
-      name: "Mike Chen",
+      name: "Omar Alami",
       avatar: "/user-avatar.png",
-      initials: "MC",
+      initials: "OA",
       isOnline: false,
     },
     item: {
@@ -57,9 +57,9 @@ const mockConversations = [
   {
     id: "3",
     participant: {
-      name: "Emma Davis",
+      name: "Amina El Idrissi",
       avatar: "/user-avatar.png",
-      initials: "ED",
+      initials: "AE",
       isOnline: true,
     },
     item: {
@@ -78,9 +78,9 @@ const mockConversations = [
   {
     id: "4",
     participant: {
-      name: "Alex Rodriguez",
+      name: "Mehdi Tazi",
       avatar: "/user-avatar.png",
-      initials: "AR",
+      initials: "MT",
       isOnline: false,
     },
     item: {
@@ -88,7 +88,7 @@ const mockConversations = [
       image: "/playstation-5-console.png",
     },
     lastMessage: {
-      text: "Could you do $40 per day instead of $50?",
+      text: "Could you do 400 DH per day instead of 500 DH?",
       timestamp: "1 day ago",
       isRead: true,
       sender: "them",

@@ -67,14 +67,14 @@ const mockMessages: Record<string, Message[]> = {
     },
     {
       id: "4",
-      text: "I'd like to book it for Saturday and Sunday. Would $90 for both days work?",
+      text: "I'd like to book it for Saturday and Sunday. Would 900 DH for both days work?",
       sender: "them",
       timestamp: "10:35 AM",
       type: "booking_request",
       metadata: {
         dates: ["2024-02-10", "2024-02-11"],
-        totalPrice: 90,
-        dailyRate: 45,
+        totalPrice: 900,
+        dailyRate: 450,
       },
     },
     {
@@ -109,7 +109,7 @@ const mockMessages: Record<string, Message[]> = {
     },
     {
       id: "3",
-      text: "Awesome! I'll take it for Saturday. $35 for the day?",
+      text: "Awesome! I'll take it for Saturday. 350 DH for the day?",
       sender: "them",
       timestamp: "9:22 AM",
       type: "text",
@@ -201,7 +201,7 @@ export function ChatWindow({ conversation }: { conversation: Conversation }) {
                 </div>
                 <div className="flex items-center gap-2">
                   <DollarSign className="h-4 w-4" />
-                  <span>Total: ${message.metadata.totalPrice}</span>
+                  <span>Total: {message.metadata.totalPrice} DH</span>
                 </div>
               </div>
               <div className="flex gap-2 mt-3">

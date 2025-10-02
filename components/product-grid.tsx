@@ -145,7 +145,7 @@ export function ProductGrid({ products, loading = false }: ProductGridProps) {
               <div className="flex items-center justify-between animate-in fade-in slide-in-from-bottom-2 duration-300 delay-400">
                 <div className="group-hover:scale-110 transition-transform duration-300 origin-left">
                   <span className="text-2xl font-bold text-primary bg-gradient-to-r from-primary to-primary/80 bg-clip-text">
-                    ${product.price}
+                    {product.price} DH
                   </span>
                   <span className="text-sm text-muted-foreground ml-1">{product.period}</span>
                 </div>

@@ -18,14 +18,14 @@ const mockItem = {
   title: "Professional DSLR Camera Kit",
   description:
     "Canon EOS R5 with 24-70mm lens, perfect for photography and videography. Includes battery charger, memory card, and protective case. Great for weddings, events, or personal projects.",
-  price: 45,
+  price: 450,
   rating: 4.9,
   reviews: 127,
   location: "San Francisco, CA",
   category: "Photography",
   condition: "Like New",
   owner: {
-    name: "Sarah Johnson",
+    name: "Salma Benjelloun",
     rating: 4.8,
     reviews: 89,
     joinDate: "2022",
@@ -213,21 +213,21 @@ export function ItemDetails({ itemId }: { itemId: string }) {
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span>
-                    ${mockItem.price} ×{" "}
+                    {mockItem.price} DH ×{" "}
                     {startDate && endDate
                       ? Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
                       : 0}{" "}
                     days
                   </span>
-                  <span>${calculateTotal()}</span>
+                  <span>{calculateTotal()} DH</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Service Fee</span>
-                  <span>${Math.round(calculateTotal() * 0.1)}</span>
+                  <span>{Math.round(calculateTotal() * 0.1)} DH</span>
                 </div>
                 <div className="border-t pt-2 flex justify-between font-semibold">
                   <span>Total</span>
-                  <span>${calculateTotal() + Math.round(calculateTotal() * 0.1)}</span>
+                  <span>{calculateTotal() + Math.round(calculateTotal() * 0.1)} DH</span>
                 </div>
               </div>
             </div>

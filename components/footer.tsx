@@ -10,14 +10,7 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-4">
             <Link href="/" className="flex items-center space-x-2">
-              <Image
-                src="/icon-192x192.png"
-                alt="Krili Logo"
-                width={24}
-                height={24}
-                className="rounded"
-              />
-              <span className="text-lg font-bold text-primary">Krili</span>
+              <Image src="/icon-192x192.png" alt="Krili Logo" width={24} height={24} className="rounded" />
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
               The ultimate peer-to-peer rental marketplace. Rent anything, anytime.
