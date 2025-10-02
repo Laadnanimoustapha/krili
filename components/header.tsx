@@ -5,16 +5,13 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
-import { LanguageSelector } from "@/components/language-selector"
 import { Menu, X, Search, MessageCircle, Bell, User, Heart, Wallet, Plus } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { useNotifications } from "@/components/notification-context"
-import { useLanguage } from "@/contexts/language-context"
 
 function HeaderComponent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const { t } = useLanguage()
 
   const { unreadCount, messageCount, wishlistCount } = useNotifications()
 
@@ -56,7 +53,7 @@ function HeaderComponent() {
             href="/browse"
             className="px-4 py-2 text-sm font-medium rounded-xl transition-all duration-300 hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 hover:text-primary hover:shadow-md hover:shadow-primary/10 hover:scale-105 relative group overflow-hidden"
           >
-            <span className="relative z-10">{t("browse")}</span>
+            <span className="relative z-10">Browse</span>
             <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-primary/70 transition-all duration-500 group-hover:w-full group-hover:left-0 rounded-full"></span>
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-xl" />
           </Link>
@@ -66,7 +63,7 @@ function HeaderComponent() {
           >
             <span className="relative z-10 flex items-center">
               <Plus className="h-4 w-4 inline mr-1 transition-transform duration-300 group-hover:rotate-90" />
-              {t("listItem")}
+              List Item
             </span>
             <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-primary/70 transition-all duration-500 group-hover:w-full group-hover:left-0 rounded-full"></span>
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-xl" />
@@ -75,7 +72,7 @@ function HeaderComponent() {
             href="/my-listings"
             className="px-4 py-2 text-sm font-medium rounded-xl transition-all duration-300 hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 hover:text-primary hover:shadow-md hover:shadow-primary/10 hover:scale-105 relative group overflow-hidden"
           >
-            <span className="relative z-10">{t("myListings")}</span>
+            <span className="relative z-10">My Listings</span>
             <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-primary/70 transition-all duration-500 group-hover:w-full group-hover:left-0 rounded-full"></span>
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-xl" />
           </Link>
@@ -85,7 +82,7 @@ function HeaderComponent() {
           >
             <span className="relative z-10 flex items-center">
               <Wallet className="h-4 w-4 inline mr-1 transition-transform duration-300 group-hover:scale-110" />
-              {t("billing")}
+              Billing
             </span>
             <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-primary/70 transition-all duration-500 group-hover:w-full group-hover:left-0 rounded-full"></span>
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-xl" />
@@ -101,7 +98,7 @@ function HeaderComponent() {
           >
             <Link href="/search">
               <Search className="h-4 w-4 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />
-              <span className="sr-only">{t("search")}</span>
+              <span className="sr-only">Search</span>
             </Link>
           </Button>
 
@@ -175,8 +172,6 @@ function HeaderComponent() {
 
           <div className="h-6 w-px bg-gradient-to-b from-transparent via-border to-transparent mx-3"></div>
 
-          <LanguageSelector />
-
           <ModeToggle />
 
           <Button
@@ -185,19 +180,18 @@ function HeaderComponent() {
             className="hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 transition-all duration-300 bg-transparent border-primary/20 hover:border-primary/40 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 rounded-xl"
             asChild
           >
-            <Link href="/login">{t("login")}</Link>
+            <Link href="/login">Login</Link>
           </Button>
           <Button
             size="sm"
             className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary/30 hover:scale-105 rounded-xl font-medium"
             asChild
           >
-            <Link href="/register">{t("signUp")}</Link>
+            <Link href="/register">Sign Up</Link>
           </Button>
         </div>
 
         <div className="flex md:hidden items-center space-x-2">
-          <LanguageSelector />
           <ModeToggle />
           <Button
             variant="ghost"
@@ -224,27 +218,27 @@ function HeaderComponent() {
               {[
                 {
                   href: "/browse",
-                  label: t("browse"),
+                  label: "Browse",
                   icon: null,
                 },
                 {
                   href: "/list-item",
-                  label: t("listItem"),
+                  label: "List Item",
                   icon: Plus,
                 },
                 {
                   href: "/my-listings",
-                  label: t("myListings"),
+                  label: "My Listings",
                   icon: null,
                 },
                 {
                   href: "/billing",
-                  label: t("billing"),
+                  label: "Billing",
                   icon: Wallet,
                 },
                 {
                   href: "/search",
-                  label: t("search"),
+                  label: "Search",
                   icon: Search,
                 },
               ].map((item, index) => (
@@ -270,7 +264,7 @@ function HeaderComponent() {
               >
                 <span className="flex items-center">
                   <Heart className="h-4 w-4 mr-3 transition-all duration-300 group-hover:scale-110 group-hover:fill-red-500 group-hover:text-red-500" />
-                  <span className="transition-transform duration-300 group-hover:translate-x-1">{t("wishlist")}</span>
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">Wishlist</span>
                 </span>
                 {wishlistCount > 0 && (
                   <Badge
