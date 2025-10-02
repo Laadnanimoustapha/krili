@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, memo } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { useNotifications } from "@/components/notification-context"
 import { useLanguage } from "@/contexts/language-context"
 
-export function Header() {
+function HeaderComponent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const { t } = useLanguage()
@@ -350,3 +350,5 @@ export function Header() {
     </header>
   )
 }
+
+export const Header = memo(HeaderComponent)

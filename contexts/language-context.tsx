@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { createContext, useContext, useState, useEffect } from "react"
+import { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react"
 import { type Language, translations, type TranslationKey } from "@/lib/translations"
 
 interface LanguageContextType {
@@ -28,25 +28,25 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const setLanguage = (lang: Language) => {
-    console.log("setLanguage called with:", lang)
     setLanguageState(lang)
     localStorage.setItem("language", lang)
     document.documentElement.lang = lang
     document.documentElement.dir = lang === "ar" ? "rtl" : "ltr"
-    console.log("Language set to:", lang)
   }
 
-  const t = (key: TranslationKey): string => {
+  const t = useCallback((key: TranslationKey): string => {
     return translations[language][key] || translations.en[key] || key
-  }
+  }, [language])
 
   const dir = language === "ar" ? "rtl" : "ltr"
+
+  const value = useMemo(() => ({ language, setLanguage, t, dir }), [language, setLanguage, t, dir])
 
   if (!mounted) {
     return null
   }
 
-  return <LanguageContext.Provider value={{ language, setLanguage, t, dir }}>{children}</LanguageContext.Provider>
+  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>
 }
 
 export function useLanguage() {
