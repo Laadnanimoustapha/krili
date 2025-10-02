@@ -11,6 +11,9 @@ const languages = [
   { code: "en" as Language, name: "English", flag: "🇬🇧" },
   { code: "fr" as Language, name: "Français", flag: "🇫🇷" },
   { code: "ar" as Language, name: "العربية", flag: "🇲🇦" },
+  { code: "es" as Language, name: "Español", flag: "🇪🇸" },
+  { code: "de" as Language, name: "Deutsch", flag: "🇩🇪" },
+  { code: "it" as Language, name: "Italiano", flag: "🇮🇹" },
 ]
 
 function LanguageSelectorComponent() {
