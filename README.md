@@ -1,5 +1,9 @@
 # Krili - Peer-to-Peer Rental Marketplace
 
+<div align="center">
+  <img src="public/icon-192x192.png" alt="Krili Logo" width="192" height="192">
+</div>
+
 [![Next.js](https://img.shields.io/badge/Next.js-14.2.16-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1.9-38B2AC)](https://tailwindcss.com/)
