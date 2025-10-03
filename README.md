@@ -129,10 +129,7 @@ npx shadcn-ui@latest add [component-name]
 
 This project is private and proprietary.
 
-## 📞 Contact
-
-For questions or support, please reach out to our team.
 
 ---
 
-Built with ❤️ using Next.js, TypeScript, and modern web technologies.
+Built with ❤️ using Next.js, TypeScript, BY LAADNANI
