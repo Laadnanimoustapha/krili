@@ -438,6 +438,22 @@ git push origin feature/amazing-feature
 
 <div align="center">
 
+
+## Project Architecture
+
+The diagram below illustrates the overall structure and workflow of the project:
+
+![Project Architecture](.github/20250827_1956_Rental%20Website%20Architecture%20Diagram_simple_compose_01k3pakzjcfata4p8tzvsry7ym.png)
+### How It Works
+
+- **User** sends requests via the frontend.
+- **Next.js (TypeScript)** handles both frontend and backend logic.
+- **Database (Postgres/MySQL)** stores and retrieves rental data.
+- **Payments System (Stripe/PayPal)** processes payments.
+- **Python ML Microservice (FastAPI)** receives user behavior data and returns recommendations.
+- **Notification System (SendGrid/Twilio)** sends confirmation emails/SMS based on user actions and recommendations.
+
+This architecture ensures modularity, scalability, and easy integration with external services.
 ## 📝 License
 
 
@@ -456,19 +472,3 @@ git push origin feature/amazing-feature
 <img src="https://user-images.githubusercontent.com/74038190/212284115-f47cd8ff-2ffb-4b04-b5bf-4d1c14c0247f.gif" width="100">
 
 </div>
-
-## Project Architecture
-
-The diagram below illustrates the overall structure and workflow of the project:
-
-![Project Architecture](.github/20250827_1956_Rental%20Website%20Architecture%20Diagram_simple_compose_01k3pakzjcfata4p8tzvsry7ym.png)
-### How It Works
-
-- **User** sends requests via the frontend.
-- **Next.js (TypeScript)** handles both frontend and backend logic.
-- **Database (Postgres/MySQL)** stores and retrieves rental data.
-- **Payments System (Stripe/PayPal)** processes payments.
-- **Python ML Microservice (FastAPI)** receives user behavior data and returns recommendations.
-- **Notification System (SendGrid/Twilio)** sends confirmation emails/SMS based on user actions and recommendations.
-
-This architecture ensures modularity, scalability, and easy integration with external services.
