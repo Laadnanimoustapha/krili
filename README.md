@@ -440,7 +440,6 @@ git push origin feature/amazing-feature
 
 ## 📝 License
 
-<img src="https://user-images.githubusercontent.com/74038190/212257467-871d32b7-e401-42e8-a166-fcfd7baa4c6b.gif" width="100">
 
 **This project is private and proprietary.**
 
