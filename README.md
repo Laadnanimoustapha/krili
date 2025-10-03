@@ -136,32 +136,62 @@
 </tr>
 </table>
 
-## 📦 Installation
+<div align="center">
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/krili.git
-   cd krili
-   ```
+## 📦 Installation Guide
 
-2. **Install dependencies**
-   ```bash
-   pnpm install
-   ```
+<img src="https://user-images.githubusercontent.com/74038190/212257467-871d32b7-e401-42e8-a166-fcfd7baa4c6b.gif" width="100">
 
-3. **Set up environment variables**
-   ```bash
-   cp .env.example .env.local
-   ```
-   Fill in your environment variables (API keys, database URLs, etc.)
+</div>
 
-4. **Run the development server**
-   ```bash
-   pnpm dev
-   ```
+### 🚀 **Quick Start**
 
-5. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+<table>
+<tr>
+<td width="50%">
+
+#### 1️⃣ **Clone Repository**
+```bash
+# 📥 Clone the project
+git clone https://github.com/yourusername/krili.git
+cd krili
+```
+
+#### 2️⃣ **Install Dependencies**
+```bash
+# 📦 Install packages with pnpm
+pnpm install
+```
+
+</td>
+<td width="50%">
+
+#### 3️⃣ **Environment Setup**
+```bash
+# 🔧 Copy environment file
+cp .env.example .env.local
+```
+> 💡 Fill in your environment variables (API keys, database URLs, etc.)
+
+#### 4️⃣ **Start Development**
+```bash
+# 🚀 Run development server
+pnpm dev
+```
+
+</td>
+</tr>
+</table>
+
+<div align="center">
+
+### 🎉 **You're Ready!**
+
+Open your browser and navigate to **[http://localhost:3000](http://localhost:3000)**
+
+<img src="https://user-images.githubusercontent.com/74038190/212284115-f47cd8ff-2ffb-4b04-b5bf-4d1c14c0247f.gif" width="200">
+
+</div>
 
 ## 🛠️ Available Scripts
 
