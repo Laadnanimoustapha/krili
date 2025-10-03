@@ -80,6 +80,27 @@
 - ⚡ **Fast Performance**: Built with Next.js 14 for optimal speed
 - 🎭 **Beautiful UI**: Modern design with shadcn/ui components
 - 📊 **Analytics Dashboard**: Track your rental activity
+- 🤖 **AI Recommendations**: Python-powered ML system for personalized suggestions
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 🗄️ **Backend & Data**
+- 🗃️ **SQL Database**: Robust relational data storage
+- 🐍 **Python ML Engine**: Advanced recommendation algorithms
+- 📈 **Data Analytics**: User behavior and rental pattern analysis
+- 🔄 **Real-time Sync**: Live data updates across platform
+
+</td>
+<td width="50%">
+
+### 🤖 **Automation & Support**
+- 🔧 **n8n Workflows**: Automated customer support processes
+- 💬 **Smart Chatbots**: AI-powered customer assistance
+- 📧 **Email Automation**: Automated notifications and reminders
+- 🎯 **Lead Management**: Automated user onboarding workflows
 
 </td>
 </tr>
@@ -95,10 +116,11 @@
 
 <div align="center">
 
-| Frontend | Backend | Styling | Tools |
-|:--------:|:-------:|:-------:|:-----:|
-| ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white) | ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white) | ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white) | ![pnpm](https://img.shields.io/badge/pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white) |
-| ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) | ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white) | ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) | ![ESLint](https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white) |
+| Frontend | Backend | Database & ML | Automation |
+|:--------:|:-------:|:------------:|:----------:|
+| ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white) | ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white) | ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) | ![n8n](https://img.shields.io/badge/n8n-EA4B71?style=for-the-badge&logo=n8n&logoColor=white) |
+| ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) | ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white) | ![SQL](https://img.shields.io/badge/SQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white) | ![pnpm](https://img.shields.io/badge/pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white) |
+| ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white) | ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) | ![Machine Learning](https://img.shields.io/badge/ML-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white) | ![ESLint](https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white) |
 
 </div>
 
@@ -121,15 +143,22 @@
 </td>
 <td width="50%">
 
-**📦 Development Tools**
+**🐍 Machine Learning & Data**
+- 🐍 **[Python](https://python.org/)** - ML recommendation engine backend
+- 🤖 **[Scikit-learn](https://scikit-learn.org/)** - Machine learning algorithms
+- 🗄️ **[SQL Database](https://www.mysql.com/)** - Relational data storage
+- 📊 **[Pandas](https://pandas.pydata.org/)** - Data manipulation and analysis
+
+**🔧 Development & Automation**
 - 📦 **[pnpm](https://pnpm.io/)** - Fast, disk space efficient package manager
 - 🔍 **[ESLint](https://eslint.org/)** - Code linting and formatting
-- 🎯 **[React Hook Form](https://react-hook-form.com/)** - Performant forms
+- 🤖 **[n8n](https://n8n.io/)** - Workflow automation for customer support
 - ✅ **[Zod](https://zod.dev/)** - TypeScript-first schema validation
 
 **📊 Additional Libraries**
 - 📈 **[Recharts](https://recharts.org/)** - Composable charting library
 - 🎨 **[Lucide React](https://lucide.dev/)** - Beautiful & consistent icons
+- 🎯 **[React Hook Form](https://react-hook-form.com/)** - Performant forms
 - ✨ **Custom Animations** - Scroll reveal and floating elements
 
 </td>
