@@ -19,9 +19,9 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1.9-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-New_York-000000?style=for-the-badge&logo=shadcnui&logoColor=white)](https://ui.shadcn.com/)
 
-![GitHub stars](https://img.shields.io/github/stars/yourusername/krili?style=social)
-![GitHub forks](https://img.shields.io/github/forks/yourusername/krili?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/yourusername/krili?style=social)
+![GitHub stars](https://img.shields.io/github/stars/Laadnanimoustapha/krili-react-ts?style=social)
+![GitHub forks](https://img.shields.io/github/forks/Laadnanimoustapha/krili-react-ts?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/Laadnanimoustapha/krili-react-ts?style=social)
 
 </div>
 
@@ -110,7 +110,7 @@
 
 **🎯 Frontend Framework**
 - 🚀 **[Next.js 14](https://nextjs.org/)** - React framework with App Router
-- 📘 **[TypeScript](https://www.typescriptlang.org/)** - Type-safe JavaScript
+- 📘 **[TypeScript](https://www.typescriptlang.org/)** - Type-safe TypeScript superset
 - ⚛️ **[React 18](https://reactjs.org/)** - UI library with latest features
 
 **🎨 Styling & UI**
