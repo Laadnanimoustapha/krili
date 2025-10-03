@@ -153,8 +153,8 @@
 #### 1️⃣ **Clone Repository**
 ```bash
 # 📥 Clone the project
-git clone https://github.com/yourusername/krili.git
-cd krili
+git clone https://github.com/Laadnanimoustapha/krili-react-ts.git
+cd krili-react-ts
 ```
 
 #### 2️⃣ **Install Dependencies**
@@ -379,7 +379,7 @@ npx shadcn-ui@latest add [component-name]
 ```bash
 # 🍴 Fork the repository
 # 📥 Clone your fork
-git clone https://github.com/yourusername/krili.git
+git clone https://github.com/Laadnanimoustapha/krili-react-ts.git
 ```
 
 #### 2️⃣ **Create Branch**
