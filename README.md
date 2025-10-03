@@ -193,77 +193,238 @@ Open your browser and navigate to **[http://localhost:3000](http://localhost:300
 
 </div>
 
+<div align="center">
+
 ## 🛠️ Available Scripts
 
-- `pnpm dev` - Start the development server
-- `pnpm build` - Build the application for production
-- `pnpm start` - Start the production server
-- `pnpm lint` - Run ESLint for code linting
+<img src="https://user-images.githubusercontent.com/74038190/212257460-738ff738-247f-4445-a718-cdd0ca76e2db.gif" width="100">
+
+</div>
+
+<table>
+<tr>
+<td width="50%">
+
+### 🚀 **Development**
+```bash
+# 🔥 Start development server
+pnpm dev
+```
+
+### 🏗️ **Build**
+```bash
+# 📦 Build for production
+pnpm build
+```
+
+</td>
+<td width="50%">
+
+### 🌐 **Production**
+```bash
+# 🚀 Start production server
+pnpm start
+```
+
+### 🔍 **Linting**
+```bash
+# ✨ Run ESLint
+pnpm lint
+```
+
+</td>
+</tr>
+</table>
+
+<div align="center">
 
 ## 📁 Project Structure
 
+<img src="https://user-images.githubusercontent.com/74038190/212257465-7ce8d493-cac5-494e-982a-5a9deb852c4b.gif" width="100">
+
+</div>
+
 ```
-krili-react-ts/
-├── app/                    # Next.js app directory
-│   ├── (pages)/           # Route groups for different sections
-│   ├── globals.css        # Global styles
-│   ├── layout.tsx         # Root layout
-│   └── page.tsx           # Homepage
-├── components/            # React components
-│   ├── ui/               # shadcn/ui components
-│   └── ...               # Feature components
-├── hooks/                # Custom React hooks
-├── lib/                  # Utility functions and configurations
-├── styles/               # Additional stylesheets
-├── public/               # Static assets
-└── ...
+🏗️ krili-react-ts/
+├── 📱 app/                    # Next.js app directory
+│   ├── 📄 (pages)/           # Route groups for different sections
+│   ├── 🎨 globals.css        # Global styles
+│   ├── 🏠 layout.tsx         # Root layout
+│   └── 🌟 page.tsx           # Homepage
+├── 🧩 components/            # React components
+│   ├── 🎭 ui/               # shadcn/ui components
+│   └── ⚡ ...               # Feature components
+├── 🎣 hooks/                # Custom React hooks
+├── 📚 lib/                  # Utility functions and configurations
+├── 🎨 styles/               # Additional stylesheets
+├── 🖼️ public/               # Static assets
+└── 📦 ...
 ```
 
-## 🎨 UI Components
+<div align="center">
 
-This project uses shadcn/ui components, which are built on top of Radix UI primitives. The design system follows the "New York" style with:
+### 🗂️ **Key Directories**
 
-- Neutral color palette
-- CSS variables for theming
-- Accessible components
-- Consistent spacing and typography
+| Directory | Purpose | Description |
+|-----------|---------|-------------|
+| 📱 `app/` | **Next.js App Router** | Modern routing with layouts and pages |
+| 🧩 `components/` | **React Components** | Reusable UI components and features |
+| 🎣 `hooks/` | **Custom Hooks** | Reusable React logic |
+| 📚 `lib/` | **Utilities** | Helper functions and configurations |
+| 🖼️ `public/` | **Static Assets** | Images, icons, and static files |
+
+</div>
+
+<div align="center">
+
+## 🎨 UI Components & Design
+
+<img src="https://user-images.githubusercontent.com/74038190/212257468-1e9a91f1-b626-4baa-b15d-5c385dfa7c7a.gif" width="100">
+
+</div>
+
+<table>
+<tr>
+<td width="50%">
+
+### 🎭 **Design System**
+- 🎨 **shadcn/ui components** - Built on Radix UI primitives
+- 🏙️ **"New York" style** - Clean and modern design
+- 🎯 **Neutral color palette** - Professional appearance
+- ♿ **Accessible components** - WCAG compliant
+
+</td>
+<td width="50%">
+
+### 🛠️ **Theming Features**
+- 🌙 **CSS variables** - Dynamic theming support
+- 📏 **Consistent spacing** - Unified design language
+- 📝 **Typography system** - Readable and scalable fonts
+- 🎨 **Custom animations** - Smooth user interactions
+
+</td>
+</tr>
+</table>
+
+<div align="center">
 
 ## 🌐 Internationalization
 
-The app includes basic internationalization support with:
+<img src="https://user-images.githubusercontent.com/74038190/212257463-4d082cb4-7483-4eaf-bc25-6dde2628aabd.gif" width="100">
 
-- Language context provider
-- Translation files in `lib/translations.ts`
-- Language selector component
+</div>
 
-## 🔧 Customization
+### 🗣️ **Multi-language Support**
 
-### Adding New Components
+- 🌍 **Language context provider** - Global language state management
+- 📄 **Translation files** - Organized in `lib/translations.ts`
+- 🔄 **Language selector** - Easy language switching component
+- 🎯 **Dynamic content** - Real-time language updates
 
+<div align="center">
+
+## 🔧 Customization Guide
+
+<img src="https://user-images.githubusercontent.com/74038190/212257454-16e3712e-945a-4ca2-b238-408ad0bf87e6.gif" width="100">
+
+</div>
+
+<table>
+<tr>
+<td width="50%">
+
+### 🧩 **Adding Components**
 ```bash
-# Add a new shadcn/ui component
+# 🎨 Add shadcn/ui component
 npx shadcn-ui@latest add [component-name]
 ```
 
-### Styling
+### 🎨 **Styling Options**
+- 📝 **Global styles** - Modify `app/globals.css`
+- 🎯 **Component styling** - Use Tailwind CSS classes
+- 🎨 **Theme variables** - CSS variables for theming
 
-- Modify `app/globals.css` for global styles
-- Use Tailwind CSS classes for component styling
-- CSS variables are defined for theming
+</td>
+<td width="50%">
+
+### ⚙️ **Configuration**
+- 🔧 **Tailwind config** - Customize design tokens
+- 📦 **Component variants** - Extend existing components
+- 🎭 **Animation settings** - Custom scroll and hover effects
+
+### 🎯 **Best Practices**
+- 📱 **Mobile-first** - Responsive design approach
+- ♿ **Accessibility** - ARIA labels and keyboard navigation
+- ⚡ **Performance** - Optimized components and lazy loading
+
+</td>
+</tr>
+</table>
+
+<div align="center">
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+<img src="https://user-images.githubusercontent.com/74038190/212284158-e840e285-664b-44d7-b79b-e264b5e54825.gif" width="200">
+
+### 🚀 **How to Contribute**
+
+</div>
+
+<table>
+<tr>
+<td width="50%">
+
+#### 1️⃣ **Fork & Clone**
+```bash
+# 🍴 Fork the repository
+# 📥 Clone your fork
+git clone https://github.com/yourusername/krili.git
+```
+
+#### 2️⃣ **Create Branch**
+```bash
+# 🌿 Create feature branch
+git checkout -b feature/amazing-feature
+```
+
+</td>
+<td width="50%">
+
+#### 3️⃣ **Commit Changes**
+```bash
+# 💾 Commit your changes
+git commit -m 'Add some amazing feature'
+```
+
+#### 4️⃣ **Submit PR**
+```bash
+# 🚀 Push and create Pull Request
+git push origin feature/amazing-feature
+```
+
+</td>
+</tr>
+</table>
+
+<div align="center">
 
 ## 📝 License
 
-This project is private and proprietary.
+<img src="https://user-images.githubusercontent.com/74038190/212257467-871d32b7-e401-42e8-a166-fcfd7baa4c6b.gif" width="100">
 
+**This project is private and proprietary.**
 
 ---
 
-Built with ❤️ using Next.js, TypeScript, BY LAADNANI
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="500">
+
+### 💖 **Built with Love**
+
+**Next.js** • **TypeScript** • **Tailwind CSS** • **shadcn/ui**
+
+**BY LAADNANI** 🚀
+
+<img src="https://user-images.githubusercontent.com/74038190/212284115-f47cd8ff-2ffb-4b04-b5bf-4d1c14c0247f.gif" width="100">
+
+</div>
