@@ -21,6 +21,8 @@ import {
   Grid3X3,
   List,
 } from "lucide-react"
+import Image from "next/image"
+import { productImages, getProductImage } from "@/lib/product-images"
 
 export default function WishlistPage() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
@@ -33,7 +35,7 @@ export default function WishlistPage() {
       description: "Canon EOS R5 with 24-70mm lens",
       price: 89.99,
       period: "per day",
-      image: "/professional-camera.png",
+      image: productImages.dslrCamera,
       location: "New York, NY",
       rating: 4.9,
       reviews: 127,
@@ -48,7 +50,7 @@ export default function WishlistPage() {
       description: "High-performance mountain bike for trails",
       price: 45.0,
       period: "per day",
-      image: "/mountain-bike-trek.png",
+      image: productImages.mountainBike,
       location: "San Francisco, CA",
       rating: 4.8,
       reviews: 89,
@@ -63,7 +65,7 @@ export default function WishlistPage() {
       description: "Waterproof family camping tent",
       price: 25.0,
       period: "per day",
-      image: "/camping-tent.png",
+      image: productImages.campingTent,
       location: "Denver, CO",
       rating: 4.7,
       reviews: 156,
@@ -71,6 +73,51 @@ export default function WishlistPage() {
       availability: "Rented until Jan 20",
       category: "Outdoor",
       addedDate: "2024-01-05",
+    },
+    {
+      id: "4",
+      title: "Gaming Setup - PS5",
+      description: "PlayStation 5 with controllers and games",
+      price: 65.0,
+      period: "per day",
+      image: productImages.playstation,
+      location: "Los Angeles, CA",
+      rating: 4.9,
+      reviews: 203,
+      owner: "Alex Martinez",
+      availability: "Available",
+      category: "Gaming",
+      addedDate: "2024-01-12",
+    },
+    {
+      id: "5",
+      title: "Electric Guitar - Fender",
+      description: "Fender Stratocaster with amplifier",
+      price: 35.0,
+      period: "per day",
+      image: productImages.electricGuitar,
+      location: "Austin, TX",
+      rating: 4.7,
+      reviews: 78,
+      owner: "Jessica Lee",
+      availability: "Available",
+      category: "Music & Audio",
+      addedDate: "2024-01-15",
+    },
+    {
+      id: "6",
+      title: "MacBook Pro 16-inch",
+      description: "Latest MacBook Pro for creative work",
+      price: 120.0,
+      period: "per day",
+      image: productImages.macbook,
+      location: "Seattle, WA",
+      rating: 4.8,
+      reviews: 145,
+      owner: "David Kim",
+      availability: "Rented until Jan 25",
+      category: "Electronics",
+      addedDate: "2024-01-18",
     },
   ]
 
@@ -158,10 +205,14 @@ export default function WishlistPage() {
                   } ${viewMode === "list" ? "flex-row" : ""}`}
                 >
                   <div className={viewMode === "list" ? "flex w-full" : ""}>
-                    <div className={`relative ${viewMode === "list" ? "w-48 flex-shrink-0" : "aspect-video"}`}>
-                      <div className="w-full h-full bg-muted rounded-t-lg flex items-center justify-center">
-                        <span className="text-muted-foreground">Image</span>
-                      </div>
+                    <div className={`relative ${viewMode === "list" ? "w-48 flex-shrink-0" : "aspect-video"} overflow-hidden`}>
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        className="object-cover rounded-t-lg"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
                       <div className="absolute top-2 left-2">
                         <Badge variant={item.availability === "Available" ? "default" : "secondary"}>
                           {item.availability}

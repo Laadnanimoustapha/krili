@@ -8,6 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Edit, MoreHorizontal, Eye, Trash2, Plus, DollarSign, Calendar, MapPin } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
+import { productImages } from "@/lib/product-images"
 
 // Mock data for user's listings
 const mockListings = [
@@ -21,7 +23,7 @@ const mockListings = [
     status: "active",
     views: 127,
     bookings: 3,
-    image: "https://images.unsplash.com/photo-1606980707986-8f6e6c3e6d1e?w=800&h=600&fit=crop",
+    image: productImages.dslrCamera,
     createdAt: "2024-01-15",
     availableFrom: "2024-01-20",
     availableTo: "2024-06-20",
@@ -36,7 +38,7 @@ const mockListings = [
     status: "active",
     views: 89,
     bookings: 2,
-    image: "https://images.unsplash.com/photo-1576435728678-68d0fbf94e91?w=800&h=600&fit=crop",
+    image: productImages.mountainBike,
     createdAt: "2024-01-10",
     availableFrom: "2024-01-15",
     availableTo: "2024-05-15",
@@ -51,10 +53,55 @@ const mockListings = [
     status: "draft",
     views: 0,
     bookings: 0,
-    image: "https://images.unsplash.com/photo-1504148455328-c376907d081c?w=800&h=600&fit=crop",
+    image: productImages.powerDrill,
     createdAt: "2024-01-12",
     availableFrom: "2024-01-18",
     availableTo: "2024-04-18",
+  },
+  {
+    id: "4",
+    title: "Electric Guitar - Fender",
+    category: "Music & Audio",
+    condition: "Good",
+    dailyPrice: 40,
+    location: "San Francisco, CA",
+    status: "active",
+    views: 67,
+    bookings: 1,
+    image: productImages.electricGuitar,
+    createdAt: "2024-01-08",
+    availableFrom: "2024-01-12",
+    availableTo: "2024-05-12",
+  },
+  {
+    id: "5",
+    title: "Gaming Setup - PS5",
+    category: "Gaming",
+    condition: "Like New",
+    dailyPrice: 60,
+    location: "San Francisco, CA",
+    status: "active",
+    views: 234,
+    bookings: 5,
+    image: productImages.playstation,
+    createdAt: "2024-01-05",
+    availableFrom: "2024-01-10",
+    availableTo: "2024-07-10",
+  },
+  {
+    id: "6",
+    title: "Camping Tent - 4 Person",
+    category: "Outdoor",
+    condition: "Good",
+    dailyPrice: 30,
+    location: "San Francisco, CA",
+    status: "draft",
+    views: 0,
+    bookings: 0,
+    image: productImages.campingTent,
+    createdAt: "2024-01-20",
+    availableFrom: "2024-01-25",
+    availableTo: "2024-06-25",
   },
 ]
 
@@ -80,7 +127,13 @@ export function MyListings() {
   const ListingCard = ({ listing }: { listing: (typeof mockListings)[0] }) => (
     <Card className="overflow-hidden">
       <div className="aspect-video relative">
-        <img src={listing.image || "/placeholder.svg"} alt={listing.title} className="w-full h-full object-cover" />
+        <Image 
+          src={listing.image} 
+          alt={listing.title} 
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
         <Badge className={`absolute top-2 right-2 ${getStatusColor(listing.status)}`}>{listing.status}</Badge>
       </div>
       <CardHeader className="pb-3">

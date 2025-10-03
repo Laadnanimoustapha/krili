@@ -8,6 +8,8 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { WishlistButton } from "@/components/wishlist-button"
 import { Star, MapPin, MessageCircle, Calendar, Eye } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
+import { getProductImage } from "@/lib/product-images"
 
 interface Product {
   id: string
@@ -65,11 +67,13 @@ export function ProductGrid({ products, loading = false }: ProductGridProps) {
           onMouseLeave={() => setHoveredProduct(null)}
         >
           <div className="relative aspect-video overflow-hidden">
-            <div className="w-full h-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center transition-all duration-500 group-hover:scale-110">
-              <span className="text-muted-foreground group-hover:scale-90 transition-transform duration-300">
-                Image
-              </span>
-            </div>
+            <Image
+              src={product.image || getProductImage(product.title, product.category)}
+              alt={product.title}
+              fill
+              className="object-cover transition-all duration-500 group-hover:scale-110"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
 
             <div
               className={`absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-all duration-500 ${hoveredProduct === product.id ? "opacity-100" : "opacity-0"}`}
