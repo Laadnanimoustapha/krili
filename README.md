@@ -461,8 +461,7 @@ git push origin feature/amazing-feature
 
 The diagram below illustrates the overall structure and workflow of the project:
 
-![Project Architecture](./docs/project-architecture.png)
-
+![Project Architecture](.github/20250827_1956_Rental%20Website%20Architecture%20Diagram_simple_compose_01k3pakzjcfata4p8tzvsry7ym.png)
 ### How It Works
 
 - **User** sends requests via the frontend.
