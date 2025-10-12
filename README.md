@@ -263,28 +263,6 @@ pnpm lint
 </tr>
 </table>
 
-<div align="center">
-
-## 📁 Project Structure
-
-</div>
-
-```
-🏗️ krili-react-ts/
-├── 📱 app/                    # Next.js app directory
-│   ├── 📄 (pages)/           # Route groups for different sections
-│   ├── 🎨 globals.css        # Global styles
-│   ├── 🏠 layout.tsx         # Root layout
-│   └── 🌟 page.tsx           # Homepage
-├── 🧩 components/            # React components
-│   ├── 🎭 ui/               # shadcn/ui components
-│   └── ⚡ ...               # Feature components
-├── 🎣 hooks/                # Custom React hooks
-├── 📚 lib/                  # Utility functions and configurations
-├── 🎨 styles/               # Additional stylesheets
-├── 🖼️ public/               # Static assets
-└── 📦 ...
-```
 
 <div align="center">
 
