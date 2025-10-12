@@ -248,45 +248,7 @@ Open your browser and navigate to **[http://localhost:3000](http://localhost:300
 - 🔄 **Language selector** - Easy language switching component
 - 🎯 **Dynamic content** - Real-time language updates
 
-<div align="center">
 
-## 🔧 Customization Guide
-
-<img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg" width="100">
-
-</div>
-
-<table>
-<tr>
-<td width="50%">
-
-### 🧩 **Adding Components**
-```bash
-# 🎨 Add shadcn/ui component
-npx shadcn-ui@latest add [component-name]
-```
-
-### 🎨 **Styling Options**
-- 📝 **Global styles** - Modify `app/globals.css`
-- 🎯 **Component styling** - Use Tailwind CSS classes
-- 🎨 **Theme variables** - CSS variables for theming
-
-</td>
-<td width="50%">
-
-### ⚙️ **Configuration**
-- 🔧 **Tailwind config** - Customize design tokens
-- 📦 **Component variants** - Extend existing components
-- 🎭 **Animation settings** - Custom scroll and hover effects
-
-### 🎯 **Best Practices**
-- 📱 **Mobile-first** - Responsive design approach
-- ♿ **Accessibility** - ARIA labels and keyboard navigation
-- ⚡ **Performance** - Optimized components and lazy loading
-
-</td>
-</tr>
-</table>
 
 <div align="center">
 
