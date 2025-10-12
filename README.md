@@ -233,40 +233,6 @@ Open your browser and navigate to **[http://localhost:3000](http://localhost:300
 </tr>
 </table>
 
-
-
-
-<div align="center">
-
-## 🎨 UI Components & Design
-
-<img src="https://user-images.githubusercontent.com/74038190/212257468-1e9a91f1-b626-4baa-b15d-5c385dfa7c7a.gif" width="100">
-
-</div>
-
-<table>
-<tr>
-<td width="50%">
-
-### 🎭 **Design System**
-- 🎨 **shadcn/ui components** - Built on Radix UI primitives
-- 🏙️ **"New York" style** - Clean and modern design
-- 🎯 **Neutral color palette** - Professional appearance
-- ♿ **Accessible components** - WCAG compliant
-
-</td>
-<td width="50%">
-
-### 🛠️ **Theming Features**
-- 🌙 **CSS variables** - Dynamic theming support
-- 📏 **Consistent spacing** - Unified design language
-- 📝 **Typography system** - Readable and scalable fonts
-- 🎨 **Custom animations** - Smooth user interactions
-
-</td>
-</tr>
-</table>
-
 <div align="center">
 
 ## 🌐 Internationalization
