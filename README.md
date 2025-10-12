@@ -254,45 +254,6 @@ Open your browser and navigate to **[http://localhost:3000](http://localhost:300
 
 
 
-### 🚀 **How to Contribute**
-
-</div>
-
-<table>
-<tr>
-<td width="50%">
-
-#### 1️⃣ **Fork & Clone**
-```bash
-# 🍴 Fork the repository
-# 📥 Clone your fork
-git clone https://github.com/Laadnanimoustapha/krili-react-ts.git
-```
-
-#### 2️⃣ **Create Branch**
-```bash
-# 🌿 Create feature branch
-git checkout -b feature/amazing-feature
-```
-
-</td>
-<td width="50%">
-
-#### 3️⃣ **Commit Changes**
-```bash
-# 💾 Commit your changes
-git commit -m 'Add some amazing feature'
-```
-
-#### 4️⃣ **Submit PR**
-```bash
-# 🚀 Push and create Pull Request
-git push origin feature/amazing-feature
-```
-
-</td>
-</tr>
-</table>
 
 <div align="center">
 
