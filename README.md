@@ -234,19 +234,7 @@ Open your browser and navigate to **[http://localhost:3000](http://localhost:300
 </table>
 
 
-<div align="center">
 
-### 🗂️ **Key Directories**
-
-| Directory | Purpose | Description |
-|-----------|---------|-------------|
-| 📱 `app/` | **Next.js App Router** | Modern routing with layouts and pages |
-| 🧩 `components/` | **React Components** | Reusable UI components and features |
-| 🎣 `hooks/` | **Custom Hooks** | Reusable React logic |
-| 📚 `lib/` | **Utilities** | Helper functions and configurations |
-| 🖼️ `public/` | **Static Assets** | Images, icons, and static files |
-
-</div>
 
 <div align="center">
 
