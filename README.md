@@ -223,41 +223,11 @@ Open your browser and navigate to **[http://localhost:3000](http://localhost:300
 
 <div align="center">
 
-## 🛠️ Available Scripts
 
-
-
-
-<table>
-<tr>
-<td width="50%">
-</div>
-### 🚀 **Development**
-```bash
-# 🔥 Start development server
-pnpm dev
-```
-
-### 🏗️ **Build**
-```bash
-# 📦 Build for production
-pnpm build
-```
 
 </td>
 <td width="50%">
 
-### 🌐 **Production**
-```bash
-# 🚀 Start production server
-pnpm start
-```
-
-### 🔍 **Linting**
-```bash
-# ✨ Run ESLint
-pnpm lint
-```
 
 </td>
 </tr>
