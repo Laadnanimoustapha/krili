@@ -10,6 +10,7 @@
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=22&duration=3000&pause=1000&color=2563EB&center=true&vCenter=true&width=600&lines=Modern+Peer-to-Peer+Rental+Platform;Built+with+Next.js+%26+TypeScript;Connecting+Communities+Worldwide" alt="Typing SVG" />
 </p>
 
+
 </div>
 
 <div align="center">
