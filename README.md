@@ -212,11 +212,10 @@ pnpm dev
 
 <div align="center">
 
-### 🎉 **You're Ready!**
 
-Open your browser and navigate to **[http://localhost:3000](http://localhost:3000)**
 
-<img src="https://user-images.githubusercontent.com/74038190/212284115-f47cd8ff-2ffb-4b04-b5bf-4d1c14c0247f.gif" width="200">
+
+
 
 </div>
 
