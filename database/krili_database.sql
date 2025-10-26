@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS items (
   category_id INT NOT NULL,
   title VARCHAR(255) NOT NULL,
   description TEXT,
-  condition ENUM('like_new', 'good', 'fair', 'poor') DEFAULT 'good',
+  `condition` ENUM('like_new', 'good', 'fair', 'poor') DEFAULT 'good',
   daily_rental_price DECIMAL(10, 2) NOT NULL,
   weekly_rental_price DECIMAL(10, 2),
   monthly_rental_price DECIMAL(10, 2),
@@ -98,6 +98,7 @@ CREATE TABLE IF NOT EXISTS items (
   INDEX idx_city (city),
   INDEX idx_created_at (created_at)
 );
+
 
 -- ============================================
 -- 4. ITEM IMAGES TABLE
