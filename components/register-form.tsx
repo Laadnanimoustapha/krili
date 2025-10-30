@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -11,8 +12,12 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Eye, EyeOff, Shield, CheckCircle } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import { authApi } from "@/lib/api-client"
+import { useToast } from "@/hooks/use-toast"
 
 export function RegisterForm() {
+  const router = useRouter()
+  const { toast } = useToast()
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -65,8 +70,42 @@ export function RegisterForm() {
     }
 
     setIsLoading(true)
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    setIsLoading(false)
+    try {
+      const response = await authApi.register({
+        email: formData.email,
+        password: formData.password,
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        phone_number: formData.phone,
+      })
+
+      if (response.success) {
+        toast({
+          title: "Success",
+          description: "Account created successfully. Please log in.",
+        })
+
+        // Redirect to login
+        router.push("/login")
+      } else {
+        setErrors({ submit: response.message || "Registration failed" })
+        toast({
+          title: "Error",
+          description: response.message || "Registration failed",
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An error occurred during registration"
+      setErrors({ submit: errorMessage })
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -303,13 +342,13 @@ export function RegisterForm() {
               </div>
             </div>
 
-            <Button
-              type="submit"
-              className="w-full"
-              size="lg"
-              disabled={!formData.agreeToTerms || isLoading}
-              loading={isLoading}
-            >
+            {errors.submit && (
+              <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-md">
+                <p className="text-sm text-destructive">{errors.submit}</p>
+              </div>
+            )}
+
+            <Button type="submit" className="w-full" size="lg" disabled={!formData.agreeToTerms || isLoading}>
               {isLoading ? "Creating Account..." : "Create Account"}
             </Button>
 

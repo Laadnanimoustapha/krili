@@ -1,62 +1,153 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Star, MapPin, Shield, MessageCircle, Heart, Share, CalendarIcon, ArrowLeft } from "lucide-react"
+import { Star, MapPin, Shield, MessageCircle, Heart, Share, CalendarIcon, ArrowLeft, Loader2 } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { format } from "date-fns"
+import { itemsApi, rentalsApi } from "@/lib/api-client"
+import { useToast } from "@/hooks/use-toast"
+import { useRouter } from "next/navigation"
 
-// Mock item data
-const mockItem = {
-  id: 1,
-  title: "Professional DSLR Camera Kit",
-  description:
-    "Canon EOS R5 with 24-70mm lens, perfect for photography and videography. Includes battery charger, memory card, and protective case. Great for weddings, events, or personal projects.",
-  price: 450,
-  rating: 4.9,
-  reviews: 127,
-  location: "San Francisco, CA",
-  category: "Photography",
-  condition: "Like New",
-  owner: {
-    name: "Salma Benjelloun",
-    rating: 4.8,
-    reviews: 89,
-    joinDate: "2022",
-    verified: true,
-  },
-  images: ["/professional-camera-front.png", "/professional-camera-side.png", "/camera-accessories.png"],
-  features: ["24-70mm Lens", "Battery Charger", "Memory Card", "Protective Case", "Instruction Manual"],
-  available: true,
-  instantBook: true,
-  pickupOptions: ["Owner Delivery", "Meet in Public", "Pickup Location"],
+interface ItemData {
+  id: number
+  title: string
+  description: string
+  daily_rental_price: number
+  rating?: number
+  total_reviews?: number
+  location?: string
+  city?: string
+  category_name?: string
+  condition?: string
+  first_name?: string
+  last_name?: string
+  images?: Array<{ image_url: string; is_primary: boolean }>
+  reviews?: any[]
+  owner_id?: number
+  bio?: string
 }
 
 export function ItemDetails({ itemId }: { itemId: string }) {
+  const router = useRouter()
+  const { toast } = useToast()
+  const [item, setItem] = useState<ItemData | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const [selectedImage, setSelectedImage] = useState(0)
   const [startDate, setStartDate] = useState<Date>()
   const [endDate, setEndDate] = useState<Date>()
   const [isLiked, setIsLiked] = useState(false)
+  const [isBooking, setIsBooking] = useState(false)
+
+  useEffect(() => {
+    const fetchItem = async () => {
+      setIsLoading(true)
+      try {
+        const response = await itemsApi.getItem(Number.parseInt(itemId))
+
+        if (response.success && response.item) {
+          setItem(response.item)
+        } else {
+          toast({
+            title: "Error",
+            description: "Item not found",
+            variant: "destructive",
+          })
+          router.push("/browse")
+        }
+      } catch (error) {
+        console.error("Error fetching item:", error)
+        toast({
+          title: "Error",
+          description: "Failed to load item details",
+          variant: "destructive",
+        })
+        router.push("/browse")
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchItem()
+  }, [itemId, toast, router])
 
   const calculateTotal = () => {
-    if (!startDate || !endDate) return 0
+    if (!startDate || !endDate || !item) return 0
     const days = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
-    return days * mockItem.price
+    return days * item.daily_rental_price
   }
+
+  const handleBooking = async () => {
+    if (!startDate || !endDate) {
+      toast({
+        title: "Error",
+        description: "Please select start and end dates",
+        variant: "destructive",
+      })
+      return
+    }
+
+    setIsBooking(true)
+    try {
+      const response = await rentalsApi.createRental({
+        item_id: item!.id,
+        rental_start_date: format(startDate, "yyyy-MM-dd"),
+        rental_end_date: format(endDate, "yyyy-MM-dd"),
+      })
+
+      if (response.success) {
+        toast({
+          title: "Success",
+          description: "Rental booking created successfully",
+        })
+        router.push("/my-rentals")
+      } else {
+        toast({
+          title: "Error",
+          description: response.message || "Failed to create booking",
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      console.error("Error creating booking:", error)
+      toast({
+        title: "Error",
+        description: "Failed to create booking",
+        variant: "destructive",
+      })
+    } finally {
+      setIsBooking(false)
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="container py-8 flex items-center justify-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    )
+  }
+
+  if (!item) {
+    return null
+  }
+
+  const itemImages = item.images || []
+  const primaryImage = itemImages.find((img) => img.is_primary)?.image_url || itemImages[0]?.image_url
 
   return (
     <div className="container py-8">
       {/* Back Button */}
       <Button variant="ghost" className="mb-6" asChild>
-        <Link href="/search">
+        <Link href="/browse">
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Search
+          Back to Browse
         </Link>
       </Button>
 
@@ -65,30 +156,32 @@ export function ItemDetails({ itemId }: { itemId: string }) {
         <div className="space-y-4">
           <div className="aspect-[4/3] relative rounded-lg overflow-hidden">
             <Image
-              src={mockItem.images[selectedImage] || "/placeholder.svg"}
-              alt={mockItem.title}
+              src={primaryImage || "/placeholder.svg?height=400&width=500&query=rental item"}
+              alt={item.title}
               fill
               className="object-cover"
             />
           </div>
-          <div className="grid grid-cols-3 gap-2">
-            {mockItem.images.map((image, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedImage(index)}
-                className={`aspect-square relative rounded-md overflow-hidden border-2 ${
-                  selectedImage === index ? "border-primary" : "border-transparent"
-                }`}
-              >
-                <Image
-                  src={image || "/placeholder.svg"}
-                  alt={`${mockItem.title} ${index + 1}`}
-                  fill
-                  className="object-cover"
-                />
-              </button>
-            ))}
-          </div>
+          {itemImages.length > 0 && (
+            <div className="grid grid-cols-3 gap-2">
+              {itemImages.map((image, index) => (
+                <button
+                  key={index}
+                  onClick={() => setSelectedImage(index)}
+                  className={`aspect-square relative rounded-md overflow-hidden border-2 ${
+                    selectedImage === index ? "border-primary" : "border-transparent"
+                  }`}
+                >
+                  <Image
+                    src={image.image_url || "/placeholder.svg"}
+                    alt={`${item.title} ${index + 1}`}
+                    fill
+                    className="object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Details */}
@@ -96,7 +189,7 @@ export function ItemDetails({ itemId }: { itemId: string }) {
           {/* Header */}
           <div>
             <div className="flex items-start justify-between mb-2">
-              <h1 className="text-3xl font-bold text-balance">{mockItem.title}</h1>
+              <h1 className="text-3xl font-bold text-balance">{item.title}</h1>
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="sm" onClick={() => setIsLiked(!isLiked)}>
                   <Heart className={`h-4 w-4 ${isLiked ? "fill-red-500 text-red-500" : ""}`} />
@@ -108,37 +201,27 @@ export function ItemDetails({ itemId }: { itemId: string }) {
             </div>
 
             <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
-              <div className="flex items-center gap-1">
-                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                <span>{mockItem.rating}</span>
-                <span>({mockItem.reviews} reviews)</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <MapPin className="h-4 w-4" />
-                <span>{mockItem.location}</span>
-              </div>
+              {item.rating && (
+                <div className="flex items-center gap-1">
+                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                  <span>{item.rating}</span>
+                  <span>({item.total_reviews || 0} reviews)</span>
+                </div>
+              )}
+              {item.city && (
+                <div className="flex items-center gap-1">
+                  <MapPin className="h-4 w-4" />
+                  <span>{item.city}</span>
+                </div>
+              )}
             </div>
 
             <div className="flex gap-2 mb-4">
-              <Badge variant="outline">{mockItem.category}</Badge>
-              <Badge variant="outline">{mockItem.condition}</Badge>
-              {mockItem.instantBook && <Badge className="bg-green-600">Instant Book</Badge>}
+              {item.category_name && <Badge variant="outline">{item.category_name}</Badge>}
+              {item.condition && <Badge variant="outline">{item.condition}</Badge>}
             </div>
 
-            <p className="text-muted-foreground leading-relaxed">{mockItem.description}</p>
-          </div>
-
-          {/* Features */}
-          <div>
-            <h3 className="font-semibold mb-3">What's Included</h3>
-            <ul className="grid grid-cols-2 gap-2">
-              {mockItem.features.map((feature) => (
-                <li key={feature} className="flex items-center gap-2 text-sm">
-                  <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-                  {feature}
-                </li>
-              ))}
-            </ul>
+            <p className="text-muted-foreground leading-relaxed">{item.description}</p>
           </div>
 
           {/* Owner */}
@@ -147,18 +230,23 @@ export function ItemDetails({ itemId }: { itemId: string }) {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Avatar>
-                    <AvatarFallback>{mockItem.owner.name.charAt(0)}</AvatarFallback>
+                    <AvatarFallback>{item.first_name?.charAt(0) || "U"}</AvatarFallback>
                   </Avatar>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-semibold">{mockItem.owner.name}</span>
-                      {mockItem.owner.verified && <Shield className="h-4 w-4 text-green-600" />}
+                      <span className="font-semibold">
+                        {item.first_name} {item.last_name}
+                      </span>
+                      <Shield className="h-4 w-4 text-green-600" />
                     </div>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                      <span>{mockItem.owner.rating}</span>
-                      <span>({mockItem.owner.reviews} reviews)</span>
-                      <span>• Joined {mockItem.owner.joinDate}</span>
+                      {item.rating && (
+                        <>
+                          <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                          <span>{item.rating}</span>
+                          <span>({item.total_reviews || 0} reviews)</span>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -213,7 +301,7 @@ export function ItemDetails({ itemId }: { itemId: string }) {
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span>
-                    {mockItem.price} DH ×{" "}
+                    {item.daily_rental_price} DH ×{" "}
                     {startDate && endDate
                       ? Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
                       : 0}{" "}
@@ -233,8 +321,20 @@ export function ItemDetails({ itemId }: { itemId: string }) {
             </div>
 
             <div className="space-y-3">
-              <Button className="w-full" size="lg" disabled={!startDate || !endDate}>
-                {mockItem.instantBook ? "Book Instantly" : "Request to Book"}
+              <Button
+                className="w-full"
+                size="lg"
+                disabled={!startDate || !endDate || isBooking}
+                onClick={handleBooking}
+              >
+                {isBooking ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Booking...
+                  </>
+                ) : (
+                  "Book Now"
+                )}
               </Button>
               <Button variant="outline" className="w-full bg-transparent">
                 <MessageCircle className="h-4 w-4 mr-2" />

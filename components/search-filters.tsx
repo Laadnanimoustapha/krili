@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -8,31 +8,82 @@ import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Slider } from "@/components/ui/slider"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { MapPin, Filter, X } from "lucide-react"
+import { MapPin, Filter, X, Loader2 } from "lucide-react"
+import { categoriesApi } from "@/lib/api-client"
+import { useToast } from "@/hooks/use-toast"
 
-const categories = [
-  "Tools & Equipment",
-  "Electronics",
-  "Vehicles",
-  "Photography",
-  "Sports & Recreation",
-  "Music & Audio",
-  "Gaming",
-  "Home & Garden",
-]
+interface Category {
+  id: number
+  name: string
+  slug: string
+}
 
 const conditions = ["New", "Like New", "Good", "Fair"]
 
-export function SearchFilters() {
-  const [priceRange, setPriceRange] = useState([0, 500])
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
-  const [selectedConditions, setSelectedConditions] = useState<string[]>([])
+interface SearchFiltersProps {
+  onFilterChange?: (filters: {
+    priceRange: number[]
+    selectedCategories: number[]
+    selectedConditions: string[]
+    city: string
+  }) => void
+}
 
-  const handleCategoryChange = (category: string, checked: boolean) => {
+export function SearchFilters({ onFilterChange }: SearchFiltersProps) {
+  const { toast } = useToast()
+  const [priceRange, setPriceRange] = useState([0, 500])
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([])
+  const [selectedConditions, setSelectedConditions] = useState<string[]>([])
+  const [city, setCity] = useState("")
+  const [categories, setCategories] = useState<Category[]>([])
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true)
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setIsLoadingCategories(true)
+      try {
+        const response = await categoriesApi.getCategories()
+
+        if (response.success && response.categories) {
+          setCategories(response.categories)
+        } else {
+          toast({
+            title: "Error",
+            description: "Failed to load categories",
+            variant: "destructive",
+          })
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error)
+        toast({
+          title: "Error",
+          description: "Failed to load categories",
+          variant: "destructive",
+        })
+      } finally {
+        setIsLoadingCategories(false)
+      }
+    }
+
+    fetchCategories()
+  }, [toast])
+
+  useEffect(() => {
+    if (onFilterChange) {
+      onFilterChange({
+        priceRange,
+        selectedCategories,
+        selectedConditions,
+        city,
+      })
+    }
+  }, [priceRange, selectedCategories, selectedConditions, city, onFilterChange])
+
+  const handleCategoryChange = (categoryId: number, checked: boolean) => {
     if (checked) {
-      setSelectedCategories([...selectedCategories, category])
+      setSelectedCategories([...selectedCategories, categoryId])
     } else {
-      setSelectedCategories(selectedCategories.filter((c) => c !== category))
+      setSelectedCategories(selectedCategories.filter((c) => c !== categoryId))
     }
   }
 
@@ -48,6 +99,7 @@ export function SearchFilters() {
     setSelectedCategories([])
     setSelectedConditions([])
     setPriceRange([0, 500])
+    setCity("")
   }
 
   return (
@@ -72,7 +124,12 @@ export function SearchFilters() {
         <CardContent className="space-y-3">
           <div className="relative">
             <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input placeholder="Enter city or zip code" className="pl-10" />
+            <Input
+              placeholder="Enter city or zip code"
+              className="pl-10"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+            />
           </div>
           <Select>
             <SelectTrigger>
@@ -108,18 +165,26 @@ export function SearchFilters() {
           <CardTitle className="text-sm">Categories</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          {categories.map((category) => (
-            <div key={category} className="flex items-center space-x-2">
-              <Checkbox
-                id={category}
-                checked={selectedCategories.includes(category)}
-                onCheckedChange={(checked) => handleCategoryChange(category, checked as boolean)}
-              />
-              <Label htmlFor={category} className="text-sm font-normal cursor-pointer">
-                {category}
-              </Label>
+          {isLoadingCategories ? (
+            <div className="flex items-center justify-center py-4">
+              <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
             </div>
-          ))}
+          ) : categories.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No categories available</p>
+          ) : (
+            categories.map((category) => (
+              <div key={category.id} className="flex items-center space-x-2">
+                <Checkbox
+                  id={`category-${category.id}`}
+                  checked={selectedCategories.includes(category.id)}
+                  onCheckedChange={(checked) => handleCategoryChange(category.id, checked as boolean)}
+                />
+                <Label htmlFor={`category-${category.id}`} className="text-sm font-normal cursor-pointer">
+                  {category.name}
+                </Label>
+              </div>
+            ))
+          )}
         </CardContent>
       </Card>
 

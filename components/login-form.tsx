@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -11,6 +12,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Eye, EyeOff, CheckCircle, AlertCircle } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import { authApi, apiClient } from "@/lib/api-client"
+import { useToast } from "@/hooks/use-toast"
 
 type FormDataType = {
   email: string
@@ -19,6 +22,8 @@ type FormDataType = {
 }
 
 export function LoginForm() {
+  const router = useRouter()
+  const { toast } = useToast()
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -67,9 +72,39 @@ export function LoginForm() {
     }
 
     setIsLoading(true)
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    setIsLoading(false)
+    try {
+      const response = await authApi.login(formData.email, formData.password)
+
+      if (response.success && response.access_token) {
+        // Store token
+        apiClient.setToken(response.access_token)
+
+        toast({
+          title: "Success",
+          description: "You have been logged in successfully",
+        })
+
+        // Redirect to dashboard or home
+        router.push("/browse")
+      } else {
+        setErrors({ submit: response.message || "Login failed" })
+        toast({
+          title: "Error",
+          description: response.message || "Login failed",
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An error occurred during login"
+      setErrors({ submit: errorMessage })
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -203,7 +238,13 @@ export function LoginForm() {
               </Link>
             </div>
 
-            <Button type="submit" className="w-full" size="lg" loading={isLoading} disabled={isLoading}>
+            {errors.submit && (
+              <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-md">
+                <p className="text-sm text-destructive">{errors.submit}</p>
+              </div>
+            )}
+
+            <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
               {isLoading ? "Signing In..." : "Sign In"}
             </Button>
 
