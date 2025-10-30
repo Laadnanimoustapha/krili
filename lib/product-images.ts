@@ -12,6 +12,7 @@ export const productImages = {
   speakers: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=800&h=600&fit=crop&auto=format",
   microphone: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=800&h=600&fit=crop&auto=format",
 
+  
   // Gaming
   playstation: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=800&h=600&fit=crop&auto=format",
   xbox: "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=800&h=600&fit=crop&auto=format",
