@@ -71,6 +71,12 @@ export function RegisterForm() {
 
     setIsLoading(true)
     try {
+      console.log("[v0] Attempting registration with:", {
+        email: formData.email,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+      })
+
       const response = await authApi.register({
         email: formData.email,
         password: formData.password,
@@ -78,6 +84,8 @@ export function RegisterForm() {
         last_name: formData.lastName,
         phone_number: formData.phone,
       })
+
+      console.log("[v0] Registration response:", response)
 
       if (response.success) {
         toast({
@@ -88,15 +96,17 @@ export function RegisterForm() {
         // Redirect to login
         router.push("/login")
       } else {
-        setErrors({ submit: response.message || "Registration failed" })
+        const errorMsg = response.message || "Registration failed"
+        setErrors({ submit: errorMsg })
         toast({
           title: "Error",
-          description: response.message || "Registration failed",
+          description: errorMsg,
           variant: "destructive",
         })
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An error occurred during registration"
+      console.error("[v0] Registration error:", errorMessage)
       setErrors({ submit: errorMessage })
       toast({
         title: "Error",
