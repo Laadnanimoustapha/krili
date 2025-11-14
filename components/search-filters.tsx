@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -8,8 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Slider } from "@/components/ui/slider"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { MapPin, Filter, X, Loader2 } from "lucide-react"
-import { categoriesApi } from "@/lib/api-client"
+import { MapPin, Filter, X } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 
 interface Category {
@@ -19,6 +18,14 @@ interface Category {
 }
 
 const conditions = ["New", "Like New", "Good", "Fair"]
+
+const mockCategories: Category[] = [
+  { id: 1, name: "Electronics", slug: "electronics" },
+  { id: 2, name: "Tools", slug: "tools" },
+  { id: 3, name: "Sports Equipment", slug: "sports" },
+  { id: 4, name: "Vehicles", slug: "vehicles" },
+  { id: 5, name: "Home & Garden", slug: "home" },
+]
 
 interface SearchFiltersProps {
   onFilterChange?: (filters: {
@@ -35,63 +42,35 @@ export function SearchFilters({ onFilterChange }: SearchFiltersProps) {
   const [selectedCategories, setSelectedCategories] = useState<number[]>([])
   const [selectedConditions, setSelectedConditions] = useState<string[]>([])
   const [city, setCity] = useState("")
-  const [categories, setCategories] = useState<Category[]>([])
-  const [isLoadingCategories, setIsLoadingCategories] = useState(true)
+  const [categories] = useState<Category[]>(mockCategories)
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      setIsLoadingCategories(true)
-      try {
-        const response = await categoriesApi.getCategories()
-
-        if (response.success && response.categories) {
-          setCategories(response.categories)
-        } else {
-          toast({
-            title: "Error",
-            description: "Failed to load categories",
-            variant: "destructive",
-          })
-        }
-      } catch (error) {
-        console.error("Error fetching categories:", error)
-        toast({
-          title: "Error",
-          description: "Failed to load categories",
-          variant: "destructive",
-        })
-      } finally {
-        setIsLoadingCategories(false)
-      }
-    }
-
-    fetchCategories()
-  }, [toast])
-
-  useEffect(() => {
+  const handleCategoryChange = (categoryId: number, checked: boolean) => {
+    const updatedCategories = checked
+      ? [...selectedCategories, categoryId]
+      : selectedCategories.filter((c) => c !== categoryId)
+    setSelectedCategories(updatedCategories)
     if (onFilterChange) {
       onFilterChange({
         priceRange,
-        selectedCategories,
+        selectedCategories: updatedCategories,
         selectedConditions,
         city,
       })
     }
-  }, [priceRange, selectedCategories, selectedConditions, city, onFilterChange])
-
-  const handleCategoryChange = (categoryId: number, checked: boolean) => {
-    if (checked) {
-      setSelectedCategories([...selectedCategories, categoryId])
-    } else {
-      setSelectedCategories(selectedCategories.filter((c) => c !== categoryId))
-    }
   }
 
   const handleConditionChange = (condition: string, checked: boolean) => {
-    if (checked) {
-      setSelectedConditions([...selectedConditions, condition])
-    } else {
-      setSelectedConditions(selectedConditions.filter((c) => c !== condition))
+    const updatedConditions = checked
+      ? [...selectedConditions, condition]
+      : selectedConditions.filter((c) => c !== condition)
+    setSelectedConditions(updatedConditions)
+    if (onFilterChange) {
+      onFilterChange({
+        priceRange,
+        selectedCategories,
+        selectedConditions: updatedConditions,
+        city,
+      })
     }
   }
 
@@ -151,7 +130,23 @@ export function SearchFilters({ onFilterChange }: SearchFiltersProps) {
           <CardTitle className="text-sm">Price Range (per day)</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Slider value={priceRange} onValueChange={setPriceRange} max={500} step={10} className="w-full" />
+          <Slider
+            value={priceRange}
+            onValueChange={(value) => {
+              setPriceRange(value)
+              if (onFilterChange) {
+                onFilterChange({
+                  priceRange: value,
+                  selectedCategories,
+                  selectedConditions,
+                  city,
+                })
+              }
+            }}
+            max={500}
+            step={10}
+            className="w-full"
+          />
           <div className="flex items-center justify-between text-sm text-muted-foreground">
             <span>${priceRange[0]}</span>
             <span>${priceRange[1]}+</span>
@@ -165,11 +160,7 @@ export function SearchFilters({ onFilterChange }: SearchFiltersProps) {
           <CardTitle className="text-sm">Categories</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          {isLoadingCategories ? (
-            <div className="flex items-center justify-center py-4">
-              <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-            </div>
-          ) : categories.length === 0 ? (
+          {categories.length === 0 ? (
             <p className="text-sm text-muted-foreground">No categories available</p>
           ) : (
             categories.map((category) => (

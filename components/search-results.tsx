@@ -10,7 +10,6 @@ import { Search, Grid, List, Star, MapPin, Map, Loader2 } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { MapSearch } from "./map-search"
-import { itemsApi } from "@/lib/api-client"
 import { useToast } from "@/hooks/use-toast"
 
 interface Item {
@@ -30,50 +29,81 @@ interface Item {
   listing_status?: string
 }
 
+const mockItems: Item[] = [
+  {
+    id: 1,
+    title: "Professional Camera Bundle",
+    description: "Complete photography kit with lenses and tripod",
+    daily_rental_price: 150,
+    rating: 4.8,
+    total_reviews: 24,
+    city: "San Francisco, CA",
+    category_name: "Electronics",
+    condition: "Like New",
+    first_name: "Alex",
+    last_name: "Johnson",
+    primary_image: "/placeholder.svg?height=300&width=400",
+    listing_status: "active",
+  },
+  {
+    id: 2,
+    title: "Electric Drill Set",
+    description: "Cordless power drill with multiple bits",
+    daily_rental_price: 35,
+    rating: 4.5,
+    total_reviews: 18,
+    city: "San Francisco, CA",
+    category_name: "Tools",
+    condition: "Good",
+    first_name: "Mike",
+    last_name: "Smith",
+    primary_image: "/placeholder.svg?height=300&width=400",
+    listing_status: "active",
+  },
+  {
+    id: 3,
+    title: "Mountain Bike",
+    description: "26-inch mountain bike perfect for trails",
+    daily_rental_price: 45,
+    rating: 4.6,
+    total_reviews: 31,
+    city: "San Francisco, CA",
+    category_name: "Sports Equipment",
+    condition: "Good",
+    first_name: "Sarah",
+    last_name: "Davis",
+    primary_image: "/placeholder.svg?height=300&width=400",
+    listing_status: "active",
+  },
+]
+
 export function SearchResults() {
   const { toast } = useToast()
   const [viewMode, setViewMode] = useState<"grid" | "list" | "map">("grid")
   const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState("relevance")
-  const [items, setItems] = useState<Item[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [items, setItems] = useState<Item[]>(mockItems)
+  const [isLoading, setIsLoading] = useState(false)
   const [page, setPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
+  const [totalPages] = useState(1)
 
+  // Filter items based on search query
   useEffect(() => {
-    const fetchItems = async () => {
-      setIsLoading(true)
-      try {
-        const response = await itemsApi.getItems({
-          search: searchQuery || undefined,
-          page,
-          limit: 12,
-        })
-
-        if (response.success) {
-          setItems(response.items || [])
-          setTotalPages(response.pagination?.pages || 1)
-        } else {
-          toast({
-            title: "Error",
-            description: "Failed to load items",
-            variant: "destructive",
-          })
-        }
-      } catch (error) {
-        console.error("Error fetching items:", error)
-        toast({
-          title: "Error",
-          description: "Failed to load items",
-          variant: "destructive",
-        })
-      } finally {
-        setIsLoading(false)
+    setIsLoading(true)
+    setTimeout(() => {
+      if (searchQuery) {
+        const filtered = mockItems.filter(
+          (item) =>
+            item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            item.description.toLowerCase().includes(searchQuery.toLowerCase()),
+        )
+        setItems(filtered)
+      } else {
+        setItems(mockItems)
       }
-    }
-
-    fetchItems()
-  }, [searchQuery, page, toast])
+      setIsLoading(false)
+    }, 500)
+  }, [searchQuery])
 
   const sortedItems = [...items].sort((a, b) => {
     switch (sortBy) {

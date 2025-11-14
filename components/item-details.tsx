@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -11,7 +11,6 @@ import { Star, MapPin, Shield, MessageCircle, Heart, Share, CalendarIcon, ArrowL
 import Image from "next/image"
 import Link from "next/link"
 import { format } from "date-fns"
-import { itemsApi, rentalsApi } from "@/lib/api-client"
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
 
@@ -37,50 +36,32 @@ interface ItemData {
 export function ItemDetails({ itemId }: { itemId: string }) {
   const router = useRouter()
   const { toast } = useToast()
-  const [item, setItem] = useState<ItemData | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [selectedImage, setSelectedImage] = useState(0)
+  const [item] = useState<ItemData | null>(null)
+  const [selectedImage] = useState(0)
   const [startDate, setStartDate] = useState<Date>()
   const [endDate, setEndDate] = useState<Date>()
   const [isLiked, setIsLiked] = useState(false)
   const [isBooking, setIsBooking] = useState(false)
 
-  useEffect(() => {
-    const fetchItem = async () => {
-      setIsLoading(true)
-      try {
-        const response = await itemsApi.getItem(Number.parseInt(itemId))
-
-        if (response.success && response.item) {
-          setItem(response.item)
-        } else {
-          toast({
-            title: "Error",
-            description: "Item not found",
-            variant: "destructive",
-          })
-          router.push("/browse")
-        }
-      } catch (error) {
-        console.error("Error fetching item:", error)
-        toast({
-          title: "Error",
-          description: "Failed to load item details",
-          variant: "destructive",
-        })
-        router.push("/browse")
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchItem()
-  }, [itemId, toast, router])
+  const mockItem: ItemData = {
+    id: Number.parseInt(itemId),
+    title: "Professional Camera Bundle",
+    description: "Professional photography camera with prime lens, tripod, and camera bag included.",
+    daily_rental_price: 150,
+    rating: 4.8,
+    total_reviews: 24,
+    city: "San Francisco, CA",
+    category_name: "Electronics",
+    condition: "Like New",
+    first_name: "Alex",
+    last_name: "Johnson",
+    images: [{ image_url: "/placeholder.svg?height=400&width=500", is_primary: true }],
+  }
 
   const calculateTotal = () => {
-    if (!startDate || !endDate || !item) return 0
+    if (!startDate || !endDate || !mockItem) return 0
     const days = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
-    return days * item.daily_rental_price
+    return days * mockItem.daily_rental_price
   }
 
   const handleBooking = async () => {
@@ -95,25 +76,13 @@ export function ItemDetails({ itemId }: { itemId: string }) {
 
     setIsBooking(true)
     try {
-      const response = await rentalsApi.createRental({
-        item_id: item!.id,
-        rental_start_date: format(startDate, "yyyy-MM-dd"),
-        rental_end_date: format(endDate, "yyyy-MM-dd"),
-      })
+      await new Promise((resolve) => setTimeout(resolve, 1000))
 
-      if (response.success) {
-        toast({
-          title: "Success",
-          description: "Rental booking created successfully",
-        })
-        router.push("/my-rentals")
-      } else {
-        toast({
-          title: "Error",
-          description: response.message || "Failed to create booking",
-          variant: "destructive",
-        })
-      }
+      toast({
+        title: "Success",
+        description: "Rental booking created successfully",
+      })
+      router.push("/browse")
     } catch (error) {
       console.error("Error creating booking:", error)
       toast({
@@ -126,19 +95,7 @@ export function ItemDetails({ itemId }: { itemId: string }) {
     }
   }
 
-  if (isLoading) {
-    return (
-      <div className="container py-8 flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    )
-  }
-
-  if (!item) {
-    return null
-  }
-
-  const itemImages = item.images || []
+  const itemImages = mockItem.images || []
   const primaryImage = itemImages.find((img) => img.is_primary)?.image_url || itemImages[0]?.image_url
 
   return (
@@ -157,7 +114,7 @@ export function ItemDetails({ itemId }: { itemId: string }) {
           <div className="aspect-[4/3] relative rounded-lg overflow-hidden">
             <Image
               src={primaryImage || "/placeholder.svg?height=400&width=500&query=rental item"}
-              alt={item.title}
+              alt={mockItem.title}
               fill
               className="object-cover"
             />
@@ -167,14 +124,13 @@ export function ItemDetails({ itemId }: { itemId: string }) {
               {itemImages.map((image, index) => (
                 <button
                   key={index}
-                  onClick={() => setSelectedImage(index)}
                   className={`aspect-square relative rounded-md overflow-hidden border-2 ${
                     selectedImage === index ? "border-primary" : "border-transparent"
                   }`}
                 >
                   <Image
                     src={image.image_url || "/placeholder.svg"}
-                    alt={`${item.title} ${index + 1}`}
+                    alt={`${mockItem.title} ${index + 1}`}
                     fill
                     className="object-cover"
                   />
@@ -189,7 +145,7 @@ export function ItemDetails({ itemId }: { itemId: string }) {
           {/* Header */}
           <div>
             <div className="flex items-start justify-between mb-2">
-              <h1 className="text-3xl font-bold text-balance">{item.title}</h1>
+              <h1 className="text-3xl font-bold text-balance">{mockItem.title}</h1>
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="sm" onClick={() => setIsLiked(!isLiked)}>
                   <Heart className={`h-4 w-4 ${isLiked ? "fill-red-500 text-red-500" : ""}`} />
@@ -201,27 +157,27 @@ export function ItemDetails({ itemId }: { itemId: string }) {
             </div>
 
             <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
-              {item.rating && (
+              {mockItem.rating && (
                 <div className="flex items-center gap-1">
                   <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  <span>{item.rating}</span>
-                  <span>({item.total_reviews || 0} reviews)</span>
+                  <span>{mockItem.rating}</span>
+                  <span>({mockItem.total_reviews || 0} reviews)</span>
                 </div>
               )}
-              {item.city && (
+              {mockItem.city && (
                 <div className="flex items-center gap-1">
                   <MapPin className="h-4 w-4" />
-                  <span>{item.city}</span>
+                  <span>{mockItem.city}</span>
                 </div>
               )}
             </div>
 
             <div className="flex gap-2 mb-4">
-              {item.category_name && <Badge variant="outline">{item.category_name}</Badge>}
-              {item.condition && <Badge variant="outline">{item.condition}</Badge>}
+              {mockItem.category_name && <Badge variant="outline">{mockItem.category_name}</Badge>}
+              {mockItem.condition && <Badge variant="outline">{mockItem.condition}</Badge>}
             </div>
 
-            <p className="text-muted-foreground leading-relaxed">{item.description}</p>
+            <p className="text-muted-foreground leading-relaxed">{mockItem.description}</p>
           </div>
 
           {/* Owner */}
@@ -230,21 +186,21 @@ export function ItemDetails({ itemId }: { itemId: string }) {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Avatar>
-                    <AvatarFallback>{item.first_name?.charAt(0) || "U"}</AvatarFallback>
+                    <AvatarFallback>{mockItem.first_name?.charAt(0) || "U"}</AvatarFallback>
                   </Avatar>
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="font-semibold">
-                        {item.first_name} {item.last_name}
+                        {mockItem.first_name} {mockItem.last_name}
                       </span>
                       <Shield className="h-4 w-4 text-green-600" />
                     </div>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      {item.rating && (
+                      {mockItem.rating && (
                         <>
                           <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                          <span>{item.rating}</span>
-                          <span>({item.total_reviews || 0} reviews)</span>
+                          <span>{mockItem.rating}</span>
+                          <span>({mockItem.total_reviews || 0} reviews)</span>
                         </>
                       )}
                     </div>
@@ -301,7 +257,7 @@ export function ItemDetails({ itemId }: { itemId: string }) {
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span>
-                    {item.daily_rental_price} DH ×{" "}
+                    {mockItem.daily_rental_price} DH ×{" "}
                     {startDate && endDate
                       ? Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
                       : 0}{" "}

@@ -12,7 +12,6 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Eye, EyeOff, Shield, CheckCircle } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { authApi } from "@/lib/api-client"
 import { useToast } from "@/hooks/use-toast"
 
 export function RegisterForm() {
@@ -71,42 +70,30 @@ export function RegisterForm() {
 
     setIsLoading(true)
     try {
-      console.log("[v0] Attempting registration with:", {
-        email: formData.email,
+      // Simulate registration delay
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+
+      // Store user registration data in localStorage for demo purposes
+      const registeredUsers = JSON.parse(localStorage.getItem("krili_registered_users") || "[]")
+      registeredUsers.push({
         firstName: formData.firstName,
         lastName: formData.lastName,
-      })
-
-      const response = await authApi.register({
         email: formData.email,
-        password: formData.password,
-        first_name: formData.firstName,
-        last_name: formData.lastName,
-        phone_number: formData.phone,
+        phone: formData.phone,
+        agreeToMarketing: formData.agreeToMarketing,
+        registeredAt: new Date().toISOString(),
+      })
+      localStorage.setItem("krili_registered_users", JSON.stringify(registeredUsers))
+
+      toast({
+        title: "Success",
+        description: "Account created successfully. Please log in.",
       })
 
-      console.log("[v0] Registration response:", response)
-
-      if (response.success) {
-        toast({
-          title: "Success",
-          description: "Account created successfully. Please log in.",
-        })
-
-        // Redirect to login
-        router.push("/login")
-      } else {
-        const errorMsg = response.message || "Registration failed"
-        setErrors({ submit: errorMsg })
-        toast({
-          title: "Error",
-          description: errorMsg,
-          variant: "destructive",
-        })
-      }
+      // Redirect to login
+      router.push("/login")
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An error occurred during registration"
-      console.error("[v0] Registration error:", errorMessage)
       setErrors({ submit: errorMessage })
       toast({
         title: "Error",

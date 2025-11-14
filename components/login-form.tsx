@@ -12,7 +12,6 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Eye, EyeOff, CheckCircle, AlertCircle } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { authApi, apiClient } from "@/lib/api-client"
 import { useToast } from "@/hooks/use-toast"
 
 type FormDataType = {
@@ -73,27 +72,25 @@ export function LoginForm() {
 
     setIsLoading(true)
     try {
-      const response = await authApi.login(formData.email, formData.password)
+      // Simulate form submission delay
+      await new Promise((resolve) => setTimeout(resolve, 1000))
 
-      if (response.success && response.access_token) {
-        // Store token
-        apiClient.setToken(response.access_token)
+      // Store user data in localStorage for demo purposes
+      localStorage.setItem(
+        "krili_user",
+        JSON.stringify({
+          email: formData.email,
+          rememberMe: formData.rememberMe,
+        }),
+      )
 
-        toast({
-          title: "Success",
-          description: "You have been logged in successfully",
-        })
+      toast({
+        title: "Success",
+        description: "You have been logged in successfully",
+      })
 
-        // Redirect to dashboard or home
-        router.push("/browse")
-      } else {
-        setErrors({ submit: response.message || "Login failed" })
-        toast({
-          title: "Error",
-          description: response.message || "Login failed",
-          variant: "destructive",
-        })
-      }
+      // Redirect to browse page
+      router.push("/browse")
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "An error occurred during login"
       setErrors({ submit: errorMessage })
