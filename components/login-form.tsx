@@ -2,7 +2,8 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useFormState } from "react-dom"
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -13,6 +14,7 @@ import { Eye, EyeOff, CheckCircle, AlertCircle } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { useToast } from "@/hooks/use-toast"
+import { authenticate } from "@/app/actions/login"
 
 type FormDataType = {
   email: string
@@ -26,11 +28,25 @@ export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
+
+  const [errorMessage, dispatch] = useFormState(authenticate, undefined)
+
   const [formData, setFormData] = useState<FormDataType>({
     email: "",
     password: "",
     rememberMe: false,
   })
+
+  useEffect(() => {
+    if (errorMessage) {
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      })
+      setIsLoading(false)
+    }
+  }, [errorMessage, toast])
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev: FormDataType) => ({ ...prev, [field]: value }))
@@ -71,37 +87,12 @@ export function LoginForm() {
     }
 
     setIsLoading(true)
-    try {
-      // Simulate form submission delay
-      await new Promise((resolve) => setTimeout(resolve, 1000))
 
-      // Store user data in localStorage for demo purposes
-      localStorage.setItem(
-        "krili_user",
-        JSON.stringify({
-          email: formData.email,
-          rememberMe: formData.rememberMe,
-        }),
-      )
+    const formDataToSend = new FormData()
+    formDataToSend.append('email', formData.email)
+    formDataToSend.append('password', formData.password)
 
-      toast({
-        title: "Success",
-        description: "You have been logged in successfully",
-      })
-
-      // Redirect to browse page
-      router.push("/browse")
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "An error occurred during login"
-      setErrors({ submit: errorMessage })
-      toast({
-        title: "Error",
-        description: errorMessage,
-        variant: "destructive",
-      })
-    } finally {
-      setIsLoading(false)
-    }
+    dispatch(formDataToSend)
   }
 
   return (
@@ -150,13 +141,12 @@ export function LoginForm() {
                   placeholder="Enter your email"
                   value={formData.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
-                  className={`transition-all duration-200 ${
-                    errors.email
+                  className={`transition-all duration-200 ${errors.email
                       ? "border-destructive focus:border-destructive animate-shake"
                       : formData.email
                         ? "border-green-500 focus:border-green-500"
                         : ""
-                  }`}
+                    }`}
                 />
                 {errors.email && (
                   <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -185,13 +175,12 @@ export function LoginForm() {
                   placeholder="Enter your password"
                   value={formData.password}
                   onChange={(e) => handleInputChange("password", e.target.value)}
-                  className={`transition-all duration-200 ${
-                    errors.password
+                  className={`transition-all duration-200 ${errors.password
                       ? "border-destructive focus:border-destructive animate-shake"
                       : formData.password
                         ? "border-green-500 focus:border-green-500"
                         : ""
-                  }`}
+                    }`}
                 />
                 <Button
                   type="button"

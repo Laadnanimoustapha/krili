@@ -2,7 +2,8 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useFormState } from "react-dom"
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -13,6 +14,7 @@ import { Eye, EyeOff, Shield, CheckCircle } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { useToast } from "@/hooks/use-toast"
+import { register, type State } from "@/app/actions/register"
 
 export function RegisterForm() {
   const router = useRouter()
@@ -21,6 +23,10 @@ export function RegisterForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
+
+  const initialState: State = { message: null, errors: {} }
+  const [state, dispatch] = useFormState(register, initialState)
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -31,6 +37,24 @@ export function RegisterForm() {
     agreeToTerms: false,
     agreeToMarketing: false,
   })
+
+  useEffect(() => {
+    if (state.message) {
+      if (state.message === "Missing Fields. Failed to Register.") {
+        // handled by field errors
+      } else if (state.message === "Database Error: Failed to Create User.") {
+        toast({
+          title: "Error",
+          description: state.message,
+          variant: "destructive",
+        })
+      }
+    }
+    if (state.errors) {
+      // Map server errors to local errors state if needed, or just use state.errors directly in UI
+      // For simplicity, we'll rely on state.errors for server validation feedback
+    }
+  }, [state, toast])
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -69,37 +93,32 @@ export function RegisterForm() {
     }
 
     setIsLoading(true)
+
+    const formDataToSend = new FormData()
+    Object.entries(formData).forEach(([key, value]) => {
+      formDataToSend.append(key, value.toString())
+    })
+    // Checkbox handling for FormData
+    if (formData.agreeToTerms) formDataToSend.set('agreeToTerms', 'on')
+    if (formData.agreeToMarketing) formDataToSend.set('agreeToMarketing', 'on')
+
     try {
-      // Simulate registration delay
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      // We can't await dispatch directly in the same way, but useFormState handles it.
+      // However, to show loading state, we might want to wrap it or use useFormStatus in a child component.
+      // Since we are in the form component, we can just call dispatch.
+      // But dispatch is void.
+      // We'll use a transition or just set loading true and let the server action redirect or return.
+      // But server action redirect throws error which is caught by Next.js.
 
-      // Store user registration data in localStorage for demo purposes
-      const registeredUsers = JSON.parse(localStorage.getItem("krili_registered_users") || "[]")
-      registeredUsers.push({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        phone: formData.phone,
-        agreeToMarketing: formData.agreeToMarketing,
-        registeredAt: new Date().toISOString(),
-      })
-      localStorage.setItem("krili_registered_users", JSON.stringify(registeredUsers))
+      // Actually, startTransition is better if we want to track pending state, but useFormState doesn't give pending.
+      // We can use useTransition hook.
+      // But useFormState's dispatch is already wrapped? No.
 
-      toast({
-        title: "Success",
-        description: "Account created successfully. Please log in.",
-      })
+      // Let's just call dispatch.
+      dispatch(formDataToSend)
 
-      // Redirect to login
-      router.push("/login")
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "An error occurred during registration"
-      setErrors({ submit: errorMessage })
-      toast({
-        title: "Error",
-        description: errorMessage,
-        variant: "destructive",
-      })
+      console.error(error)
     } finally {
       setIsLoading(false)
     }
@@ -147,15 +166,20 @@ export function RegisterForm() {
                 </Label>
                 <Input
                   id="firstName"
+                  name="firstName"
                   placeholder="John"
                   value={formData.firstName}
                   onChange={(e) => handleInputChange("firstName", e.target.value)}
-                  className={`transition-all duration-200 ${
-                    formData.firstName && validateField("firstName", formData.firstName)
-                      ? "border-green-500 focus:border-green-500"
-                      : ""
-                  }`}
+                  className={`transition-all duration-200 ${(state.errors?.firstName || (formData.firstName && !validateField("firstName", formData.firstName)))
+                      ? "border-destructive focus:border-destructive"
+                      : formData.firstName && validateField("firstName", formData.firstName)
+                        ? "border-green-500 focus:border-green-500"
+                        : ""
+                    }`}
                 />
+                {state.errors?.firstName && (
+                  <p className="text-sm text-destructive">{state.errors.firstName[0]}</p>
+                )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="lastName" className="flex items-center gap-2">
@@ -166,15 +190,20 @@ export function RegisterForm() {
                 </Label>
                 <Input
                   id="lastName"
+                  name="lastName"
                   placeholder="Doe"
                   value={formData.lastName}
                   onChange={(e) => handleInputChange("lastName", e.target.value)}
-                  className={`transition-all duration-200 ${
-                    formData.lastName && validateField("lastName", formData.lastName)
-                      ? "border-green-500 focus:border-green-500"
-                      : ""
-                  }`}
+                  className={`transition-all duration-200 ${(state.errors?.lastName || (formData.lastName && !validateField("lastName", formData.lastName)))
+                      ? "border-destructive focus:border-destructive"
+                      : formData.lastName && validateField("lastName", formData.lastName)
+                        ? "border-green-500 focus:border-green-500"
+                        : ""
+                    }`}
                 />
+                {state.errors?.lastName && (
+                  <p className="text-sm text-destructive">{state.errors.lastName[0]}</p>
+                )}
               </div>
             </div>
 
@@ -187,16 +216,21 @@ export function RegisterForm() {
               </Label>
               <Input
                 id="email"
+                name="email"
                 type="email"
                 placeholder="john.doe@email.com"
                 value={formData.email}
                 onChange={(e) => handleInputChange("email", e.target.value)}
-                className={`transition-all duration-200 ${
-                  formData.email && validateField("email", formData.email)
-                    ? "border-green-500 focus:border-green-500"
-                    : ""
-                }`}
+                className={`transition-all duration-200 ${(state.errors?.email || (formData.email && !validateField("email", formData.email)))
+                    ? "border-destructive focus:border-destructive"
+                    : formData.email && validateField("email", formData.email)
+                      ? "border-green-500 focus:border-green-500"
+                      : ""
+                  }`}
               />
+              {state.errors?.email && (
+                <p className="text-sm text-destructive">{state.errors.email[0]}</p>
+              )}
             </div>
 
             <div className="space-y-2 animate-in fade-in slide-in-from-left-2 duration-300 delay-700">
@@ -208,16 +242,21 @@ export function RegisterForm() {
               </Label>
               <Input
                 id="phone"
+                name="phone"
                 type="tel"
                 placeholder="+1 (555) 123-4567"
                 value={formData.phone}
                 onChange={(e) => handleInputChange("phone", e.target.value)}
-                className={`transition-all duration-200 ${
-                  formData.phone && validateField("phone", formData.phone)
-                    ? "border-green-500 focus:border-green-500"
-                    : ""
-                }`}
+                className={`transition-all duration-200 ${(state.errors?.phone || (formData.phone && !validateField("phone", formData.phone)))
+                    ? "border-destructive focus:border-destructive"
+                    : formData.phone && validateField("phone", formData.phone)
+                      ? "border-green-500 focus:border-green-500"
+                      : ""
+                  }`}
               />
+              {state.errors?.phone && (
+                <p className="text-sm text-destructive">{state.errors.phone[0]}</p>
+              )}
             </div>
 
             <div className="space-y-2 animate-in fade-in slide-in-from-left-2 duration-300 delay-800">
@@ -230,15 +269,17 @@ export function RegisterForm() {
               <div className="relative">
                 <Input
                   id="password"
+                  name="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Create a strong password"
                   value={formData.password}
                   onChange={(e) => handleInputChange("password", e.target.value)}
-                  className={`transition-all duration-200 ${
-                    formData.password && validateField("password", formData.password)
-                      ? "border-green-500 focus:border-green-500"
-                      : ""
-                  }`}
+                  className={`transition-all duration-200 ${(state.errors?.password || (formData.password && !validateField("password", formData.password)))
+                      ? "border-destructive focus:border-destructive"
+                      : formData.password && validateField("password", formData.password)
+                        ? "border-green-500 focus:border-green-500"
+                        : ""
+                    }`}
                 />
                 <Button
                   type="button"
@@ -254,6 +295,9 @@ export function RegisterForm() {
                   )}
                 </Button>
               </div>
+              {state.errors?.password && (
+                <p className="text-sm text-destructive">{state.errors.password[0]}</p>
+              )}
               {formData.password && (
                 <div className="text-xs space-y-1 animate-in fade-in slide-in-from-bottom-2 duration-200">
                   <div
@@ -278,17 +322,19 @@ export function RegisterForm() {
               <div className="relative">
                 <Input
                   id="confirmPassword"
+                  name="confirmPassword"
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirm your password"
                   value={formData.confirmPassword}
                   onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
-                  className={`transition-all duration-200 ${
-                    formData.confirmPassword && validateField("confirmPassword", formData.confirmPassword)
-                      ? "border-green-500 focus:border-green-500"
-                      : formData.confirmPassword && !validateField("confirmPassword", formData.confirmPassword)
-                        ? "border-destructive focus:border-destructive"
-                        : ""
-                  }`}
+                  className={`transition-all duration-200 ${(state.errors?.confirmPassword || (formData.confirmPassword && !validateField("confirmPassword", formData.confirmPassword)))
+                      ? "border-destructive focus:border-destructive"
+                      : formData.confirmPassword && validateField("confirmPassword", formData.confirmPassword)
+                        ? "border-green-500 focus:border-green-500"
+                        : formData.confirmPassword && !validateField("confirmPassword", formData.confirmPassword)
+                          ? "border-destructive focus:border-destructive"
+                          : ""
+                    }`}
                 />
                 <Button
                   type="button"
@@ -304,12 +350,16 @@ export function RegisterForm() {
                   )}
                 </Button>
               </div>
+              {state.errors?.confirmPassword && (
+                <p className="text-sm text-destructive">{state.errors.confirmPassword[0]}</p>
+              )}
             </div>
 
             <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2 duration-300 delay-1000">
               <div className="flex items-start space-x-2">
                 <Checkbox
                   id="terms"
+                  name="agreeToTerms"
                   checked={formData.agreeToTerms}
                   onCheckedChange={(checked) => handleInputChange("agreeToTerms", checked as boolean)}
                   className="transition-all duration-200"
@@ -325,10 +375,14 @@ export function RegisterForm() {
                   </Link>
                 </Label>
               </div>
+              {state.errors?.agreeToTerms && (
+                <p className="text-sm text-destructive">{state.errors.agreeToTerms[0]}</p>
+              )}
 
               <div className="flex items-start space-x-2">
                 <Checkbox
                   id="marketing"
+                  name="agreeToMarketing"
                   checked={formData.agreeToMarketing}
                   onCheckedChange={(checked) => handleInputChange("agreeToMarketing", checked as boolean)}
                   className="transition-all duration-200"
