@@ -113,7 +113,7 @@ export function RegisterForm() {
       // But useFormState's dispatch is already wrapped? No.
 
       // Let's just call dispatch.
-      console.log("Dispatching register action with data:", Object.fromEntries(formDataToSend.entries()));
+      console.log('Submitting form...', Object.fromEntries(formDataToSend));
       dispatch(formDataToSend)
       console.log("Dispatch called");
     } catch (error) {

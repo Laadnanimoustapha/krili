@@ -35,6 +35,10 @@ export type State = {
 };
 
 export async function register(prevState: State, formData: FormData) {
+    console.log('Server Action started', {
+        firstName: formData.get('firstName'),
+        email: formData.get('email')
+    });
     const validatedFields = RegisterSchema.safeParse({
         firstName: formData.get('firstName'),
         lastName: formData.get('lastName'),
