@@ -39,6 +39,7 @@ export function RegisterForm() {
   })
 
   useEffect(() => {
+    console.log("Form State Updated:", state);
     if (state.message || (state.errors && Object.keys(state.errors).length > 0)) {
       setIsLoading(false)
       if (state.message === "Missing Fields. Failed to Register.") {
@@ -112,7 +113,9 @@ export function RegisterForm() {
       // But useFormState's dispatch is already wrapped? No.
 
       // Let's just call dispatch.
+      console.log("Dispatching register action with data:", Object.fromEntries(formDataToSend.entries()));
       dispatch(formDataToSend)
+      console.log("Dispatch called");
     } catch (error) {
       console.error(error)
       setIsLoading(false)

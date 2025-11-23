@@ -48,27 +48,16 @@ export async function register(prevState: State, formData: FormData) {
 
     if (!validatedFields.success) {
         return {
-            errors: validatedFields.error.flatten().fieldErrors,
-            message: 'Missing Fields. Failed to Register.',
-        };
-    }
-
-    const { firstName, lastName, email, phone, password } = validatedFields.data;
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    console.log('Registering user:', email);
-    try {
-        await db.execute(
             'INSERT INTO users (first_name, last_name, email, phone, password) VALUES (?, ?, ?, ?, ?)',
             [firstName, lastName, email, phone, hashedPassword]
         );
-        console.log('User registered successfully');
-    } catch (error) {
-        console.error('Registration error:', error);
-        return {
-            message: 'Database Error: Failed to Create User.',
-        };
-    }
+            console.log('User registered successfully');
+        } catch (error) {
+            console.error('Registration error:', error);
+            return {
+                message: 'Database Error: Failed to Create User. ' + (error instanceof Error ? error.message : String(error)),
+            };
+        }
 
-    redirect('/login');
-}
+        redirect('/login');
+    }
