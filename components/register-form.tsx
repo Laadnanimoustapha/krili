@@ -39,7 +39,8 @@ export function RegisterForm() {
   })
 
   useEffect(() => {
-    if (state.message) {
+    if (state.message || (state.errors && Object.keys(state.errors).length > 0)) {
+      setIsLoading(false)
       if (state.message === "Missing Fields. Failed to Register.") {
         // handled by field errors
       } else if (state.message === "Database Error: Failed to Create User.") {
@@ -49,10 +50,6 @@ export function RegisterForm() {
           variant: "destructive",
         })
       }
-    }
-    if (state.errors) {
-      // Map server errors to local errors state if needed, or just use state.errors directly in UI
-      // For simplicity, we'll rely on state.errors for server validation feedback
     }
   }, [state, toast])
 
@@ -116,10 +113,8 @@ export function RegisterForm() {
 
       // Let's just call dispatch.
       dispatch(formDataToSend)
-
     } catch (error) {
       console.error(error)
-    } finally {
       setIsLoading(false)
     }
   }
@@ -171,10 +166,10 @@ export function RegisterForm() {
                   value={formData.firstName}
                   onChange={(e) => handleInputChange("firstName", e.target.value)}
                   className={`transition-all duration-200 ${(state.errors?.firstName || (formData.firstName && !validateField("firstName", formData.firstName)))
-                      ? "border-destructive focus:border-destructive"
-                      : formData.firstName && validateField("firstName", formData.firstName)
-                        ? "border-green-500 focus:border-green-500"
-                        : ""
+                    ? "border-destructive focus:border-destructive"
+                    : formData.firstName && validateField("firstName", formData.firstName)
+                      ? "border-green-500 focus:border-green-500"
+                      : ""
                     }`}
                 />
                 {state.errors?.firstName && (
@@ -195,10 +190,10 @@ export function RegisterForm() {
                   value={formData.lastName}
                   onChange={(e) => handleInputChange("lastName", e.target.value)}
                   className={`transition-all duration-200 ${(state.errors?.lastName || (formData.lastName && !validateField("lastName", formData.lastName)))
-                      ? "border-destructive focus:border-destructive"
-                      : formData.lastName && validateField("lastName", formData.lastName)
-                        ? "border-green-500 focus:border-green-500"
-                        : ""
+                    ? "border-destructive focus:border-destructive"
+                    : formData.lastName && validateField("lastName", formData.lastName)
+                      ? "border-green-500 focus:border-green-500"
+                      : ""
                     }`}
                 />
                 {state.errors?.lastName && (
@@ -222,10 +217,10 @@ export function RegisterForm() {
                 value={formData.email}
                 onChange={(e) => handleInputChange("email", e.target.value)}
                 className={`transition-all duration-200 ${(state.errors?.email || (formData.email && !validateField("email", formData.email)))
-                    ? "border-destructive focus:border-destructive"
-                    : formData.email && validateField("email", formData.email)
-                      ? "border-green-500 focus:border-green-500"
-                      : ""
+                  ? "border-destructive focus:border-destructive"
+                  : formData.email && validateField("email", formData.email)
+                    ? "border-green-500 focus:border-green-500"
+                    : ""
                   }`}
               />
               {state.errors?.email && (
@@ -248,10 +243,10 @@ export function RegisterForm() {
                 value={formData.phone}
                 onChange={(e) => handleInputChange("phone", e.target.value)}
                 className={`transition-all duration-200 ${(state.errors?.phone || (formData.phone && !validateField("phone", formData.phone)))
-                    ? "border-destructive focus:border-destructive"
-                    : formData.phone && validateField("phone", formData.phone)
-                      ? "border-green-500 focus:border-green-500"
-                      : ""
+                  ? "border-destructive focus:border-destructive"
+                  : formData.phone && validateField("phone", formData.phone)
+                    ? "border-green-500 focus:border-green-500"
+                    : ""
                   }`}
               />
               {state.errors?.phone && (
@@ -275,10 +270,10 @@ export function RegisterForm() {
                   value={formData.password}
                   onChange={(e) => handleInputChange("password", e.target.value)}
                   className={`transition-all duration-200 ${(state.errors?.password || (formData.password && !validateField("password", formData.password)))
-                      ? "border-destructive focus:border-destructive"
-                      : formData.password && validateField("password", formData.password)
-                        ? "border-green-500 focus:border-green-500"
-                        : ""
+                    ? "border-destructive focus:border-destructive"
+                    : formData.password && validateField("password", formData.password)
+                      ? "border-green-500 focus:border-green-500"
+                      : ""
                     }`}
                 />
                 <Button
@@ -328,12 +323,12 @@ export function RegisterForm() {
                   value={formData.confirmPassword}
                   onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
                   className={`transition-all duration-200 ${(state.errors?.confirmPassword || (formData.confirmPassword && !validateField("confirmPassword", formData.confirmPassword)))
-                      ? "border-destructive focus:border-destructive"
-                      : formData.confirmPassword && validateField("confirmPassword", formData.confirmPassword)
-                        ? "border-green-500 focus:border-green-500"
-                        : formData.confirmPassword && !validateField("confirmPassword", formData.confirmPassword)
-                          ? "border-destructive focus:border-destructive"
-                          : ""
+                    ? "border-destructive focus:border-destructive"
+                    : formData.confirmPassword && validateField("confirmPassword", formData.confirmPassword)
+                      ? "border-green-500 focus:border-green-500"
+                      : formData.confirmPassword && !validateField("confirmPassword", formData.confirmPassword)
+                        ? "border-destructive focus:border-destructive"
+                        : ""
                     }`}
                 />
                 <Button
