@@ -59,7 +59,10 @@
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "latest",
-    "zod": "3.25.67"
+    "zod": "3.25.67",
+    "mysql2": "^3.9.0",
+    "bcryptjs": "^2.4.3",
+    "next-auth": "5.0.0-beta.25"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.9",
@@ -69,6 +72,7 @@
     "postcss": "^8.5",
     "tailwindcss": "^4.1.9",
     "tw-animate-css": "1.3.3",
-    "typescript": "^5"
+    "typescript": "^5",
+    "@types/bcryptjs": "^2.4.6"
   }
 }
