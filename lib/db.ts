@@ -4,8 +4,14 @@ if (!process.env.DATABASE_URL) {
     throw new Error('DATABASE_URL environment variable is not defined');
 }
 
+const dbUrl = new URL(process.env.DATABASE_URL);
+
 export const db = mysql.createPool({
-    uri: process.env.DATABASE_URL,
+    host: dbUrl.hostname,
+    user: dbUrl.username,
+    password: dbUrl.password,
+    database: dbUrl.pathname.slice(1),
+    port: Number(dbUrl.port) || 3306,
     ssl: {
         rejectUnauthorized: false,
     },
