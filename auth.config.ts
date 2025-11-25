@@ -43,7 +43,6 @@ export const authConfig = {
     providers: [
         Credentials({
             async authorize(credentials) {
-                console.log('Login attempt for email:', credentials?.email);
                 const parsedCredentials = z
                     .object({ email: z.string().email(), password: z.string().min(6) })
                     .safeParse(credentials);
@@ -51,13 +50,8 @@ export const authConfig = {
                 if (parsedCredentials.success) {
                     const { email, password } = parsedCredentials.data;
                     const user = await getUser(email);
-                    console.log('Fetched user object:', user);
-
                     if (!user) return null;
-                    console.log('DB Hashed Password:', user?.password);
-
                     const passwordsMatch = await bcrypt.compare(password, user.password);
-                    console.log('Bcrypt comparison result:', passwordsMatch);
 
                     if (passwordsMatch) return user;
                 }
