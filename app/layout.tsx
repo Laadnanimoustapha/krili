@@ -11,6 +11,8 @@ import { ToastProvider, ToastViewport } from "@/components/ui/toast"
 import { NotificationProvider } from "@/components/notification-context"
 import { PageTransition } from "@/components/page-transition"
 import { LanguageProvider } from "@/contexts/language-context"
+import { SessionProvider } from "next-auth/react"
+import { auth } from "@/auth"
 
 export const metadata: Metadata = {
   title: {
@@ -98,11 +100,12 @@ export const viewport: Viewport = {
   ],
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const session = await auth()
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -154,20 +157,22 @@ export default function RootLayout({
       </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`} suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <LanguageProvider>
-            <NotificationProvider>
-              <ToastProvider>
-                <PageTransition>
-                  <Suspense fallback={null}>
-                    {children}
-                    <FloatingActionButton />
-                    <QuickSearch />
-                  </Suspense>
-                </PageTransition>
-                <ToastViewport />
-              </ToastProvider>
-            </NotificationProvider>
-          </LanguageProvider>
+          <SessionProvider session={session}>
+            <LanguageProvider>
+              <NotificationProvider>
+                <ToastProvider>
+                  <PageTransition>
+                    <Suspense fallback={null}>
+                      {children}
+                      <FloatingActionButton />
+                      <QuickSearch />
+                    </Suspense>
+                  </PageTransition>
+                  <ToastViewport />
+                </ToastProvider>
+              </NotificationProvider>
+            </LanguageProvider>
+          </SessionProvider>
         </ThemeProvider>
       </body>
     </html>

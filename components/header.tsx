@@ -11,6 +11,18 @@ import { useNotifications } from "@/components/notification-context"
 import { useLanguage } from "@/contexts/language-context"
 import { getTranslation } from "@/lib/translations"
 import { LanguageSelector } from "@/components/language-selector"
+import { useSession } from "next-auth/react"
+import { signOutAction } from "@/app/actions/auth"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { LogOut, Settings } from "lucide-react"
 
 function HeaderComponent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -18,6 +30,8 @@ function HeaderComponent() {
 
   const { unreadCount, messageCount, wishlistCount } = useNotifications()
   const { language } = useLanguage()
+  const { data: session } = useSession()
+  const user = session?.user
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,11 +43,10 @@ function HeaderComponent() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-all duration-500 ease-out ${
-        isScrolled
+      className={`sticky top-0 z-50 w-full transition-all duration-500 ease-out ${isScrolled
           ? "bg-background/95 backdrop-blur-xl border-b shadow-xl shadow-primary/5"
           : "bg-background/80 backdrop-blur-sm border-b border-transparent"
-      }`}
+        }`}
     >
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center space-x-2 group">
@@ -177,21 +190,64 @@ function HeaderComponent() {
 
           <ModeToggle />
 
-          <Button
-            variant="outline"
-            size="sm"
-            className="hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 transition-all duration-300 bg-transparent border-primary/20 hover:border-primary/40 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 rounded-xl"
-            asChild
-          >
-            <Link href="/login">{getTranslation(language, "login")}</Link>
-          </Button>
-          <Button
-            size="sm"
-            className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary/30 hover:scale-105 rounded-xl font-medium"
-            asChild
-          >
-            <Link href="/register">{getTranslation(language, "signUp")}</Link>
-          </Button>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={user.image || ""} alt={user.name || ""} />
+                    <AvatarFallback>{user.first_name?.[0]}{user.last_name?.[0]}</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">{user.first_name} {user.last_name}</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/profile">
+                    <User className="mr-2 h-4 w-4" />
+                    <span>{getTranslation(language, "profile")}</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/settings">
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => signOutAction()}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <>
+              <Button
+                variant="outline"
+                size="sm"
+                className="hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 transition-all duration-300 bg-transparent border-primary/20 hover:border-primary/40 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 rounded-xl"
+                asChild
+              >
+                <Link href="/login">{getTranslation(language, "login")}</Link>
+              </Button>
+              <Button
+                size="sm"
+                className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary/30 hover:scale-105 rounded-xl font-medium"
+                asChild
+              >
+                <Link href="/register">{getTranslation(language, "signUp")}</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         <div className="flex md:hidden items-center space-x-2">
@@ -334,21 +390,35 @@ function HeaderComponent() {
             <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mt-3 mb-3"></div>
 
             <div className="flex space-x-3 pt-4">
-              <Button
-                variant="outline"
-                size="sm"
-                className="flex-1 hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 transition-all duration-300 bg-transparent border-primary/20 hover:border-primary/40 hover:scale-105 rounded-xl"
-                asChild
-              >
-                <Link href="/login">{getTranslation(language, "login")}</Link>
-              </Button>
-              <Button
-                size="sm"
-                className="flex-1 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl rounded-xl"
-                asChild
-              >
-                <Link href="/register">{getTranslation(language, "signUp")}</Link>
-              </Button>
+              {user ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1 hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 transition-all duration-300 bg-transparent border-primary/20 hover:border-primary/40 hover:scale-105 rounded-xl"
+                  onClick={() => signOutAction()}
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Log out
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1 hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 transition-all duration-300 bg-transparent border-primary/20 hover:border-primary/40 hover:scale-105 rounded-xl"
+                    asChild
+                  >
+                    <Link href="/login">{getTranslation(language, "login")}</Link>
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="flex-1 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl rounded-xl"
+                    asChild
+                  >
+                    <Link href="/register">{getTranslation(language, "signUp")}</Link>
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
