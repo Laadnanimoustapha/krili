@@ -11,18 +11,8 @@ import { useNotifications } from "@/components/notification-context"
 import { useLanguage } from "@/contexts/language-context"
 import { getTranslation } from "@/lib/translations"
 import { LanguageSelector } from "@/components/language-selector"
-import { useSession } from "next-auth/react"
-import { signOutAction } from "@/app/actions/auth"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { LogOut, Settings } from "lucide-react"
+import { UserMenu } from "@/components/user-menu"
+import { signOut } from "next-auth/react"
 
 function HeaderComponent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -44,8 +34,8 @@ function HeaderComponent() {
   return (
     <header
       className={`sticky top-0 z-50 w-full transition-all duration-500 ease-out ${isScrolled
-          ? "bg-background/95 backdrop-blur-xl border-b shadow-xl shadow-primary/5"
-          : "bg-background/80 backdrop-blur-sm border-b border-transparent"
+        ? "bg-background/95 backdrop-blur-xl border-b shadow-xl shadow-primary/5"
+        : "bg-background/80 backdrop-blur-sm border-b border-transparent"
         }`}
     >
       <div className="container flex h-16 items-center justify-between">
@@ -191,44 +181,7 @@ function HeaderComponent() {
           <ModeToggle />
 
           {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={user.image || ""} alt={user.name || ""} />
-                    <AvatarFallback>{user.first_name?.[0]}{user.last_name?.[0]}</AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{user.first_name} {user.last_name}</p>
-                    <p className="text-xs leading-none text-muted-foreground">
-                      {user.email}
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/profile">
-                    <User className="mr-2 h-4 w-4" />
-                    <span>{getTranslation(language, "profile")}</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/settings">
-                    <Settings className="mr-2 h-4 w-4" />
-                    <span>Settings</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => signOutAction()}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <UserMenu user={user} language={language} getTranslation={getTranslation} />
           ) : (
             <>
               <Button
@@ -395,7 +348,7 @@ function HeaderComponent() {
                   variant="outline"
                   size="sm"
                   className="flex-1 hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 transition-all duration-300 bg-transparent border-primary/20 hover:border-primary/40 hover:scale-105 rounded-xl"
-                  onClick={() => signOutAction()}
+                  onClick={() => signOut({ callbackUrl: "/" })}
                 >
                   <LogOut className="mr-2 h-4 w-4" />
                   Log out
