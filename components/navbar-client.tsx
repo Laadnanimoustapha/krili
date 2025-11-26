@@ -42,8 +42,8 @@ export function NavbarClient({ user }: NavbarClientProps) {
     return (
         <header
             className={`sticky top-0 z-50 w-full transition-all duration-500 ease-out ${isScrolled
-                    ? "bg-background/95 backdrop-blur-xl border-b shadow-xl shadow-primary/5"
-                    : "bg-background/80 backdrop-blur-sm border-b border-transparent"
+                ? "bg-background/95 backdrop-blur-xl border-b shadow-xl shadow-primary/5"
+                : "bg-background/80 backdrop-blur-sm border-b border-transparent"
                 }`}
         >
             <div className="container flex h-16 items-center justify-between">
@@ -359,7 +359,7 @@ export function NavbarClient({ user }: NavbarClientProps) {
                                     onClick={() => signOut({ callbackUrl: "/" })}
                                 >
                                     <LogOut className="mr-2 h-4 w-4" />
-                                    Log out
+                                    Logout
                                 </Button>
                             ) : (
                                 <>

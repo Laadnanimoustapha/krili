@@ -65,10 +65,13 @@ export function UserMenu({ user, language, getTranslation }: UserMenuProps) {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
-          onClick={() => signOut({ callbackUrl: "/" })}
+          onSelect={(event) => {
+            event.preventDefault()
+            signOut({ callbackUrl: "/" })
+          }}
         >
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
+          <span>Logout</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
