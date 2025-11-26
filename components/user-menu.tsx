@@ -57,7 +57,7 @@ export function UserMenu({ user, language, getTranslation }: UserMenuProps) {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/settings" className="cursor-pointer">
+          <Link href="#" className="cursor-pointer">
             <Settings className="mr-2 h-4 w-4" />
             <span>Settings</span>
           </Link>
@@ -65,10 +65,7 @@ export function UserMenu({ user, language, getTranslation }: UserMenuProps) {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
-          onSelect={(event) => {
-            event.preventDefault()
-            signOut({ callbackUrl: "/" })
-          }}
+          onClick={() => signOut({ callbackUrl: "/" })}
         >
           <LogOut className="mr-2 h-4 w-4" />
           <span>Logout</span>
