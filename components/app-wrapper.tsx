@@ -1,21 +1,20 @@
-"use client"
+'use client';
 
-import { usePathname } from "next/navigation"
+import { usePathname } from 'next/navigation';
+import Header from '@/components/header';
+import Footer from '@/components/footer';
 
-interface AppWrapperProps {
-    children: React.ReactNode
-    header?: React.ReactNode
-    footer?: React.ReactNode
-}
+export default function AppWrapper({ children }: { children: React.ReactNode }) {
+    const pathname = usePathname();
 
-export function AppWrapper({ children, header, footer }: AppWrapperProps) {
-    const hideLayout = pathname === "/login" || pathname === "/register"
+    // Logic to hide layout on auth pages
+    const hideLayout = pathname === '/login' || pathname === '/register';
 
     return (
         <>
-            {!hideLayout && header}
-            {children}
-            {!hideLayout && footer}
+            {hideLayout ? null : <Header />}
+            <main>{children}</main>
+            {hideLayout ? null : <Footer />}
         </>
-    )
+    );
 }
