@@ -1,6 +1,6 @@
 "use client"
 
-import { signOutAction } from "@/app/actions/auth"
+import { signOut } from "next-auth/react"
 import Link from "next/link"
 import {
   DropdownMenu,
@@ -63,14 +63,17 @@ export function UserMenu({ user, language, getTranslation }: UserMenuProps) {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <form action={signOutAction} className="w-full">
-          <DropdownMenuItem asChild>
-            <button type="submit" className="w-full flex items-center cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50">
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Logout</span>
-            </button>
-          </DropdownMenuItem>
-        </form>
+        <DropdownMenuItem
+          className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
+          onSelect={(event) => {
+            event.preventDefault()
+            console.log("Logout clicked")
+            signOut({ callbackUrl: "/" })
+          }}
+        >
+          <LogOut className="mr-2 h-4 w-4" />
+          <span>Logout</span>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )
