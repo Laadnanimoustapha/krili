@@ -16,5 +16,6 @@ export const config = {
         "/my-listings/:path*",
         "/list-item/:path*",
         "/wishlist/:path*",
+        "/browse/:path*",
     ],
 }
