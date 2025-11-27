@@ -165,7 +165,7 @@ export default async function RootLayout({
                 <ToastProvider>
                   <PageTransition>
                     <Suspense fallback={null}>
-                      <AppWrapper>
+                      <AppWrapper header={<Header />} footer={<Footer />}>
                         {children}
                       </AppWrapper>
                       <QuickSearch />

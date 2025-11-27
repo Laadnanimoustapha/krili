@@ -9,14 +9,13 @@ interface AppWrapperProps {
 }
 
 export function AppWrapper({ children, header, footer }: AppWrapperProps) {
-    const pathname = usePathname()
-    const hideNavAndFooter = pathname === "/login" || pathname === "/register"
+    const hideLayout = pathname === "/login" || pathname === "/register"
 
     return (
         <>
-            {!hideNavAndFooter && header}
-            <main>{children}</main>
-            {!hideNavAndFooter && footer}
+            {!hideLayout && header}
+            {children}
+            {!hideLayout && footer}
         </>
     )
 }
