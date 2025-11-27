@@ -13,6 +13,9 @@ import { PageTransition } from "@/components/page-transition"
 import { LanguageProvider } from "@/contexts/language-context"
 import { SessionProvider } from "next-auth/react"
 import { auth } from "@/auth"
+import { AppWrapper } from "@/components/app-wrapper"
+import { Header } from "@/components/header"
+import { Footer } from "@/components/footer"
 
 export const metadata: Metadata = {
   title: {
@@ -163,7 +166,9 @@ export default async function RootLayout({
                 <ToastProvider>
                   <PageTransition>
                     <Suspense fallback={null}>
-                      {children}
+                      <AppWrapper header={<Header />} footer={<Footer />}>
+                        {children}
+                      </AppWrapper>
                       <FloatingActionButton />
                       <QuickSearch />
                     </Suspense>
