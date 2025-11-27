@@ -1,4 +1,6 @@
+import { Header } from "@/components/header"
 import { ItemDetails } from "@/components/item-details"
+import { Footer } from "@/components/footer"
 import {
   generateSEOMetadata,
   generateProductStructuredData,
@@ -102,9 +104,11 @@ export default function ItemPage({ params }: { params: { id: string } }) {
         }}
       />
 
-      <div className="container py-8">
+      <Header />
+      <main>
         <ItemDetails itemId={params.id} />
-      </div>
+      </main>
+      <Footer />
     </div>
   )
 }

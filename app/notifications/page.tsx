@@ -1,9 +1,13 @@
+import { Header } from "@/components/header"
 import { NotificationsClient } from "@/components/notifications-client"
 
 export default function NotificationsPage() {
   return (
-    <main>
-      <NotificationsClient />
-    </main>
+    <div className="min-h-screen bg-background">
+      <Header />
+      <main>
+        <NotificationsClient />
+      </main>
+    </div>
   )
 }

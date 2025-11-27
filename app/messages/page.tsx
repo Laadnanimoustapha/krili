@@ -1,9 +1,13 @@
-import { MessagesClient } from "@/components/messages-client"
+import { MessagesLayout } from "@/components/messages-layout"
+import { Header } from "@/components/header"
 
 export default function MessagesPage() {
   return (
-    <main>
-      <MessagesClient />
-    </main>
+    <div className="min-h-screen bg-background">
+      <Header />
+      <main className="container mx-auto px-4 py-8">
+        <MessagesLayout />
+      </main>
+    </div>
   )
 }
