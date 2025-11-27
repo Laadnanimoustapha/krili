@@ -14,7 +14,7 @@ export const config = {
         "/notifications/:path*",
         "/chat/:path*",
         "/my-listings/:path*",
-        "/add-listings/:path*",
+        "/list-item/:path*",
         "/wishlist/:path*",
     ],
 }
