@@ -1,9 +1,7 @@
-import { Header } from "@/components/header"
 import { Hero } from "@/components/hero"
 import { Features } from "@/components/features"
 import { Categories } from "@/components/categories"
 import { Testimonials } from "@/components/testimonials"
-import { Footer } from "@/components/footer"
 import { ScrollReveal } from "@/components/scroll-reveal"
 import { FloatingElements } from "@/components/floating-elements"
 import { generateLocalBusinessStructuredData } from "@/components/seo-head"
@@ -109,21 +107,15 @@ export default function HomePage() {
       />
 
       <FloatingElements />
-      <Header />
-      <main>
-        <Hero />
-        <ScrollReveal direction="up" delay={100}>
-          <Categories />
-        </ScrollReveal>
-        <ScrollReveal direction="up" delay={200}>
-          <Features />
-        </ScrollReveal>
-        <ScrollReveal direction="up" delay={300}>
-          <Testimonials />
-        </ScrollReveal>
-      </main>
-      <ScrollReveal direction="fade" delay={100}>
-        <Footer />
+      <Hero />
+      <ScrollReveal direction="up" delay={100}>
+        <Categories />
+      </ScrollReveal>
+      <ScrollReveal direction="up" delay={200}>
+        <Features />
+      </ScrollReveal>
+      <ScrollReveal direction="up" delay={300}>
+        <Testimonials />
       </ScrollReveal>
     </div>
   )
