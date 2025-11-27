@@ -5,7 +5,6 @@ import { GeistMono } from "geist/font/mono"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Suspense } from "react"
-import { FloatingActionButton } from "@/components/floating-action-button"
 import { QuickSearch } from "@/components/quick-search"
 import { ToastProvider, ToastViewport } from "@/components/ui/toast"
 import { NotificationProvider } from "@/components/notification-context"
@@ -169,7 +168,6 @@ export default async function RootLayout({
                       <AppWrapper header={<Header />} footer={<Footer />}>
                         {children}
                       </AppWrapper>
-                      <FloatingActionButton />
                       <QuickSearch />
                     </Suspense>
                   </PageTransition>
