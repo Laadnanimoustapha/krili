@@ -4,8 +4,8 @@ import { usePathname } from "next/navigation"
 
 interface AppWrapperProps {
     children: React.ReactNode
-    header: React.ReactNode
-    footer: React.ReactNode
+    header?: React.ReactNode
+    footer?: React.ReactNode
 }
 
 export function AppWrapper({ children, header, footer }: AppWrapperProps) {
