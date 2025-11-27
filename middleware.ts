@@ -12,7 +12,7 @@ export const config = {
         "/profile/:path*",
         "/billing/:path*",
         "/notifications/:path*",
-        "/chat/:path*",
+        "/messages/:path*",
         "/my-listings/:path*",
         "/list-item/:path*",
         "/wishlist/:path*",
