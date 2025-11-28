@@ -546,48 +546,4 @@
   [dir="rtl"] .text-right {
     text-align: left;
   }
-
-  /* Custom CSS to clean up Google Translate Widget */
-
-  /* 1. Hide the entire floating bar that appears when a language is selected */
-  .skiptranslate.goog-te-banner-frame {
-    display: none !important;
-    height: 0 !important;
-    visibility: hidden !important;
-    top: 0 !important;
-    margin: 0 !important;
-  }
-
-  /* 2. Hide the banner containing 'Powered by Google Translate' text and image icon */
-  .goog-logo-link,
-  .goog-te-gadget img {
-    display: none !important;
-  }
-
-  /* 3. Remove the default border and padding around the dropdown container */
-  .goog-te-gadget {
-    /* Fixes the large gap above the navbar content */
-    height: 28px;
-    overflow: hidden;
-    border: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  /* 4. Style the actual select dropdown element to look modern */
-  .goog-te-gadget .goog-te-combo {
-    border: 1px solid #e5e7eb;
-    /* gray-200 */
-    padding: 6px 10px;
-    border-radius: 8px;
-    background-color: #ffffff;
-    cursor: pointer;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  }
-
-  /* 5. Crucial: Reset the body margin added by the widget to fix the large top space */
-  body {
-    top: 0px !important;
-    margin-top: 0px !important;
-  }
 }
