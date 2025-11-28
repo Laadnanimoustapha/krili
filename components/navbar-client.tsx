@@ -22,10 +22,9 @@ interface NavbarClientProps {
         first_name?: string | null
         last_name?: string | null
     } | null
-    dictionary?: any
 }
 
-export function NavbarClient({ user, dictionary }: NavbarClientProps) {
+export function NavbarClient({ user }: NavbarClientProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
 
@@ -66,7 +65,7 @@ export function NavbarClient({ user, dictionary }: NavbarClientProps) {
                         href="/browse"
                         className="px-4 py-2 text-sm font-medium rounded-xl transition-all duration-300 hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 hover:text-primary hover:shadow-md hover:shadow-primary/10 hover:scale-105 relative group overflow-hidden"
                     >
-                        <span className="relative z-10">{dictionary?.navbar_browse || getTranslation(language, "browse")}</span>
+                        <span className="relative z-10">{getTranslation(language, "browse")}</span>
                         <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-primary/70 transition-all duration-500 group-hover:w-full group-hover:left-0 rounded-full"></span>
                         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-xl" />
                     </Link>
@@ -76,7 +75,7 @@ export function NavbarClient({ user, dictionary }: NavbarClientProps) {
                     >
                         <span className="relative z-10 flex items-center">
                             <Plus className="h-4 w-4 inline mr-1 transition-transform duration-300 group-hover:rotate-90" />
-                            {dictionary?.navbar_list_item || getTranslation(language, "listItem")}
+                            {getTranslation(language, "listItem")}
                         </span>
                         <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-primary/70 transition-all duration-500 group-hover:w-full group-hover:left-0 rounded-full"></span>
                         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-xl" />
