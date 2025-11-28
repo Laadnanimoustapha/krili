@@ -515,4 +515,50 @@
   [dir="rtl"] .text-right {
     text-align: left;
   }
+
+  /* Custom CSS to clean up Google Translate Widget */
+  .goog-te-gadget {
+    font-family: inherit !important;
+    color: #555 !important;
+    font-size: 14px !important;
+  }
+
+  /* Hides the 'Google Translate' text and image icon */
+  .goog-te-gadget .goog-te-combo {
+    /* Set minimal styling for the select dropdown itself */
+    border: 1px solid #d1d5db; /* gray-300 */
+    padding: 6px 10px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  /* Hides the banner containing 'Powered by Google Translate' text */
+  .goog-logo-link,
+  .goog-te-gadget img {
+    display: none !important;
+  }
+
+  /* Hides the default floating frame that often covers content */
+  body > .skiptranslate, 
+  .goog-tooltip, 
+  .goog-tooltip:hover {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Fixes the position of the language dropdown container */
+  .goog-te-spinner-pos {
+    top: 0 !important;
+    bottom: 0 !important;
+    margin: auto !important;
+    left: 0 !important;
+  }
+
+  /* Optional: Clean up the top floating bar introduced on translation */
+  .skiptranslate.goog-te-banner {
+    display: none !important;
+    height: 0 !important;
+  }
 }
