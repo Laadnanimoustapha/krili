@@ -6,9 +6,10 @@ interface AppWrapperProps {
     children: React.ReactNode
     header?: React.ReactNode
     footer?: React.ReactNode
+    dictionary?: Record<string, string>
 }
 
-export function AppWrapper({ children, header, footer }: AppWrapperProps) {
+export function AppWrapper({ children, header, footer, dictionary }: AppWrapperProps) {
     const pathname = usePathname()
     const hideNavAndFooter = pathname === "/login" || pathname === "/register"
 

@@ -102,14 +102,27 @@ export const viewport: Viewport = {
   ],
 }
 
+import { cookies } from "next/headers"
+import { getDictionary } from "@/lib/get-dictionary"
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
   const session = await auth()
+
+  // Get language from cookie or default to 'en'
+  const cookieStore = cookies()
+  const language = cookieStore.get("language")?.value || "en"
+  const locale = ["en", "ar", "fr"].includes(language) ? (language as "en" | "ar" | "fr") : "en"
+
+  // Load dictionary
+  const dictionary = await getDictionary(locale)
+  const dir = locale === "ar" ? "rtl" : "ltr"
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} dir={dir} suppressHydrationWarning>
       <head>
         <link rel="icon" href="/logo.ico" sizes="any" />
         <link rel="icon" href="/icon-192x192.png" type="image/png" />
@@ -140,7 +153,7 @@ export default async function RootLayout({
               "@context": "https://schema.org",
               "@type": "Organization",
               name: "Krili",
-              url: "https://krili.comicon-192x192",
+              url: "https://krili.com",
               logo: "https://krili.com/icon-192x192.png",
               description: "The ultimate peer-to-peer rental marketplace",
               sameAs: [
@@ -165,7 +178,11 @@ export default async function RootLayout({
                 <ToastProvider>
                   <PageTransition>
                     <Suspense fallback={null}>
-                      <AppWrapper>
+                      <AppWrapper
+                        header={<Header dictionary={dictionary} />}
+                        footer={<Footer dictionary={dictionary} />}
+                        dictionary={dictionary}
+                      >
                         {children}
                       </AppWrapper>
                       <QuickSearch />

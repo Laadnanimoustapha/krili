@@ -22,9 +22,10 @@ interface NavbarClientProps {
         first_name?: string | null
         last_name?: string | null
     } | null
+    dictionary?: Record<string, string>
 }
 
-export function NavbarClient({ user }: NavbarClientProps) {
+export function NavbarClient({ user, dictionary }: NavbarClientProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
 
