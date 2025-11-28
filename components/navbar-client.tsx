@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { useNotifications } from "@/components/notification-context"
 import { useLanguage } from "@/contexts/language-context"
 import { getTranslation } from "@/lib/translations"
-import { LanguageSelector } from "@/components/language-selector"
+import { LanguageSwitcher } from "@/components/language-switcher"
 import { UserMenu } from "@/components/user-menu"
 import { signOut } from "next-auth/react"
 
@@ -184,7 +184,7 @@ export function NavbarClient({ user }: NavbarClientProps) {
 
                     <div className="h-6 w-px bg-gradient-to-b from-transparent via-border to-transparent mx-3"></div>
 
-                    <LanguageSelector />
+                    <LanguageSwitcher />
 
                     <ModeToggle />
 
@@ -212,7 +212,7 @@ export function NavbarClient({ user }: NavbarClientProps) {
                 </div>
 
                 <div className="flex md:hidden items-center space-x-2">
-                    <LanguageSelector />
+                    <LanguageSwitcher />
                     <ModeToggle />
                     <Button
                         variant="ghost"
