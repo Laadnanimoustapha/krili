@@ -119,6 +119,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -126,20 +127,24 @@
 
 @layer utilities {
   @keyframes float {
+
     0%,
     100% {
       transform: translateY(0px);
     }
+
     50% {
       transform: translateY(-10px);
     }
   }
 
   @keyframes glow {
+
     0%,
     100% {
       box-shadow: 0 0 5px rgba(var(--primary), 0.2);
     }
+
     50% {
       box-shadow: 0 0 20px rgba(var(--primary), 0.4), 0 0 30px rgba(var(--primary), 0.2);
     }
@@ -149,6 +154,7 @@
     0% {
       transform: translateX(-100%);
     }
+
     100% {
       transform: translateX(100%);
     }
@@ -159,6 +165,7 @@
       transform: scale(0);
       opacity: 1;
     }
+
     100% {
       transform: scale(4);
       opacity: 0;
@@ -170,6 +177,7 @@
       opacity: 0;
       transform: translate3d(0, 100%, 0);
     }
+
     to {
       opacity: 1;
       transform: translate3d(0, 0, 0);
@@ -181,6 +189,7 @@
       opacity: 0;
       transform: scale(0.8);
     }
+
     to {
       opacity: 1;
       transform: scale(1);
@@ -189,10 +198,12 @@
 
   /* Added new advanced animation keyframes */
   @keyframes shake {
+
     0%,
     100% {
       transform: translateX(0);
     }
+
     10%,
     30%,
     50%,
@@ -200,6 +211,7 @@
     90% {
       transform: translateX(-4px);
     }
+
     20%,
     40%,
     60%,
@@ -213,13 +225,16 @@
       opacity: 0;
       transform: scale(0.3);
     }
+
     50% {
       opacity: 1;
       transform: scale(1.05);
     }
+
     70% {
       transform: scale(0.9);
     }
+
     100% {
       opacity: 1;
       transform: scale(1);
@@ -231,6 +246,7 @@
       opacity: 0;
       transform: translateX(100%);
     }
+
     100% {
       opacity: 1;
       transform: translateX(0);
@@ -242,6 +258,7 @@
       opacity: 0;
       transform: translateX(-100%);
     }
+
     100% {
       opacity: 1;
       transform: translateX(0);
@@ -249,20 +266,24 @@
   }
 
   @keyframes pulse-glow {
+
     0%,
     100% {
       box-shadow: 0 0 5px hsl(var(--primary) / 0.3);
     }
+
     50% {
       box-shadow: 0 0 20px hsl(var(--primary) / 0.6), 0 0 30px hsl(var(--primary) / 0.4);
     }
   }
 
   @keyframes gradient-shift {
+
     0%,
     100% {
       background-position: 0% 50%;
     }
+
     50% {
       background-position: 100% 50%;
     }
@@ -272,16 +293,19 @@
     from {
       width: 0;
     }
+
     to {
       width: 100%;
     }
   }
 
   @keyframes blink {
+
     0%,
     50% {
       opacity: 1;
     }
+
     51%,
     100% {
       opacity: 0;
@@ -289,13 +313,16 @@
   }
 
   @keyframes morph {
+
     0%,
     100% {
       border-radius: 40% 60% 70% 30% / 40% 40% 60% 50%;
     }
+
     34% {
       border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%;
     }
+
     67% {
       border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%;
     }
@@ -306,6 +333,7 @@
       opacity: 0;
       transform: translateY(20px);
     }
+
     100% {
       opacity: 1;
       transform: translateY(0);
@@ -384,15 +412,19 @@
   .animate-stagger-1 {
     animation-delay: 0.1s;
   }
+
   .animate-stagger-2 {
     animation-delay: 0.2s;
   }
+
   .animate-stagger-3 {
     animation-delay: 0.3s;
   }
+
   .animate-stagger-4 {
     animation-delay: 0.4s;
   }
+
   .animate-stagger-5 {
     animation-delay: 0.5s;
   }
@@ -425,13 +457,11 @@
   }
 
   .bg-gradient-animated {
-    background: linear-gradient(
-      -45deg,
-      hsl(var(--primary)),
-      hsl(var(--secondary)),
-      hsl(var(--accent)),
-      hsl(var(--primary))
-    );
+    background: linear-gradient(-45deg,
+        hsl(var(--primary)),
+        hsl(var(--secondary)),
+        hsl(var(--accent)),
+        hsl(var(--primary)));
     background-size: 400% 400%;
     animation: gradient-shift 15s ease infinite;
   }
@@ -468,6 +498,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
@@ -487,22 +518,22 @@
   }
 
   /* RTL-aware spacing */
-  [dir="rtl"] .space-x-1 > * + * {
+  [dir="rtl"] .space-x-1>*+* {
     margin-right: 0.25rem;
     margin-left: 0;
   }
 
-  [dir="rtl"] .space-x-2 > * + * {
+  [dir="rtl"] .space-x-2>*+* {
     margin-right: 0.5rem;
     margin-left: 0;
   }
 
-  [dir="rtl"] .space-x-3 > * + * {
+  [dir="rtl"] .space-x-3>*+* {
     margin-right: 0.75rem;
     margin-left: 0;
   }
 
-  [dir="rtl"] .space-x-4 > * + * {
+  [dir="rtl"] .space-x-4>*+* {
     margin-right: 1rem;
     margin-left: 0;
   }
@@ -517,16 +548,36 @@
   }
 
   /* Custom CSS to clean up Google Translate Widget */
-  .goog-te-gadget {
-    font-family: inherit !important;
-    color: #555 !important;
-    font-size: 14px !important;
+
+  /* 1. Hide the entire floating bar that appears when a language is selected */
+  .skiptranslate.goog-te-banner-frame {
+    display: none !important;
+    height: 0 !important;
+    visibility: hidden !important;
+    top: 0 !important;
+    margin: 0 !important;
   }
 
-  /* Hides the 'Google Translate' text and image icon */
+  /* 2. Hide the banner containing 'Powered by Google Translate' text and image icon */
+  .goog-logo-link,
+  .goog-te-gadget img {
+    display: none !important;
+  }
+
+  /* 3. Remove the default border and padding around the dropdown container */
+  .goog-te-gadget {
+    /* Fixes the large gap above the navbar content */
+    height: 28px;
+    overflow: hidden;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* 4. Style the actual select dropdown element to look modern */
   .goog-te-gadget .goog-te-combo {
-    /* Set minimal styling for the select dropdown itself */
-    border: 1px solid #d1d5db; /* gray-300 */
+    border: 1px solid #e5e7eb;
+    /* gray-200 */
     padding: 6px 10px;
     border-radius: 8px;
     background-color: #ffffff;
@@ -534,31 +585,9 @@
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   }
 
-  /* Hides the banner containing 'Powered by Google Translate' text */
-  .goog-logo-link,
-  .goog-te-gadget img {
-    display: none !important;
-  }
-
-  /* Hides the default floating frame that often covers content */
-  body > .skiptranslate, 
-  .goog-tooltip, 
-  .goog-tooltip:hover {
-    display: none !important;
-    visibility: hidden !important;
-  }
-
-  /* Fixes the position of the language dropdown container */
-  .goog-te-spinner-pos {
-    top: 0 !important;
-    bottom: 0 !important;
-    margin: auto !important;
-    left: 0 !important;
-  }
-
-  /* Optional: Clean up the top floating bar introduced on translation */
-  .skiptranslate.goog-te-banner {
-    display: none !important;
-    height: 0 !important;
+  /* 5. Crucial: Reset the body margin added by the widget to fix the large top space */
+  body {
+    top: 0px !important;
+    margin-top: 0px !important;
   }
 }
