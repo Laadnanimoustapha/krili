@@ -3,14 +3,30 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Languages } from "lucide-react"
+import { usePathname, useRouter } from "next/navigation"
 
 export function LanguageSwitcher() {
     const [isOpen, setIsOpen] = useState(false)
+    const pathname = usePathname()
+    const router = useRouter()
 
     const toggleOpen = () => setIsOpen(!isOpen)
 
-    const handleSelect = (language: string) => {
-        console.log(`Selected: ${language}`)
+    const handleSelect = (locale: string) => {
+        if (!pathname) return
+
+        const segments = pathname.split('/')
+        // segments[0] is always empty string for absolute paths
+        // segments[1] is the first part (e.g. "fr", "ar", "en" or "profile")
+
+        if (segments[1] && ['ar', 'fr', 'en'].includes(segments[1])) {
+            segments[1] = locale
+        } else {
+            segments.splice(1, 0, locale)
+        }
+
+        const newPath = segments.join('/')
+        router.push(newPath)
         setIsOpen(false)
     }
 
@@ -30,19 +46,19 @@ export function LanguageSwitcher() {
                 <div className="absolute right-0 mt-2 w-40 bg-background border rounded-xl shadow-xl z-50 overflow-hidden">
                     <div className="py-1 flex flex-col">
                         <button
-                            onClick={() => handleSelect("Arabic")}
+                            onClick={() => handleSelect("ar")}
                             className="text-left px-4 py-2 text-sm hover:bg-primary/10 hover:text-primary transition-colors flex items-center gap-2 w-full"
                         >
                             <span className="text-base">🇸🇦</span> Arabic
                         </button>
                         <button
-                            onClick={() => handleSelect("French")}
+                            onClick={() => handleSelect("fr")}
                             className="text-left px-4 py-2 text-sm hover:bg-primary/10 hover:text-primary transition-colors flex items-center gap-2 w-full"
                         >
                             <span className="text-base">🇫🇷</span> French
                         </button>
                         <button
-                            onClick={() => handleSelect("English")}
+                            onClick={() => handleSelect("en")}
                             className="text-left px-4 py-2 text-sm hover:bg-primary/10 hover:text-primary transition-colors flex items-center gap-2 w-full"
                         >
                             <span className="text-base">🇬🇧</span> English
