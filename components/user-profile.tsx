@@ -6,18 +6,28 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Star, MapPin, Shield, Calendar, Edit, Settings, Plus } from "lucide-react"
+import { Star, MapPin, Shield, Calendar, Edit, Settings, Plus, Mail, Phone } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
-// Mock user data
-const mockUser = {
-  id: 1,
-  name: "Sarah Johnson",
-  email: "sarah.johnson@email.com",
+// Interface for the user data passed from the parent
+interface UserData {
+  id: number;
+  email: string;
+  first_name?: string | null;
+  last_name?: string | null;
+  phone?: string | null;
+  created_at: Date | string;
+}
+
+interface UserProfileProps {
+  user?: UserData | null;
+}
+
+// Mock user data for fields not yet in DB
+const mockUserExtras = {
   avatar: "/user-avatar.png",
   location: "San Francisco, CA",
-  joinDate: "March 2022",
   rating: 4.9,
   totalReviews: 127,
   totalRentals: 89,
@@ -86,8 +96,18 @@ const mockReviews = [
   },
 ]
 
-export function UserProfile() {
+export function UserProfile({ user }: UserProfileProps) {
   const [activeTab, setActiveTab] = useState("overview")
+
+  // Determine display name
+  const displayName = user?.first_name || user?.last_name
+    ? `${user.first_name || ''} ${user.last_name || ''}`.trim()
+    : user?.email || 'User';
+
+  // Format join date
+  const joinDate = user?.created_at 
+    ? new Date(user.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+    : mockUserExtras.location; // Fallback or keep mock if no user? Actually logic below handles it.
 
   return (
     <div className="container py-8">
@@ -97,15 +117,15 @@ export function UserProfile() {
           <div className="flex flex-col md:flex-row gap-6">
             <div className="flex flex-col items-center md:items-start">
               <Avatar className="w-24 h-24 mb-4">
-                <AvatarImage src={mockUser.avatar || "/placeholder.svg"} alt={mockUser.name} />
-                <AvatarFallback className="text-2xl">{mockUser.name.charAt(0)}</AvatarFallback>
+                <AvatarImage src={mockUserExtras.avatar || "/placeholder.svg"} alt={displayName} />
+                <AvatarFallback className="text-2xl">{displayName.charAt(0).toUpperCase()}</AvatarFallback>
               </Avatar>
               <div className="flex items-center gap-2 mb-2">
                 <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
                   <Shield className="w-3 h-3 mr-1" />
                   Verified
                 </Badge>
-                {mockUser.kycStatus === "verified" && (
+                {mockUserExtras.kycStatus === "verified" && (
                   <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
                     KYC Verified
                   </Badge>
@@ -116,16 +136,30 @@ export function UserProfile() {
             <div className="flex-1">
               <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
                 <div>
-                  <h1 className="text-3xl font-bold mb-2">{mockUser.name}</h1>
-                  <div className="flex items-center gap-4 text-muted-foreground mb-3">
-                    <div className="flex items-center gap-1">
-                      <MapPin className="w-4 h-4" />
-                      <span>{mockUser.location}</span>
+                  <h1 className="text-3xl font-bold mb-2">{displayName}</h1>
+                  <div className="flex flex-col gap-1 text-muted-foreground mb-3">
+                    <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-1">
+                        <MapPin className="w-4 h-4" />
+                        <span>{mockUserExtras.location}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                        <Calendar className="w-4 h-4" />
+                        <span>Joined {joinDate}</span>
+                        </div>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      <span>Joined {mockUser.joinDate}</span>
-                    </div>
+                    {user?.email && (
+                        <div className="flex items-center gap-1">
+                            <Mail className="w-4 h-4" />
+                            <span>{user.email}</span>
+                        </div>
+                    )}
+                    {user?.phone && (
+                        <div className="flex items-center gap-1">
+                            <Phone className="w-4 h-4" />
+                            <span>{user.phone}</span>
+                        </div>
+                    )}
                   </div>
                 </div>
                 <div className="flex gap-2">
@@ -144,26 +178,26 @@ export function UserProfile() {
                 </div>
               </div>
 
-              <p className="text-muted-foreground mb-4 leading-relaxed">{mockUser.bio}</p>
+              <p className="text-muted-foreground mb-4 leading-relaxed">{mockUserExtras.bio}</p>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-1 mb-1">
                     <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                    <span className="font-semibold">{mockUser.rating}</span>
+                    <span className="font-semibold">{mockUserExtras.rating}</span>
                   </div>
-                  <p className="text-sm text-muted-foreground">{mockUser.totalReviews} reviews</p>
+                  <p className="text-sm text-muted-foreground">{mockUserExtras.totalReviews} reviews</p>
                 </div>
                 <div className="text-center">
-                  <p className="font-semibold text-lg">{mockUser.totalRentals}</p>
+                  <p className="font-semibold text-lg">{mockUserExtras.totalRentals}</p>
                   <p className="text-sm text-muted-foreground">Rentals</p>
                 </div>
                 <div className="text-center">
-                  <p className="font-semibold text-lg">{mockUser.totalListings}</p>
+                  <p className="font-semibold text-lg">{mockUserExtras.totalListings}</p>
                   <p className="text-sm text-muted-foreground">Listings</p>
                 </div>
                 <div className="text-center">
-                  <p className="font-semibold text-lg">{mockUser.responseRate}</p>
+                  <p className="font-semibold text-lg">{mockUserExtras.responseRate}</p>
                   <p className="text-sm text-muted-foreground">Response Rate</p>
                 </div>
               </div>
@@ -190,11 +224,11 @@ export function UserProfile() {
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Response Time</span>
-                  <span className="font-medium">{mockUser.responseTime}</span>
+                  <span className="font-medium">{mockUserExtras.responseTime}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Response Rate</span>
-                  <span className="font-medium">{mockUser.responseRate}</span>
+                  <span className="font-medium">{mockUserExtras.responseRate}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Total Earnings</span>
@@ -292,8 +326,8 @@ export function UserProfile() {
             <h2 className="text-2xl font-bold">Reviews</h2>
             <div className="flex items-center gap-2">
               <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-              <span className="font-semibold text-lg">{mockUser.rating}</span>
-              <span className="text-muted-foreground">({mockUser.totalReviews} reviews)</span>
+              <span className="font-semibold text-lg">{mockUserExtras.rating}</span>
+              <span className="text-muted-foreground">({mockUserExtras.totalReviews} reviews)</span>
             </div>
           </div>
 
