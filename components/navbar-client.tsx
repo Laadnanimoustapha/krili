@@ -9,7 +9,6 @@ import { Menu, X, Search, MessageCircle, Bell, User, Heart, Wallet, Plus, LogOut
 import { Badge } from "@/components/ui/badge"
 import { useNotifications } from "@/components/notification-context"
 import { useLanguage } from "@/contexts/language-context"
-import { getTranslation } from "@/lib/translations"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import { UserMenu } from "@/components/user-menu"
 import { signOut } from "next-auth/react"
@@ -25,11 +24,12 @@ interface NavbarClientProps {
     dictionary?: Record<string, string>
 }
 
-export function NavbarClient({ user, dictionary }: NavbarClientProps) {
+export function NavbarClient({ user, dictionary = {} }: NavbarClientProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isScrolled, setIsScrolled] = useState(false)
 
     const { unreadCount, messageCount, wishlistCount } = useNotifications()
+    // We can still use useLanguage for other things if needed, but for text we use dictionary
     const { language } = useLanguage()
 
     useEffect(() => {
@@ -39,6 +39,8 @@ export function NavbarClient({ user, dictionary }: NavbarClientProps) {
         window.addEventListener("scroll", handleScroll)
         return () => window.removeEventListener("scroll", handleScroll)
     }, [])
+
+    const t = (key: string, fallback: string) => dictionary[key] || fallback
 
     return (
         <header
@@ -66,7 +68,7 @@ export function NavbarClient({ user, dictionary }: NavbarClientProps) {
                         href="/browse"
                         className="px-4 py-2 text-sm font-medium rounded-xl transition-all duration-300 hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 hover:text-primary hover:shadow-md hover:shadow-primary/10 hover:scale-105 relative group overflow-hidden"
                     >
-                        <span className="relative z-10">{getTranslation(language, "browse")}</span>
+                        <span className="relative z-10">{t("Browse Items", "Browse Items")}</span>
                         <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-primary/70 transition-all duration-500 group-hover:w-full group-hover:left-0 rounded-full"></span>
                         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-xl" />
                     </Link>
@@ -76,7 +78,7 @@ export function NavbarClient({ user, dictionary }: NavbarClientProps) {
                     >
                         <span className="relative z-10 flex items-center">
                             <Plus className="h-4 w-4 inline mr-1 transition-transform duration-300 group-hover:rotate-90" />
-                            {getTranslation(language, "listItem")}
+                            {t("List an Item", "List an Item")}
                         </span>
                         <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-primary/70 transition-all duration-500 group-hover:w-full group-hover:left-0 rounded-full"></span>
                         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-xl" />
@@ -85,7 +87,7 @@ export function NavbarClient({ user, dictionary }: NavbarClientProps) {
                         href="/my-listings"
                         className="px-4 py-2 text-sm font-medium rounded-xl transition-all duration-300 hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 hover:text-primary hover:shadow-md hover:shadow-primary/10 hover:scale-105 relative group overflow-hidden"
                     >
-                        <span className="relative z-10">{getTranslation(language, "myListings")}</span>
+                        <span className="relative z-10">{t("My Listings", "My Listings")}</span>
                         <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-primary/70 transition-all duration-500 group-hover:w-full group-hover:left-0 rounded-full"></span>
                         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-xl" />
                     </Link>
@@ -95,7 +97,7 @@ export function NavbarClient({ user, dictionary }: NavbarClientProps) {
                     >
                         <span className="relative z-10 flex items-center">
                             <Wallet className="h-4 w-4 inline mr-1 transition-transform duration-300 group-hover:scale-110" />
-                            {getTranslation(language, "billing")}
+                            {t("Billing", "Billing")}
                         </span>
                         <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-primary/70 transition-all duration-500 group-hover:w-full group-hover:left-0 rounded-full"></span>
                         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 rounded-xl" />
@@ -111,7 +113,7 @@ export function NavbarClient({ user, dictionary }: NavbarClientProps) {
                     >
                         <Link href="/search">
                             <Search className="h-4 w-4 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />
-                            <span className="sr-only">Search</span>
+                            <span className="sr-only">{t("Search", "Search")}</span>
                         </Link>
                     </Button>
 
@@ -190,7 +192,7 @@ export function NavbarClient({ user, dictionary }: NavbarClientProps) {
                     <ModeToggle />
 
                     {user ? (
-                        <UserMenu user={user} language={language} getTranslation={getTranslation} />
+                        <UserMenu user={user} language={language} getTranslation={(lang, key) => t(key, key)} />
                     ) : (
                         <>
                             <Button
@@ -199,14 +201,14 @@ export function NavbarClient({ user, dictionary }: NavbarClientProps) {
                                 className="hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 transition-all duration-300 bg-transparent border-primary/20 hover:border-primary/40 hover:scale-105 hover:shadow-lg hover:shadow-primary/20 rounded-xl"
                                 asChild
                             >
-                                <Link href="/login">{getTranslation(language, "login")}</Link>
+                                <Link href="/login">{t("Login", "Login")}</Link>
                             </Button>
                             <Button
                                 size="sm"
                                 className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-primary/30 hover:scale-105 rounded-xl font-medium"
                                 asChild
                             >
-                                <Link href="/register">{getTranslation(language, "signUp")}</Link>
+                                <Link href="/register">{t("Sign Up", "Sign Up")}</Link>
                             </Button>
                         </>
                     )}
@@ -240,27 +242,27 @@ export function NavbarClient({ user, dictionary }: NavbarClientProps) {
                             {[
                                 {
                                     href: "/browse",
-                                    label: getTranslation(language, "browse"),
+                                    label: t("Browse Items", "Browse Items"),
                                     icon: null,
                                 },
                                 {
                                     href: "/list-item",
-                                    label: getTranslation(language, "listItem"),
+                                    label: t("List an Item", "List an Item"),
                                     icon: Plus,
                                 },
                                 {
                                     href: "/my-listings",
-                                    label: getTranslation(language, "myListings"),
+                                    label: t("My Listings", "My Listings"),
                                     icon: null,
                                 },
                                 {
                                     href: "/billing",
-                                    label: getTranslation(language, "billing"),
+                                    label: t("Billing", "Billing"),
                                     icon: Wallet,
                                 },
                                 {
                                     href: "/search",
-                                    label: getTranslation(language, "search"),
+                                    label: t("Search", "Search"),
                                     icon: Search,
                                 },
                             ].map((item, index) => (
@@ -289,7 +291,7 @@ export function NavbarClient({ user, dictionary }: NavbarClientProps) {
                                 <span className="flex items-center">
                                     <Heart className="h-4 w-4 mr-3 transition-all duration-300 group-hover:scale-110 group-hover:fill-red-500 group-hover:text-red-500" />
                                     <span className="transition-transform duration-300 group-hover:translate-x-1">
-                                        {getTranslation(language, "wishlist")}
+                                        {t("Wishlist", "Wishlist")}
                                     </span>
                                 </span>
                                 {wishlistCount > 0 && (
@@ -308,7 +310,7 @@ export function NavbarClient({ user, dictionary }: NavbarClientProps) {
                                 <span className="flex items-center">
                                     <MessageCircle className="h-4 w-4 mr-3 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-12" />
                                     <span className="transition-transform duration-300 group-hover:translate-x-1">
-                                        {getTranslation(language, "messages")}
+                                        {t("Messages", "Messages")}
                                     </span>
                                 </span>
                                 {messageCount > 0 && (
@@ -327,7 +329,7 @@ export function NavbarClient({ user, dictionary }: NavbarClientProps) {
                                 <span className="flex items-center">
                                     <Bell className="h-4 w-4 mr-3 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />
                                     <span className="transition-transform duration-300 group-hover:translate-x-1">
-                                        {getTranslation(language, "notifications")}
+                                        {t("Notifications", "Notifications")}
                                     </span>
                                 </span>
                                 {unreadCount > 0 && (
@@ -345,7 +347,7 @@ export function NavbarClient({ user, dictionary }: NavbarClientProps) {
                             >
                                 <User className="h-4 w-4 mr-3 transition-transform duration-300 group-hover:scale-110" />
                                 <span className="transition-transform duration-300 group-hover:translate-x-1">
-                                    {getTranslation(language, "profile")}
+                                    {t("Profile", "Profile")}
                                 </span>
                             </Link>
                         </div>
@@ -370,14 +372,14 @@ export function NavbarClient({ user, dictionary }: NavbarClientProps) {
                                         className="flex-1 hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 transition-all duration-300 bg-transparent border-primary/20 hover:border-primary/40 hover:scale-105 rounded-xl"
                                         asChild
                                     >
-                                        <Link href="/login">{getTranslation(language, "login")}</Link>
+                                        <Link href="/login">{t("Login", "Login")}</Link>
                                     </Button>
                                     <Button
                                         size="sm"
                                         className="flex-1 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl rounded-xl"
                                         asChild
                                     >
-                                        <Link href="/register">{getTranslation(language, "signUp")}</Link>
+                                        <Link href="/register">{t("Sign Up", "Sign Up")}</Link>
                                     </Button>
                                 </>
                             )}
