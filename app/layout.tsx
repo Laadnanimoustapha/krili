@@ -182,6 +182,7 @@ export default async function RootLayout({
                         header={<Header dictionary={dictionary} />}
                         footer={<Footer dictionary={dictionary} />}
                         dictionary={dictionary}
+                        locale={locale}
                       >
                         {children}
                       </AppWrapper>
