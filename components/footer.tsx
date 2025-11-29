@@ -114,7 +114,7 @@ export function Footer({ dictionary }: { dictionary?: Record<string, string> }) 
         </div>
 
         <div className="border-t mt-8 pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; 2026 Krili. All rights reserved. BY LAADNANI</p>
+          <p>&copy; 2026 Krili. All rights reserved.<Link href={"https://www.instagram.com/ladnani?igsh=MTJwZzd3bG1kb2M4ag=="}> BY LAADNANI</Link></p>
         </div>
       </div>
     </footer>
