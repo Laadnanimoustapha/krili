@@ -1,5 +1,3 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -8,7 +6,6 @@ import { CheckCircle } from "lucide-react"
 export default function PricingPage() {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       <main className="container py-12">
         <div className="space-y-12">
           <div className="text-center space-y-4">

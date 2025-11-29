@@ -1,5 +1,3 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 import { Hero } from "@/components/hero"
 import { Features } from "@/components/features"
 import { Categories } from "@/components/categories"
@@ -108,7 +106,6 @@ export default function HomePage() {
         }}
       />
 
-      <Header />
       <FloatingElements />
       <Hero />
       <ScrollReveal direction="up" delay={100}>
@@ -120,7 +117,6 @@ export default function HomePage() {
       <ScrollReveal direction="up" delay={300}>
         <Testimonials />
       </ScrollReveal>
-      <Footer />
     </div>
   )
 }

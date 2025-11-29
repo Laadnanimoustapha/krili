@@ -1,7 +1,5 @@
-import { Header } from "@/components/header"
 import { SearchFilters } from "@/components/search-filters"
 import { SearchResults } from "@/components/search-results"
-import { Footer } from "@/components/footer"
 import { generateSEOMetadata, generateBreadcrumbStructuredData } from "@/components/seo-head"
 import type { Metadata } from "next"
 
@@ -94,7 +92,6 @@ export default function SearchPage() {
         }}
       />
 
-      <Header />
       <main className="container py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters Sidebar */}
@@ -108,7 +105,6 @@ export default function SearchPage() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   )
 }

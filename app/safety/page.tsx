@@ -1,12 +1,9 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Shield, Users, Eye, AlertTriangle } from "lucide-react"
 
 export default function SafetyPage() {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       <main className="container py-12">
         <div className="space-y-8">
           <div className="text-center space-y-4">
@@ -73,7 +70,6 @@ export default function SafetyPage() {
           </Card>
         </div>
       </main>
-      <Footer />
     </div>
   )
 }

@@ -1,11 +1,8 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       <main className="container py-12 max-w-4xl">
         <div className="space-y-8">
           <div className="text-center space-y-4">

@@ -1,6 +1,4 @@
-import { Header } from "@/components/header"
 import { UserProfile } from "@/components/user-profile"
-import { Footer } from "@/components/footer"
 import { auth } from "@/auth"
 import { db } from "@/lib/db"
 import { RowDataPacket } from "mysql2"
@@ -26,11 +24,9 @@ export default async function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       <main>
         <UserProfile user={user as any} />
       </main>
-      <Footer />
     </div>
   )
 }

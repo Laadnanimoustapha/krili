@@ -1,10 +1,8 @@
 import { ListItemForm } from "@/components/list-item-form"
-import { Header } from "@/components/header"
 
 export default function ListItemPage() {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
           <div className="mb-8">
