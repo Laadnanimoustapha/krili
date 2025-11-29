@@ -2,7 +2,7 @@
 
 Krili is a modern, peer-to-peer rental marketplace designed to connect people who have items to rent with those who need them. Whether it's tools, electronics, vehicles, or recreational equipment, Krili makes it easy to list, discover, and rent items within your local community.
 
-![Krili Homepage](/.github/system-structur.png)
+![Krili Homepage]()
 
 ## 🚀 Features
 
