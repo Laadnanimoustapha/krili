@@ -179,6 +179,7 @@ export default async function RootLayout({
                   <PageTransition>
                     <Suspense fallback={null}>
                       <AppWrapper
+                        key={locale}
                         header={<Header dictionary={dictionary} />}
                         footer={<Footer dictionary={dictionary} />}
                         dictionary={dictionary}
