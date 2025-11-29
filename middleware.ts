@@ -19,6 +19,6 @@ export const config = {
         "/list-items/:path*",
         "/wishlist/:path*",
         "/browse/:path*",
-        "/search/:path*",
+
     ],
 }

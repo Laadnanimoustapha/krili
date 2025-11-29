@@ -33,7 +33,7 @@ export function Categories() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {categories.map((category, index) => (
             <ScrollReveal key={category.name} direction="up" delay={index * 75} className="group">
-              <Link href={`/search?category=${category.name.toLowerCase()}`}>
+              <Link href={`/browse?category=${category.name.toLowerCase()}`}>
                 <Card className="hover:shadow-xl transition-all duration-300 cursor-pointer group-hover:scale-105 group-hover:-translate-y-2 border-0 bg-background/80 backdrop-blur-sm">
                   <CardContent className="p-6 text-center relative overflow-hidden">
                     <div

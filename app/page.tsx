@@ -59,7 +59,7 @@ export default function HomePage() {
             description: "The ultimate peer-to-peer rental marketplace",
             potentialAction: {
               "@type": "SearchAction",
-              target: "https://krili.com/search?q={search_term_string}",
+              target: "https://krili.com/browse?q={search_term_string}",
               "query-input": "required name=search_term_string",
             },
             sameAs: ["https://twitter.com/krili_app", "https://facebook.com/krili", "https://instagram.com/krili_app"],

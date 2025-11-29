@@ -111,7 +111,7 @@ export function NavbarClient({ user, dictionary = {} }: NavbarClientProps) {
                         className="relative hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary/5 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-primary/20 rounded-xl group"
                         asChild
                     >
-                        <Link href="/search">
+                        <Link href="/browse">
                             <Search className="h-4 w-4 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12" />
                             <span className="sr-only">{t("Search", "Search")}</span>
                         </Link>
@@ -261,7 +261,7 @@ export function NavbarClient({ user, dictionary = {} }: NavbarClientProps) {
                                     icon: Wallet,
                                 },
                                 {
-                                    href: "/search",
+                                    href: "/browse",
                                     label: t("Search", "Search"),
                                     icon: Search,
                                 },
