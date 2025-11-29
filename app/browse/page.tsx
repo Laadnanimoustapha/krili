@@ -1,12 +1,12 @@
-import { Header } from "@/components/header"
+
 import { SearchFilters } from "@/components/search-filters"
 import { SearchResults } from "@/components/search-results"
-import { Footer } from "@/components/footer"
+
 
 export default function BrowsePage() {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+
       <main className="container py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Browse Items</h1>
@@ -25,7 +25,7 @@ export default function BrowsePage() {
           </div>
         </div>
       </main>
-      <Footer />
+
     </div>
   )
 }
