@@ -24,4 +24,3 @@ Krili is a modern, peer-to-peer rental marketplace designed to connect people wh
 -   **Authentication**: [NextAuth.js v5](https://authjs.dev/)
 -   **Database**: [MySQL](https://www.mysql.com/) (via `mysql2`)
 -   **Forms**: React Hook Form + Zod
-
