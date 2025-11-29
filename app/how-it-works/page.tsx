@@ -1,5 +1,4 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Search, MessageCircle, Calendar, Star } from "lucide-react"
@@ -7,7 +6,7 @@ import { Search, MessageCircle, Calendar, Star } from "lucide-react"
 export default function HowItWorksPage() {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+
       <main className="container py-12">
         <div className="space-y-12">
           <div className="text-center space-y-4">
@@ -138,7 +137,7 @@ export default function HowItWorksPage() {
           </div>
         </div>
       </main>
-      <Footer />
+
     </div>
   )
 }
