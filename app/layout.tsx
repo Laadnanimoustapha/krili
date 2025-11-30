@@ -18,11 +18,11 @@ import { Footer } from "@/components/footer"
 
 export const metadata: Metadata = {
   title: {
-    default: "KRILI by Laadnani Mustapha",
+    default: "KRILI",
     template: "%s | KRILI",
   },
   description:
-    "Rent Anything, Anytime. The ultimate peer-to-peer rental marketplace. From power tools to party equipment, cameras to cars - find what you need or earn money from what you own.",
+    "BY LAADNANI MUSTAPHA | Rent Anything, Anytime. The ultimate peer-to-peer rental marketplace. From power tools to party equipment, cameras to cars - find what you need or earn money from what you own.",
   keywords: [
     "rental marketplace",
     "peer-to-peer rental",
