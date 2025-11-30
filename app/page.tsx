@@ -27,9 +27,9 @@ export const metadata: Metadata = {
     "bike rental",
   ],
   openGraph: {
-    title: "KRILI by Laadnani Mustapha",
+    title: "KRILI",
     description:
-      "Rent Anything, Anytime. The ultimate peer-to-peer rental marketplace. From power tools to party equipment, cameras to cars - find what you need or earn money from what you own.",
+      "BY LAADNANI MUSTAPHA || Rent Anything, Anytime. The ultimate peer-to-peer rental marketplace. From power tools to party equipment, cameras to cars - find what you need or earn money from what you own.",
     images: [
       {
         url: "/og-preview.png",
