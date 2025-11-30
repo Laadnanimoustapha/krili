@@ -8,9 +8,8 @@ import { generateLocalBusinessStructuredData } from "@/components/seo-head"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Krili - Rent Anything, Anytime | Peer-to-Peer Rental Marketplace",
-  description:
-    "Join thousands of users in the ultimate peer-to-peer rental marketplace. Rent tools, electronics, vehicles, equipment and more from your local community. List your items and earn money.",
+  title: "KRILI by Laadnani Mustapha | Rent Anything, Anytime",
+  "Rent Anything, Anytime. The ultimate peer-to-peer rental marketplace. From power tools to party equipment, cameras to cars - find what you need or earn money from what you own.",
   keywords: [
     "rental marketplace",
     "peer-to-peer rental",
@@ -27,15 +26,15 @@ export const metadata: Metadata = {
     "bike rental",
   ],
   openGraph: {
-    title: "Krili - Rent Anything, Anytime",
+    title: "KRILI by Laadnani Mustapha",
     description:
-      "Join thousands of users in the ultimate peer-to-peer rental marketplace. Rent or list anything from tools to electronics.",
+      "Rent Anything, Anytime. The ultimate peer-to-peer rental marketplace. From power tools to party equipment, cameras to cars - find what you need or earn money from what you own.",
     images: [
       {
-        url: "/og-homepage.jpg",
+        url: "/og-preview.png",
         width: 1200,
         height: 630,
-        alt: "Krili Homepage - Peer-to-Peer Rental Marketplace",
+        alt: "KRILI - Rent Anything, Anytime",
       },
     ],
   },

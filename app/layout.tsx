@@ -18,11 +18,10 @@ import { Footer } from "@/components/footer"
 
 export const metadata: Metadata = {
   title: {
-    default: "Krili - Rent Anything, Anytime",
-    template: "%s | Krili",
+    default: "KRILI by Laadnani Mustapha",
+    template: "%s | KRILI",
   },
-  description:
-    "The ultimate peer-to-peer rental marketplace. Rent or list anything from tools to electronics, vehicles to equipment. Join thousands of users sharing resources in your community.",
+  "Rent Anything, Anytime. The ultimate peer-to-peer rental marketplace. From power tools to party equipment, cameras to cars - find what you need or earn money from what you own.",
   keywords: [
     "rental marketplace",
     "peer-to-peer rental",
@@ -42,33 +41,33 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://krili.com"),
+  metadataBase: new URL("https://krili-psi.vercel.app"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://krili.com",
-    title: "Krili - Rent Anything, Anytime",
+    url: "https://krili-psi.vercel.app",
+    title: "KRILI by Laadnani Mustapha",
     description:
-      "The ultimate peer-to-peer rental marketplace. Rent or list anything from tools to electronics, vehicles to equipment.",
-    siteName: "Krili",
+      "Rent Anything, Anytime. The ultimate peer-to-peer rental marketplace. From power tools to party equipment, cameras to cars - find what you need or earn money from what you own.",
+    siteName: "KRILI",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/og-preview.png",
         width: 1200,
         height: 630,
-        alt: "Krili - Peer-to-Peer Rental Marketplace",
+        alt: "KRILI - Rent Anything, Anytime",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Krili - Rent Anything, Anytime",
+    title: "KRILI by Laadnani Mustapha",
     description:
-      "The ultimate peer-to-peer rental marketplace. Rent or list anything from tools to electronics, vehicles to equipment.",
-    images: ["/twitter-image.jpg"],
+      "Rent Anything, Anytime. The ultimate peer-to-peer rental marketplace. From power tools to party equipment, cameras to cars - find what you need or earn money from what you own.",
+    images: ["/og-preview.png"],
     creator: "@krili_app",
   },
   robots: {
