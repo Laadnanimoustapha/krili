@@ -9,7 +9,8 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "KRILI by Laadnani Mustapha | Rent Anything, Anytime",
-  "Rent Anything, Anytime. The ultimate peer-to-peer rental marketplace. From power tools to party equipment, cameras to cars - find what you need or earn money from what you own.",
+  description:
+    "Rent Anything, Anytime. The ultimate peer-to-peer rental marketplace. From power tools to party equipment, cameras to cars - find what you need or earn money from what you own.",
   keywords: [
     "rental marketplace",
     "peer-to-peer rental",

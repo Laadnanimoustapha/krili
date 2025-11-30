@@ -21,7 +21,8 @@ export const metadata: Metadata = {
     default: "KRILI by Laadnani Mustapha",
     template: "%s | KRILI",
   },
-  "Rent Anything, Anytime. The ultimate peer-to-peer rental marketplace. From power tools to party equipment, cameras to cars - find what you need or earn money from what you own.",
+  description:
+    "Rent Anything, Anytime. The ultimate peer-to-peer rental marketplace. From power tools to party equipment, cameras to cars - find what you need or earn money from what you own.",
   keywords: [
     "rental marketplace",
     "peer-to-peer rental",
